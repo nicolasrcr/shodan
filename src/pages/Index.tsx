@@ -9,6 +9,16 @@ import KatameWazaSection from "@/components/KatameWazaSection";
 import RegrasSection from "@/components/RegrasSection";
 import BeltSystemSection from "@/components/BeltSystemSection";
 import ComingSoonSection from "@/components/ComingSoonSection";
+import NomenclaturaSection from "@/components/NomenclaturaSection";
+import KatasSection from "@/components/KatasSection";
+import NageNoKataSection from "@/components/NageNoKataSection";
+import KatameNoKataSection from "@/components/KatameNoKataSection";
+import TreinosSection from "@/components/TreinosSection";
+import OrganizacaoSection from "@/components/OrganizacaoSection";
+import EscolarSection from "@/components/EscolarSection";
+import SocorrosSection from "@/components/SocorrosSection";
+import InclusivoSection from "@/components/InclusivoSection";
+import VideosSection from "@/components/VideosSection";
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState("home");
@@ -28,13 +38,33 @@ const Index = () => {
         return <PrincipiosSection />;
       case "etiqueta":
         return <BeltSystemSection />;
+      case "nomenclatura":
+        return <NomenclaturaSection />;
       case "gokyo":
         return <GokyoSection />;
       case "katameWaza":
         return <KatameWazaSection />;
+      case "katas":
+        return <KatasSection />;
+      case "nageNoKata":
+        return <NageNoKataSection />;
+      case "katameNoKata":
+        return <KatameNoKataSection />;
+      case "treinos":
+        return <TreinosSection />;
       case "regras":
       case "regras2025":
         return <RegrasSection />;
+      case "organizacao":
+        return <OrganizacaoSection />;
+      case "escolar":
+        return <EscolarSection />;
+      case "socorros":
+        return <SocorrosSection />;
+      case "inclusivo":
+        return <InclusivoSection />;
+      case "videos":
+        return <VideosSection />;
       default:
         return <ComingSoonSection section={activeSection} onNavigate={handleNavigate} />;
     }
