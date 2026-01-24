@@ -19,7 +19,7 @@ export const sections = [
   { id: 'inclusivo', label: 'Inclusivo', icon: '♿' },
   { id: 'videos', label: 'Vídeos', icon: '映' },
   { id: 'flashcardsMenu', label: 'Flashcards', icon: '札' },
-  { id: 'quizMenu', label: 'Quizzes', icon: '問' },
+  { id: 'quizzes', label: 'Quizzes', icon: '問' },
 ];
 
 export const homeCards = [
