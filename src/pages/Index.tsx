@@ -21,6 +21,7 @@ import SocorrosSection from "@/components/SocorrosSection";
 import InclusivoSection from "@/components/InclusivoSection";
 import VideosSection from "@/components/VideosSection";
 import QuizzesSection from "@/components/QuizzesSection";
+import FlashcardsSection from "@/components/FlashcardsSection";
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState("home");
@@ -70,6 +71,8 @@ const Index = () => {
         return <VideosSection />;
       case "quizzes":
         return <QuizzesSection />;
+      case "flashcardsMenu":
+        return <FlashcardsSection />;
       default:
         return <ComingSoonSection section={activeSection} onNavigate={handleNavigate} />;
     }

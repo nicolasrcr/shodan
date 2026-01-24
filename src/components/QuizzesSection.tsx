@@ -250,6 +250,40 @@ const quizData: Record<string, QuizCategory> = {
   },
 };
 
+interface QuizProgress {
+  [category: string]: {
+    bestScore: number;
+    totalQuestions: number;
+    attempts: number;
+    lastPlayed: string;
+  };
+}
+
+const STORAGE_KEY = 'judo-quiz-progress';
+
+const getProgress = (): QuizProgress => {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    return stored ? JSON.parse(stored) : {};
+  } catch {
+    return {};
+  }
+};
+
+const saveProgress = (category: string, score: number, total: number) => {
+  const progress = getProgress();
+  const existing = progress[category];
+  
+  progress[category] = {
+    bestScore: existing ? Math.max(existing.bestScore, score) : score,
+    totalQuestions: total,
+    attempts: existing ? existing.attempts + 1 : 1,
+    lastPlayed: new Date().toISOString(),
+  };
+  
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+};
+
 const QuizzesSection = () => {
   const [currentQuiz, setCurrentQuiz] = useState<string | null>(null);
   const [questionIndex, setQuestionIndex] = useState(0);
@@ -258,6 +292,7 @@ const QuizzesSection = () => {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false);
+  const [progress, setProgress] = useState<QuizProgress>(getProgress());
 
   const startQuiz = (category: string) => {
     setCurrentQuiz(category);
@@ -277,12 +312,18 @@ const QuizzesSection = () => {
     setAnswered(prev => prev + 1);
     
     const quiz = quizData[currentQuiz!];
-    if (index === quiz.questions[questionIndex].c) {
-      setScore(prev => prev + 1);
+    const isCorrect = index === quiz.questions[questionIndex].c;
+    const newScore = isCorrect ? score + 1 : score;
+    
+    if (isCorrect) {
+      setScore(newScore);
     }
 
     setTimeout(() => {
       if (questionIndex + 1 >= quiz.questions.length) {
+        // Quiz completed - save progress
+        saveProgress(currentQuiz!, newScore, quiz.questions.length);
+        setProgress(getProgress());
         setQuizCompleted(true);
       } else {
         setQuestionIndex(prev => prev + 1);
@@ -312,26 +353,77 @@ const QuizzesSection = () => {
           </p>
         </div>
 
+        {/* Progress Summary */}
+        {Object.keys(progress).length > 0 && (
+          <div className="card-judo mb-8 p-4">
+            <h3 className="font-semibold text-white mb-3 flex items-center gap-2">
+              <span>📊</span> Seu Progresso
+            </h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+              {Object.entries(progress).map(([key, data]) => {
+                const quizInfo = quizData[key];
+                if (!quizInfo) return null;
+                const percent = Math.round((data.bestScore / data.totalQuestions) * 100);
+                return (
+                  <div key={key} className="p-3 bg-muted/20 rounded-lg">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs text-muted-foreground truncate">{quizInfo.title}</span>
+                      <span className="text-primary font-serif">{quizInfo.icon}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="flex-1 h-2 bg-muted/30 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-primary transition-all"
+                          style={{ width: `${percent}%` }}
+                        />
+                      </div>
+                      <span className="text-xs text-primary font-semibold">{percent}%</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">{data.attempts} tentativa{data.attempts > 1 ? 's' : ''}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {Object.entries(quizData).map(([key, quiz]) => (
-            <button
-              key={key}
-              onClick={() => startQuiz(key)}
-              className="card-judo text-left hover:border-primary transition-colors p-6"
-            >
-              <div className="flex items-center justify-between mb-3">
-                <div>
-                  <h3 className="font-semibold text-white">{quiz.title}</h3>
-                  <p className="text-xs text-muted-foreground">{quiz.questions.length} perguntas</p>
+          {Object.entries(quizData).map(([key, quiz]) => {
+            const quizProgress = progress[key];
+            const bestPercent = quizProgress ? Math.round((quizProgress.bestScore / quizProgress.totalQuestions) * 100) : null;
+            
+            return (
+              <button
+                key={key}
+                onClick={() => startQuiz(key)}
+                className="card-judo text-left hover:border-primary transition-colors p-6 relative"
+              >
+                {bestPercent !== null && (
+                  <div className="absolute top-2 right-2">
+                    <span className={`text-xs px-2 py-0.5 rounded-full ${
+                      bestPercent >= 90 ? 'bg-green-500/20 text-green-400' :
+                      bestPercent >= 70 ? 'bg-yellow-500/20 text-yellow-400' :
+                      bestPercent >= 50 ? 'bg-orange-500/20 text-orange-400' :
+                      'bg-red-500/20 text-red-400'
+                    }`}>
+                      {bestPercent}%
+                    </span>
+                  </div>
+                )}
+                <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <h3 className="font-semibold text-white">{quiz.title}</h3>
+                    <p className="text-xs text-muted-foreground">{quiz.questions.length} perguntas</p>
+                  </div>
+                  <span className="text-3xl text-primary font-serif">{quiz.icon}</span>
                 </div>
-                <span className="text-3xl text-primary font-serif">{quiz.icon}</span>
-              </div>
-              <div className="flex items-center gap-2 text-primary text-sm">
-                <span>Iniciar Quiz</span>
-                <span>→</span>
-              </div>
-            </button>
-          ))}
+                <div className="flex items-center gap-2 text-primary text-sm">
+                  <span>{quizProgress ? 'Jogar Novamente' : 'Iniciar Quiz'}</span>
+                  <span>→</span>
+                </div>
+              </button>
+            );
+          })}
         </div>
 
         <div className="card-red p-6 mt-8">

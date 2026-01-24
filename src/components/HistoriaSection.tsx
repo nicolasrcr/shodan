@@ -1,4 +1,5 @@
 import { historyData } from "@/data/judoData";
+import jigoroKanoImg from "@/assets/jigoro-kano.jpg";
 
 const HistoriaSection = () => {
   return (
@@ -10,8 +11,12 @@ const HistoriaSection = () => {
 
       {/* Founder Section */}
       <div className="grid md:grid-cols-[220px_1fr] gap-7 mb-10">
-        <div className="card-red flex flex-col items-center justify-center py-8 px-6 text-center">
-          <span className="text-6xl font-serif text-primary mb-3">嘉納</span>
+        <div className="card-red flex flex-col items-center justify-center py-6 px-6 text-center overflow-hidden">
+          <img 
+            src={jigoroKanoImg} 
+            alt="Mestre Jigoro Kano, fundador do Judô"
+            className="w-32 h-40 object-cover rounded-lg mb-3 border-2 border-primary/30"
+          />
           <h3 className="text-lg font-semibold text-white">Jigoro Kano</h3>
           <p className="text-sm text-muted-foreground mt-1">1860 - 1938</p>
         </div>
