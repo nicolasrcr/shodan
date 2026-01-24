@@ -26,8 +26,8 @@ const HomeSection = ({ onNavigate }: HomeSectionProps) => {
       {/* Search */}
       <SearchBar onNavigate={onNavigate} />
 
-      {/* Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-12">
+      {/* Cards Grid - 5 columns on xl to match reference design */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-12">
         {homeCards.map((card) => (
           <div
             key={card.section}
@@ -37,15 +37,15 @@ const HomeSection = ({ onNavigate }: HomeSectionProps) => {
             {/* Top gold line on hover */}
             <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             
-            <div className="flex justify-between items-start mb-3">
-              <h3 className="text-base font-semibold text-white group-hover:text-primary transition-colors">
+            <div className="flex justify-between items-start mb-2">
+              <h3 className="text-sm font-semibold text-white group-hover:text-primary transition-colors">
                 {card.title}
               </h3>
-              <span className="text-3xl font-serif text-primary opacity-80 group-hover:opacity-100 transition-opacity">
+              <span className="text-2xl font-serif text-primary opacity-80 group-hover:opacity-100 transition-opacity">
                 {card.icon}
               </span>
             </div>
-            <p className="text-sm text-muted-foreground">{card.desc}</p>
+            <p className="text-xs text-muted-foreground">{card.desc}</p>
           </div>
         ))}
       </div>
