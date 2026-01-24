@@ -100,7 +100,10 @@ const GokyoSection = () => {
             </div>
             <h4 className="font-semibold text-white text-sm mb-1">{technique.name}</h4>
             <p className={cn("text-2xl font-serif mb-2", currentColor.text)}>{technique.kanji}</p>
-            <p className="text-xs text-muted-foreground">{technique.translation}</p>
+            <p className="text-xs text-muted-foreground mb-2">{technique.translation}</p>
+            <p className="text-[10px] text-primary/70 flex items-center gap-1">
+              <span>🎬</span> Vídeo disponível na página Vídeos
+            </p>
           </div>
         ))}
       </div>

@@ -234,7 +234,7 @@ export const principlesData = {
 
 export const gokyoData = {
   ikkyo: {
-    name: "Ikkyo (1º Grupo)",
+    name: "Ikkyo (1º GOKYO)",
     techniques: [
       { num: 1, name: "De-Ashi-Harai", kanji: "出足払", translation: "Varrer o pé que avança", group: "Ashi-waza" },
       { num: 2, name: "Hiza-Guruma", kanji: "膝車", translation: "Roda do joelho", group: "Ashi-waza" },
@@ -247,7 +247,7 @@ export const gokyoData = {
     ]
   },
   nikyo: {
-    name: "Nikyo (2º Grupo)",
+    name: "Nikyo (2º GOKYO)",
     techniques: [
       { num: 9, name: "Ko-Soto-Gari", kanji: "小外刈", translation: "Pequena ceifada externa", group: "Ashi-waza" },
       { num: 10, name: "Ko-Uchi-Gari", kanji: "小内刈", translation: "Pequena ceifada interna", group: "Ashi-waza" },
@@ -260,7 +260,7 @@ export const gokyoData = {
     ]
   },
   sankyo: {
-    name: "Sankyo (3º Grupo)",
+    name: "Sankyo (3º GOKYO)",
     techniques: [
       { num: 17, name: "Ko-Soto-Gake", kanji: "小外掛", translation: "Pequeno gancho externo", group: "Ashi-waza" },
       { num: 18, name: "Tsuri-Goshi", kanji: "釣腰", translation: "Quadril levantando", group: "Koshi-waza" },
@@ -273,7 +273,7 @@ export const gokyoData = {
     ]
   },
   yonkyo: {
-    name: "Yonkyo (4º Grupo)",
+    name: "Yonkyo (4º GOKYO)",
     techniques: [
       { num: 25, name: "Sumi-Gaeshi", kanji: "隅返", translation: "Virada de canto", group: "Ma-sutemi" },
       { num: 26, name: "Tani-Otoshi", kanji: "谷落", translation: "Queda no vale", group: "Yoko-sutemi" },
@@ -286,7 +286,7 @@ export const gokyoData = {
     ]
   },
   gokyo: {
-    name: "Gokyo (5º Grupo)",
+    name: "Gokyo (5º GOKYO)",
     techniques: [
       { num: 33, name: "O-Soto-Guruma", kanji: "大外車", translation: "Grande roda externa", group: "Ashi-waza" },
       { num: 34, name: "Uki-Waza", kanji: "浮技", translation: "Técnica flutuante", group: "Yoko-sutemi" },
