@@ -1,4 +1,14 @@
 const NomenclaturaSection = () => {
+  const positions = [
+    { name: 'Ritsui', desc: 'Em pé' },
+    { name: 'Seiza', desc: 'Ajoelhado (formal)' },
+    { name: 'Anza', desc: 'Pernas cruzadas (informal)' },
+    { name: 'Chū-Goshi', desc: 'Agachado' },
+    { name: 'Kyoshi', desc: 'Ajoelhado com 1 joelho' },
+    { name: 'Zai', desc: 'Sentado' },
+    { name: 'Aomuke', desc: 'Deitado de costas' },
+  ];
+
   const terminology = [
     { term: 'Matte', def: 'Parar' }, { term: 'Hajime', def: 'Começar' },
     { term: 'Sensei', def: 'Professor' }, { term: 'Judô', def: 'Caminho Suave' },
@@ -63,6 +73,19 @@ const NomenclaturaSection = () => {
         <span className="section-title-icon">言</span>
         Nomenclatura Japonesa
       </h2>
+
+      {/* Posições e Posturas */}
+      <h3 className="text-lg font-semibold text-primary flex items-center gap-2 mb-4">
+        <span>🧘</span> Posições e Posturas
+      </h3>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3 mb-10">
+        {positions.map((item, i) => (
+          <div key={i} className="card-judo text-center p-3">
+            <p className="text-primary font-semibold text-sm">{item.name}</p>
+            <p className="text-xs text-muted-foreground">{item.desc}</p>
+          </div>
+        ))}
+      </div>
 
       {/* Termos Básicos */}
       <h3 className="text-lg font-semibold text-primary flex items-center gap-2 mb-4">
