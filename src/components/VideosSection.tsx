@@ -103,15 +103,6 @@ const VideosSection = () => {
     },
   ];
 
-  const canaisRecomendados = [
-    { name: 'Kodokan Judo Institute', desc: 'Canal oficial do Kodokan - demonstrações oficiais', url: 'https://www.youtube.com/@KodokanJudoInstitute' },
-    { name: 'IJF Judo', desc: 'Federação Internacional de Judô - competições e técnicas', url: 'https://www.youtube.com/@ijabordeaux' },
-    { name: 'JudoInside', desc: 'Notícias, análises técnicas e competições', url: 'https://www.youtube.com/@JudoInside' },
-    { name: 'CBJ Oficial', desc: 'Confederação Brasileira de Judô', url: 'https://www.youtube.com/@cbj_oficial' },
-    { name: 'Superstar Judo', desc: 'Tutoriais e análises técnicas detalhadas', url: 'https://www.youtube.com/@SuperstarJudo' },
-    { name: 'Matt D\'Aquino', desc: 'Dicas de treino e técnicas avançadas', url: 'https://www.youtube.com/@BeyondGrappling' },
-  ];
-
   return (
     <div className="animate-fade-in">
       <h2 className="section-title">
@@ -151,10 +142,14 @@ const VideosSection = () => {
               >
                 <div className="relative aspect-video bg-background/50">
                   <img 
-                    src={`https://img.youtube.com/vi/${video.id}/mqdefault.jpg`}
+                    src={`https://img.youtube.com/vi/${video.id}/hqdefault.jpg`}
                     alt={video.name}
                     className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
                     loading="lazy"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = `https://img.youtube.com/vi/${video.id}/mqdefault.jpg`;
+                    }}
                   />
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -188,29 +183,6 @@ const VideosSection = () => {
           </div>
         </div>
       ))}
-
-      {/* Canais Recomendados */}
-      <h3 className="text-lg font-semibold text-primary flex items-center gap-2 mb-4">
-        <span>📺</span> Canais Recomendados
-      </h3>
-      
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {canaisRecomendados.map((channel, index) => (
-          <a 
-            key={index} 
-            href={channel.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="card-judo text-center p-4 hover:border-primary transition-colors"
-          >
-            <div className="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center mx-auto mb-2">
-              <span className="text-white text-lg">▶</span>
-            </div>
-            <p className="font-medium text-white text-sm">{channel.name}</p>
-            <p className="text-xs text-muted-foreground">{channel.desc}</p>
-          </a>
-        ))}
-      </div>
 
       {/* Dicas para Estudo */}
       <h3 className="text-lg font-semibold text-primary flex items-center gap-2 mb-4 mt-10">
