@@ -1,97 +1,105 @@
+import { Badge } from '@/components/ui/badge';
+
+interface VideoItem {
+  name: string;
+  id: string;
+  gokyo?: string;
+}
+
 const VideosSection = () => {
   const videoCategories = [
     {
       title: 'Te-Waza (Técnicas de Mão)',
       videos: [
-        { name: 'Seoi-nage', id: 'zIq0xI0ogxk' },
-        { name: 'Ippon-seoi-nage', id: 'FQnOlCxo4oI' },
-        { name: 'Seoi-otoshi', id: 'vu1TMVNnq34' },
-        { name: 'Tai-otoshi', id: '4x6S3Q-Ktv8' },
-        { name: 'Kata-guruma', id: 'cnHRhSy8yi4' },
-        { name: 'Sukui-nage', id: 'vU6aJ2kFxoI' },
-        { name: 'Obi-otoshi', id: 'ff8U2TVZIYI' },
-        { name: 'Uki-otoshi', id: '6H5tmncOY4Q' },
-        { name: 'Sumi-otoshi', id: 'lLU9wv52ni0' },
-        { name: 'Yama-arashi', id: 'MGlyKmSuzdc' },
-        { name: 'Obi-tori-gaeshi', id: 'bpc82SrunUU' },
-        { name: 'Morote-gari', id: 'BHLQS4K85bs' },
-        { name: 'Kuchiki-taoshi', id: 'ZNL47q1aJNY' },
-        { name: 'Kibisu-gaeshi', id: 'SqI12aHF1P8' },
-        { name: 'Uchi-mata-sukashi', id: 'y5v1kU6E01I' },
-        { name: 'Ko-uchi-gaeshi', id: '8v7S_76IHBE' },
-      ]
+        { name: 'Seoi-nage', id: 'zIq0xI0ogxk', gokyo: 'Ikkyo' },
+        { name: 'Ippon-seoi-nage', id: 'FQnOlCxo4oI', gokyo: 'Sankyo' },
+        { name: 'Seoi-otoshi', id: 'vu1TMVNnq34', gokyo: 'Sankyo' },
+        { name: 'Tai-otoshi', id: '4x6S3Q-Ktv8', gokyo: 'Nikyo' },
+        { name: 'Kata-guruma', id: 'cnHRhSy8yi4', gokyo: 'Sankyo' },
+        { name: 'Sukui-nage', id: 'vU6aJ2kFxoI', gokyo: 'Yonkyo' },
+        { name: 'Obi-otoshi', id: 'ff8U2TVZIYI', gokyo: 'Shinmeisho' },
+        { name: 'Uki-otoshi', id: '6H5tmncOY4Q', gokyo: 'Ikkyo' },
+        { name: 'Sumi-otoshi', id: 'lLU9wv52ni0', gokyo: 'Nikyo' },
+        { name: 'Yama-arashi', id: 'MGlyKmSuzdc', gokyo: 'Gokyo' },
+        { name: 'Obi-tori-gaeshi', id: 'bpc82SrunUU', gokyo: 'Shinmeisho' },
+        { name: 'Morote-gari', id: 'BHLQS4K85bs', gokyo: 'Shinmeisho' },
+        { name: 'Kuchiki-taoshi', id: 'ZNL47q1aJNY', gokyo: 'Shinmeisho' },
+        { name: 'Kibisu-gaeshi', id: 'SqI12aHF1P8', gokyo: 'Shinmeisho' },
+        { name: 'Uchi-mata-sukashi', id: 'y5v1kU6E01I', gokyo: 'Shinmeisho' },
+        { name: 'Ko-uchi-gaeshi', id: '8v7S_76IHBE', gokyo: 'Shinmeisho' },
+      ] as VideoItem[]
     },
     {
       title: 'Koshi-Waza (Técnicas de Quadril)',
       videos: [
-        { name: 'O-goshi', id: 'yhu1mfy2vJ4' },
-        { name: 'Uki-goshi', id: 'bPKwtB4lyOQ' },
-        { name: 'Harai-goshi', id: 'qTo8HlAAkOo' },
-        { name: 'Koshi-guruma', id: 'SU7Id6uVJ44' },
-        { name: 'Tsurikomi-goshi', id: 'McfzA0yRVt4' },
-        { name: 'Hane-goshi', id: 'M9_7De6A1kk' },
-        { name: 'Tsuri-goshi', id: 'IKRsNEnHJKg' },
-        { name: 'Utsuri-goshi', id: 'GKl0pUKGWMg' },
-        { name: 'Sode-tsurikomi-goshi', id: 'WhQg2YMoW9o' },
-        { name: 'Ushiro-goshi', id: 'C7OXB3wQ9Ds' },
-        { name: 'O-guruma', id: 'k3l_v7rPSVg' },
-      ]
+        { name: 'O-goshi', id: 'yhu1mfy2vJ4', gokyo: 'Ikkyo' },
+        { name: 'Uki-goshi', id: 'bPKwtB4lyOQ', gokyo: 'Ikkyo' },
+        { name: 'Harai-goshi', id: 'qTo8HlAAkOo', gokyo: 'Nikyo' },
+        { name: 'Koshi-guruma', id: 'SU7Id6uVJ44', gokyo: 'Nikyo' },
+        { name: 'Tsurikomi-goshi', id: 'McfzA0yRVt4', gokyo: 'Nikyo' },
+        { name: 'Hane-goshi', id: 'M9_7De6A1kk', gokyo: 'Nikyo' },
+        { name: 'Tsuri-goshi', id: 'IKRsNEnHJKg', gokyo: 'Sankyo' },
+        { name: 'Utsuri-goshi', id: 'GKl0pUKGWMg', gokyo: 'Yonkyo' },
+        { name: 'Sode-tsurikomi-goshi', id: 'WhQg2YMoW9o', gokyo: 'Shinmeisho' },
+        { name: 'Ushiro-goshi', id: 'C7OXB3wQ9Ds', gokyo: 'Yonkyo' },
+        { name: 'O-guruma', id: 'k3l_v7rPSVg', gokyo: 'Gokyo' },
+      ] as VideoItem[]
     },
     {
       title: 'Ashi-Waza (Técnicas de Perna)',
       videos: [
-        { name: 'De-ashi-harai', id: '4BUUvqxi_Kk' },
-        { name: 'Okuri-ashi-harai', id: 'kNhJKQE5aLY' },
-        { name: 'Ko-soto-gake', id: 'ORaD7hUVR80' },
-        { name: 'Ko-soto-gari', id: 'jeQ541ScLB4' },
-        { name: 'Ko-uchi-gari', id: '3Jb3tZvr9Ng' },
-        { name: 'O-soto-gari', id: 'c-A_nP7mKAc' },
-        { name: 'O-uchi-gari', id: '0itJFhV9pDQ' },
-        { name: 'Uchi-mata', id: 'iUpSu5J-bgw' },
-        { name: 'O-soto-otoshi', id: '4CjxN5zqHEs' },
-        { name: 'Hiza-guruma', id: 'TlODJyQE57g' },
-        { name: 'Ashi-guruma', id: 'N3aNe7Ufpfs' },
-        { name: 'Harai-tsurikomi-ashi', id: 'pjbUb1lpmxc' },
-        { name: 'Sasae-tsurikomi-ashi', id: 'z3bP4l4Ofhg' },
-        { name: 'O-soto-guruma', id: 'Dt5LfUyPqVA' },
-        { name: 'O-soto-gaeshi', id: '8ZjM3X_EANo' },
-        { name: 'O-uchi-gaeshi', id: 'dCyZTXyjIXE' },
-        { name: 'Hane-goshi-gaeshi', id: '9bZAZSBtnGs' },
-        { name: 'Harai-goshi-gaeshi', id: '4U3It-7PPsc' },
-        { name: 'Uchi-mata-gaeshi', id: 'Sy6sLWxkWYw' },
-        { name: 'Tsubame-gaeshi', id: 'GwweWqqFB5g' },
-      ]
+        { name: 'De-ashi-harai', id: '4BUUvqxi_Kk', gokyo: 'Ikkyo' },
+        { name: 'Okuri-ashi-harai', id: 'kNhJKQE5aLY', gokyo: 'Nikyo' },
+        { name: 'Ko-soto-gake', id: 'ORaD7hUVR80', gokyo: 'Yonkyo' },
+        { name: 'Ko-soto-gari', id: 'jeQ541ScLB4', gokyo: 'Nikyo' },
+        { name: 'Ko-uchi-gari', id: '3Jb3tZvr9Ng', gokyo: 'Sankyo' },
+        { name: 'O-soto-gari', id: 'c-A_nP7mKAc', gokyo: 'Ikkyo' },
+        { name: 'O-uchi-gari', id: '0itJFhV9pDQ', gokyo: 'Gokyo' },
+        { name: 'Uchi-mata', id: 'iUpSu5J-bgw', gokyo: 'Sankyo' },
+        { name: 'O-soto-otoshi', id: '4CjxN5zqHEs', gokyo: 'Gokyo' },
+        { name: 'Hiza-guruma', id: 'TlODJyQE57g', gokyo: 'Ikkyo' },
+        { name: 'Ashi-guruma', id: 'N3aNe7Ufpfs', gokyo: 'Sankyo' },
+        { name: 'Harai-tsurikomi-ashi', id: 'pjbUb1lpmxc', gokyo: 'Nikyo' },
+        { name: 'Sasae-tsurikomi-ashi', id: 'z3bP4l4Ofhg', gokyo: 'Ikkyo' },
+        { name: 'O-soto-guruma', id: 'Dt5LfUyPqVA', gokyo: 'Gokyo' },
+        { name: 'O-soto-gaeshi', id: '8ZjM3X_EANo', gokyo: 'Shinmeisho' },
+        { name: 'O-uchi-gaeshi', id: 'dCyZTXyjIXE', gokyo: 'Shinmeisho' },
+        { name: 'Hane-goshi-gaeshi', id: '9bZAZSBtnGs', gokyo: 'Shinmeisho' },
+        { name: 'Harai-goshi-gaeshi', id: '4U3It-7PPsc', gokyo: 'Shinmeisho' },
+        { name: 'Uchi-mata-gaeshi', id: 'Sy6sLWxkWYw', gokyo: 'Shinmeisho' },
+        { name: 'Tsubame-gaeshi', id: 'GwweWqqFB5g', gokyo: 'Shinmeisho' },
+      ] as VideoItem[]
     },
     {
       title: 'Ma-Sutemi-Waza (Sacrifício para Trás)',
       videos: [
-        { name: 'Tomoe-nage', id: '880WbHvHv6A' },
-        { name: 'Sumi-gaeshi', id: '5VhduA5xkbA' },
-        { name: 'Hikikomi-gaeshi', id: '92zUYWBp5N8' },
-        { name: 'Tawara-gaeshi', id: 'TmTWgrmViZc' },
-        { name: 'Ura-nage', id: 'Fgi9b8DJ5sQ' },
-      ]
+        { name: 'Tomoe-nage', id: '880WbHvHv6A', gokyo: 'Yonkyo' },
+        { name: 'Sumi-gaeshi', id: '5VhduA5xkbA', gokyo: 'Yonkyo' },
+        { name: 'Hikikomi-gaeshi', id: '92zUYWBp5N8', gokyo: 'Shinmeisho' },
+        { name: 'Tawara-gaeshi', id: 'TmTWgrmViZc', gokyo: 'Shinmeisho' },
+        { name: 'Ura-nage', id: 'Fgi9b8DJ5sQ', gokyo: 'Gokyo' },
+      ] as VideoItem[]
     },
     {
       title: 'Yoko-Sutemi-Waza (Sacrifício Lateral)',
       videos: [
-        { name: 'Yoko-otoshi', id: 'MnNG67pF_a0' },
-        { name: 'Tani-otoshi', id: '3b9Me3Fohpk' },
-        { name: 'Hane-makikomi', id: '6CRBGLGz9j8' },
-        { name: 'Soto-makikomi', id: 'bWG9O1BVKtQ' },
-        { name: 'Uchi-makikomi', id: '5BowcjduxVc' },
-        { name: 'Uki-waza', id: 'weVOpJ63gII' },
-        { name: 'Yoko-wakare', id: 'bp1tscHlePI' },
-        { name: 'Yoko-guruma', id: 'MehP6I5cY2c' },
-        { name: 'Yoko-gake', id: 'tP1Sj1uDfSo' },
-        { name: 'Daki-wakare', id: 'Hr0cOMGBDYo' },
-        { name: 'O-soto-makikomi', id: 'DGDv2oMwmas' },
-        { name: 'Uchi-mata-makikomi', id: 'jZXENTLpJCI' },
-        { name: 'Harai-makikomi', id: 'VBaHzKaCXss' },
-        { name: 'Ko-uchi-makikomi', id: '_1eygIXLD_w' },
-        { name: 'Kani-basami', id: 'OR-HGHnarYc' },
-        { name: 'Kawazu-gake', id: 'w6G57bWACi0' },
-      ]
+        { name: 'Yoko-otoshi', id: 'MnNG67pF_a0', gokyo: 'Gokyo' },
+        { name: 'Tani-otoshi', id: '3b9Me3Fohpk', gokyo: 'Yonkyo' },
+        { name: 'Hane-makikomi', id: '6CRBGLGz9j8', gokyo: 'Yonkyo' },
+        { name: 'Soto-makikomi', id: 'bWG9O1BVKtQ', gokyo: 'Yonkyo' },
+        { name: 'Uchi-makikomi', id: '5BowcjduxVc', gokyo: 'Yonkyo' },
+        { name: 'Uki-waza', id: 'weVOpJ63gII', gokyo: 'Yonkyo' },
+        { name: 'Yoko-wakare', id: 'bp1tscHlePI', gokyo: 'Gokyo' },
+        { name: 'Yoko-guruma', id: 'MehP6I5cY2c', gokyo: 'Gokyo' },
+        { name: 'Yoko-gake', id: 'tP1Sj1uDfSo', gokyo: 'Gokyo' },
+        { name: 'Daki-wakare', id: 'Hr0cOMGBDYo', gokyo: 'Shinmeisho' },
+        { name: 'O-soto-makikomi', id: 'DGDv2oMwmas', gokyo: 'Shinmeisho' },
+        { name: 'Uchi-mata-makikomi', id: 'jZXENTLpJCI', gokyo: 'Shinmeisho' },
+        { name: 'Harai-makikomi', id: 'VBaHzKaCXss', gokyo: 'Shinmeisho' },
+        { name: 'Ko-uchi-makikomi', id: '_1eygIXLD_w', gokyo: 'Shinmeisho' },
+        { name: 'Kani-basami', id: 'OR-HGHnarYc', gokyo: 'Kinshi' },
+        { name: 'Kawazu-gake', id: 'w6G57bWACi0', gokyo: 'Kinshi' },
+      ] as VideoItem[]
     },
   ];
 
@@ -153,6 +161,22 @@ const VideosSection = () => {
                       <span className="text-white text-sm ml-0.5">▶</span>
                     </div>
                   </div>
+                  {video.gokyo && (
+                    <Badge 
+                      variant={video.gokyo === 'Kinshi' ? 'destructive' : 'secondary'}
+                      className={`absolute top-1 right-1 text-[10px] px-1.5 py-0.5 ${
+                        video.gokyo === 'Ikkyo' ? 'bg-green-600 hover:bg-green-700' :
+                        video.gokyo === 'Nikyo' ? 'bg-blue-600 hover:bg-blue-700' :
+                        video.gokyo === 'Sankyo' ? 'bg-purple-600 hover:bg-purple-700' :
+                        video.gokyo === 'Yonkyo' ? 'bg-orange-600 hover:bg-orange-700' :
+                        video.gokyo === 'Gokyo' ? 'bg-cyan-600 hover:bg-cyan-700' :
+                        video.gokyo === 'Shinmeisho' ? 'bg-amber-600 hover:bg-amber-700' :
+                        video.gokyo === 'Kinshi' ? 'bg-red-700 hover:bg-red-800' : ''
+                      }`}
+                    >
+                      {video.gokyo}
+                    </Badge>
+                  )}
                 </div>
                 <div className="p-2 text-center">
                   <p className="text-xs font-medium text-white group-hover:text-primary transition-colors truncate">
