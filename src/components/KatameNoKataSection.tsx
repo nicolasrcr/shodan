@@ -10,7 +10,7 @@ const KatameNoKataSection = () => {
         { name: 'Kata-Gatame', kanji: '肩固', desc: 'Imobilização do ombro' },
         { name: 'Kami-Shiho-Gatame', kanji: '上四方固', desc: 'Imobilização superior em 4 pontos' },
         { name: 'Yoko-Shiho-Gatame', kanji: '横四方固', desc: 'Imobilização lateral em 4 pontos' },
-        { name: 'Kuzure-Kami-Shiho', kanji: '崩上四方固', desc: 'Variação do Kami-Shiho' },
+        { name: 'Kuzure-Kami-Shiho-Gatame', kanji: '崩上四方固', desc: 'Variação do Kami-Shiho' },
       ]
     },
     { 
@@ -33,9 +33,9 @@ const KatameNoKataSection = () => {
       desc: 'Técnicas de Chave Articular',
       tecnicas: [
         { name: 'Ude-Garami', kanji: '腕緘', desc: 'Enrolamento do braço (Americana/Kimura)' },
-        { name: 'Juji-Gatame', kanji: '腕挫十字固', desc: 'Chave de braço em cruz' },
-        { name: 'Ude-Gatame', kanji: '腕挫腕固', desc: 'Chave de braço pelo braço' },
-        { name: 'Hiza-Gatame', kanji: '腕挫膝固', desc: 'Chave de braço pelo joelho' },
+        { name: 'Ude-Hishigi-Juji-Gatame', kanji: '腕挫十字固', desc: 'Chave de braço em cruz' },
+        { name: 'Ude-Hishigi-Ude-Gatame', kanji: '腕挫腕固', desc: 'Chave de braço pelo braço' },
+        { name: 'Ude-Hishigi-Hiza-Gatame', kanji: '腕挫膝固', desc: 'Chave de braço pelo joelho' },
         { name: 'Ashi-Garami*', kanji: '足緘', desc: 'Enrolamento da perna (proibido em competição)' },
       ]
     },

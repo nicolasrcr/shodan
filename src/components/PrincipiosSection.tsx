@@ -9,7 +9,7 @@ const PrincipiosSection = () => {
       </h2>
 
       {/* Main Principles */}
-      <div className="grid md:grid-cols-2 gap-6 mb-10">
+      <div className="grid md:grid-cols-3 gap-6 mb-10">
         {principlesData.mainPrinciples.map((principle, index) => (
           <div key={index} className="card-red text-center p-8 hover:scale-[1.02] transition-transform">
             <span className="text-5xl font-serif text-primary block mb-3">{principle.kanji}</span>
@@ -24,7 +24,7 @@ const PrincipiosSection = () => {
       <h3 className="text-lg font-semibold text-primary flex items-center gap-2 mb-5 mt-8">
         <span>📜</span> Código Moral do Judô
       </h3>
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
+      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4 mb-10">
         {principlesData.moralCode.map((item, index) => (
           <div 
             key={index} 
@@ -33,6 +33,40 @@ const PrincipiosSection = () => {
             <h4 className="text-primary font-bold text-base mb-1">{item.title}</h4>
             <p className="text-primary/70 text-xs mb-2">{item.kanji}</p>
             <p className="text-foreground/70 text-sm">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Ideologies */}
+      <h3 className="text-lg font-semibold text-primary flex items-center gap-2 mb-5 mt-8">
+        <span>💭</span> Frases de Jigoro Kano
+      </h3>
+      <div className="grid gap-3 mb-10">
+        {principlesData.ideologies.map((phrase, index) => (
+          <div 
+            key={index} 
+            className="p-4 bg-card/60 rounded-xl border-l-4 border-primary italic text-foreground/80 text-sm"
+          >
+            "{phrase}"
+          </div>
+        ))}
+      </div>
+
+      {/* Practice Forms */}
+      <h3 className="text-lg font-semibold text-primary flex items-center gap-2 mb-5 mt-10">
+        <span>🥋</span> Formas de Prática
+      </h3>
+      <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-10">
+        {principlesData.practiceForms.map((form, index) => (
+          <div key={index} className="card-judo hover:-translate-y-1 transition-transform">
+            <div className="flex items-center gap-3 mb-3">
+              <span className="text-3xl font-serif text-primary">{form.kanji}</span>
+              <div>
+                <h4 className="font-semibold text-white">{form.title}</h4>
+                <p className="text-xs text-muted-foreground">{form.romaji}</p>
+              </div>
+            </div>
+            <p className="text-sm text-foreground/70">{form.desc}</p>
           </div>
         ))}
       </div>
@@ -71,30 +105,6 @@ const PrincipiosSection = () => {
             ))}
           </div>
         </div>
-      </div>
-
-      {/* Practice Forms */}
-      <h3 className="text-lg font-semibold text-primary flex items-center gap-2 mb-5 mt-10">
-        <span>🥋</span> Formas de Prática
-      </h3>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {[
-          { kanji: "乱取", title: "Randori", romaji: "Treino livre", desc: "Prática de combate livre onde ambos judocas atacam e defendem" },
-          { kanji: "形", title: "Kata", romaji: "Formas", desc: "Sequências técnicas pré-definidas para estudo dos princípios" },
-          { kanji: "打込", title: "Uchi-komi", romaji: "Repetição", desc: "Repetição de entradas de técnicas para desenvolvimento motor" },
-          { kanji: "試合", title: "Shiai", romaji: "Competição", desc: "Combate oficial com regras e árbitros" },
-        ].map((form, index) => (
-          <div key={index} className="card-judo hover:-translate-y-1 transition-transform">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-3xl font-serif text-primary">{form.kanji}</span>
-              <div>
-                <h4 className="font-semibold text-white">{form.title}</h4>
-                <p className="text-xs text-muted-foreground">{form.romaji}</p>
-              </div>
-            </div>
-            <p className="text-sm text-foreground/70">{form.desc}</p>
-          </div>
-        ))}
       </div>
     </div>
   );

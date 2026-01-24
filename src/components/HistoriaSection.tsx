@@ -28,7 +28,7 @@ const HistoriaSection = () => {
           </div>
 
           <div className="space-y-2">
-            {historyData.founderFacts.slice(0, 5).map((fact, index) => (
+            {historyData.founderFacts.map((fact, index) => (
               <div key={index} className="p-3 bg-primary/10 rounded-lg border-l-3 border-primary text-sm text-foreground/80">
                 {fact}
               </div>
@@ -85,15 +85,31 @@ const HistoriaSection = () => {
 
       {/* World Origins */}
       <h3 className="text-lg font-semibold text-primary flex items-center gap-2 mb-5 mt-10">
-        <span>🌍</span> Judô pelo Mundo
+        <span>🌍</span> Origens das Artes Marciais
       </h3>
-      <div className="grid sm:grid-cols-2 gap-4">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
         {historyData.origins.map((origin, index) => (
           <div key={index} className="card-red p-5 hover:border-primary transition-all hover:-translate-y-1">
             <h4 className="text-primary font-bold text-lg mb-2">{origin.country}</h4>
             <p className="text-sm text-foreground/70 leading-relaxed">{origin.desc}</p>
           </div>
         ))}
+      </div>
+
+      {/* Brazil Timeline */}
+      <h3 className="text-lg font-semibold text-primary flex items-center gap-2 mb-5 mt-10">
+        <span>🇧🇷</span> Judô no Brasil
+      </h3>
+      <div className="relative">
+        <div className="absolute left-[7px] top-0 bottom-0 w-[2px] bg-gradient-to-b from-green-500 to-green-500/20" />
+        <div className="space-y-0">
+          {historyData.brazilTimeline.map((item, index) => (
+            <div key={index} className="timeline-item">
+              <span className="text-green-400 font-bold text-sm">{item.year}</span>
+              <p className="text-foreground/80 text-sm mt-1">{item.event}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -4,11 +4,11 @@ import Navigation from "@/components/Navigation";
 import HomeSection from "@/components/HomeSection";
 import HistoriaSection from "@/components/HistoriaSection";
 import PrincipiosSection from "@/components/PrincipiosSection";
+import EtiquetaSection from "@/components/EtiquetaSection";
 import GokyoSection from "@/components/GokyoSection";
 import KatameWazaSection from "@/components/KatameWazaSection";
 import RegrasSection from "@/components/RegrasSection";
 import Regras2025Section from "@/components/Regras2025Section";
-import BeltSystemSection from "@/components/BeltSystemSection";
 import ComingSoonSection from "@/components/ComingSoonSection";
 import NomenclaturaSection from "@/components/NomenclaturaSection";
 import KatasSection from "@/components/KatasSection";
@@ -38,7 +38,7 @@ const Index = () => {
       case "principios":
         return <PrincipiosSection />;
       case "etiqueta":
-        return <BeltSystemSection />;
+        return <EtiquetaSection />;
       case "nomenclatura":
         return <NomenclaturaSection />;
       case "gokyo":
