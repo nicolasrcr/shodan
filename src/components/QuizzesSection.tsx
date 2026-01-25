@@ -497,6 +497,52 @@ const QuizzesSection = () => {
         Quiz: {quiz.title}
       </h2>
 
+      {/* Score Panel */}
+      <div className="card-judo mb-4 p-4">
+        <div className="flex items-center justify-between mb-3">
+          <h4 className="text-sm font-semibold text-white flex items-center gap-2">
+            <span>📊</span> Painel de Score
+          </h4>
+          <span className="text-xs text-muted-foreground">
+            Pergunta {questionIndex + 1} de {quiz.questions.length}
+          </span>
+        </div>
+        
+        <div className="grid grid-cols-3 gap-3 mb-3">
+          {/* Acertos */}
+          <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-3 text-center">
+            <div className="text-2xl font-bold text-green-400">{score}</div>
+            <div className="text-xs text-green-400/70">Acertos</div>
+          </div>
+          
+          {/* Erros */}
+          <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3 text-center">
+            <div className="text-2xl font-bold text-red-400">{answered - score}</div>
+            <div className="text-xs text-red-400/70">Erros</div>
+          </div>
+          
+          {/* Desempenho */}
+          <div className="bg-primary/10 border border-primary/30 rounded-lg p-3 text-center">
+            <div className="text-2xl font-bold text-primary">
+              {answered > 0 ? Math.round((score / answered) * 100) : 0}%
+            </div>
+            <div className="text-xs text-primary/70">Desempenho</div>
+          </div>
+        </div>
+
+        {/* Progress Bar */}
+        <div className="h-2 bg-muted/30 rounded-full overflow-hidden">
+          <div 
+            className="h-full bg-gradient-to-r from-primary to-primary/70 transition-all duration-300"
+            style={{ width: `${((questionIndex) / quiz.questions.length) * 100}%` }}
+          />
+        </div>
+        <div className="flex justify-between text-xs text-muted-foreground mt-1">
+          <span>Progresso</span>
+          <span>{Math.round((questionIndex / quiz.questions.length) * 100)}%</span>
+        </div>
+      </div>
+
       <div className="card-judo">
         <div className="flex items-center justify-between mb-4">
           <button
@@ -505,16 +551,6 @@ const QuizzesSection = () => {
           >
             ← Voltar
           </button>
-          <div className="text-sm text-primary">
-            {questionIndex + 1} / {quiz.questions.length}
-          </div>
-        </div>
-
-        <div className="h-2 bg-muted/30 rounded-full mb-6 overflow-hidden">
-          <div 
-            className="h-full bg-primary transition-all duration-300"
-            style={{ width: `${((questionIndex) / quiz.questions.length) * 100}%` }}
-          />
         </div>
 
         <h3 className="text-lg font-semibold text-white mb-6">{question.q}</h3>
@@ -557,9 +593,6 @@ const QuizzesSection = () => {
           })}
         </div>
 
-        <div className="mt-6 text-center text-sm text-muted-foreground">
-          Acertos: <span className="text-primary font-semibold">{score}</span> / {answered}
-        </div>
       </div>
     </div>
   );
