@@ -82,6 +82,8 @@ const CadastroPage = () => {
     if (error) {
       if (error.message.includes('already registered')) {
         setError("Este email já está cadastrado. Tente fazer login.");
+      } else if (error.message.includes('rate limit') || error.message.includes('over_email_send_rate_limit')) {
+        setError("Limite de envio de emails atingido. Aguarde alguns minutos e tente novamente.");
       } else {
         setError("Erro ao criar conta. Tente novamente.");
       }
