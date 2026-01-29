@@ -30,6 +30,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const normalizeEmail = (email: string) => email.trim().toLowerCase();
+
   const fetchProfile = async (userId: string) => {
     const { data, error } = await supabase
       .from('profiles')
@@ -91,8 +93,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const signUp = async (email: string, password: string, name: string, phone: string) => {
+    const normalizedEmail = normalizeEmail(email);
     const { data, error } = await supabase.auth.signUp({
-      email,
+      email: normalizedEmail,
       password,
       options: {
         emailRedirectTo: window.location.origin,
@@ -114,7 +117,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         .insert({
           id: data.user.id,
           name,
-          email,
+          email: normalizedEmail,
           phone,
           has_paid: false
         });
@@ -129,7 +132,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signIn = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({
-      email,
+      email: normalizeEmail(email),
       password
     });
 

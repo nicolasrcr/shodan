@@ -19,7 +19,9 @@ const RecuperarSenhaPage = () => {
     setError("");
     setLoading(true);
 
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    const normalizedEmail = email.trim().toLowerCase();
+
+    const { error } = await supabase.auth.resetPasswordForEmail(normalizedEmail, {
       redirectTo: `${window.location.origin}/redefinir-senha`,
     });
 
