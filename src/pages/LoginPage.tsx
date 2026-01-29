@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,21 +17,66 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [needsEmailConfirm, setNeedsEmailConfirm] = useState(false);
+  const [resendLoading, setResendLoading] = useState(false);
+  const [resendSent, setResendSent] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setResendSent(false);
     setLoading(true);
 
     const { error } = await signIn(email, password);
 
     if (error) {
-      setError("Email ou senha incorretos. Tente novamente.");
+      const code = (error as unknown as { code?: string })?.code;
+      const msg = (error.message || "").toLowerCase();
+      const isEmailNotConfirmed =
+        code === "email_not_confirmed" ||
+        msg.includes("email not confirmed") ||
+        msg.includes("email_not_confirmed");
+
+      if (isEmailNotConfirmed) {
+        setNeedsEmailConfirm(true);
+        setError(
+          "Seu email ainda não foi confirmado. Verifique sua caixa de entrada e o spam (lixo eletrônico)."
+        );
+      } else {
+        setNeedsEmailConfirm(false);
+        setError("Email ou senha incorretos. Tente novamente.");
+      }
       setLoading(false);
       return;
     }
 
+    setNeedsEmailConfirm(false);
     navigate('/curso');
+  };
+
+  const handleResendConfirmation = async () => {
+    const normalizedEmail = email.trim().toLowerCase();
+    if (!normalizedEmail) return;
+
+    setResendLoading(true);
+    setResendSent(false);
+    setError("");
+
+    const { error } = await supabase.auth.resend({
+      type: "signup",
+      email: normalizedEmail,
+    });
+
+    if (error) {
+      setError(
+        "Não foi possível reenviar o email agora. Aguarde alguns minutos e tente novamente."
+      );
+      setResendLoading(false);
+      return;
+    }
+
+    setResendSent(true);
+    setResendLoading(false);
   };
 
   return (
@@ -114,6 +160,32 @@ const LoginPage = () => {
                   "Entrar"
                 )}
               </Button>
+
+              {needsEmailConfirm && (
+                <div className="space-y-3 pt-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    disabled={resendLoading || !email.trim()}
+                    onClick={handleResendConfirmation}
+                    className="w-full border-primary/50 text-primary hover:bg-primary hover:text-secondary"
+                  >
+                    {resendLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Reenviando...
+                      </>
+                    ) : (
+                      "Reenviar email de confirmação"
+                    )}
+                  </Button>
+                  {resendSent && (
+                    <p className="text-xs text-muted-foreground text-center">
+                      Email reenviado! Confira sua caixa de entrada e o spam.
+                    </p>
+                  )}
+                </div>
+              )}
             </form>
 
             <div className="mt-6 text-center">
