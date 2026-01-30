@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { toast } from '@/hooks/use-toast';
-import { Users, Shield, Search, CheckCircle, XCircle, LogOut, RefreshCw } from 'lucide-react';
+import { Users, Shield, Search, CheckCircle, XCircle, LogOut, RefreshCw, RotateCcw } from 'lucide-react';
 
 interface UserProfile {
   id: string;
@@ -18,6 +18,7 @@ interface UserProfile {
   phone: string;
   has_paid: boolean;
   created_at: string;
+  access_expires_at: string | null;
 }
 
 const AdminPage = () => {
@@ -73,6 +74,35 @@ const AdminPage = () => {
       toast({
         title: 'Sucesso',
         description: `Acesso ${!currentStatus ? 'liberado' : 'revogado'} com sucesso!`,
+      });
+      fetchUsers();
+    }
+    
+    setUpdating(null);
+  };
+
+  const renewAccess = async (userId: string) => {
+    setUpdating(userId);
+    
+    const newExpirationDate = new Date();
+    newExpirationDate.setFullYear(newExpirationDate.getFullYear() + 1);
+    
+    const { error } = await supabase
+      .from('profiles')
+      .update({ access_expires_at: newExpirationDate.toISOString() })
+      .eq('id', userId);
+
+    if (error) {
+      console.error('Error renewing access:', error);
+      toast({
+        title: 'Erro',
+        description: 'Não foi possível renovar o acesso.',
+        variant: 'destructive',
+      });
+    } else {
+      toast({
+        title: 'Sucesso',
+        description: 'Acesso renovado por mais 1 ano!',
       });
       fetchUsers();
     }
@@ -227,8 +257,13 @@ const AdminPage = () => {
                         </TableCell>
                         <TableCell className="text-sm">
                           {(() => {
-                            const expirationDate = new Date(user.created_at);
-                            expirationDate.setFullYear(expirationDate.getFullYear() + 1);
+                            const expirationDate = user.access_expires_at 
+                              ? new Date(user.access_expires_at)
+                              : (() => {
+                                  const d = new Date(user.created_at);
+                                  d.setFullYear(d.getFullYear() + 1);
+                                  return d;
+                                })();
                             const isExpired = expirationDate < new Date();
                             return (
                               <span className={isExpired ? 'text-destructive font-medium' : 'text-muted-foreground'}>
@@ -252,20 +287,54 @@ const AdminPage = () => {
                           )}
                         </TableCell>
                         <TableCell className="text-right">
-                          <Button
-                            size="sm"
-                            variant={user.has_paid ? 'destructive' : 'default'}
-                            onClick={() => togglePaymentStatus(user.id, user.has_paid)}
-                            disabled={updating === user.id}
-                          >
-                            {updating === user.id ? (
-                              <RefreshCw className="h-4 w-4 animate-spin" />
-                            ) : user.has_paid ? (
-                              'Revogar'
-                            ) : (
-                              'Liberar'
-                            )}
-                          </Button>
+                          <div className="flex items-center justify-end gap-2">
+                            {(() => {
+                              const expirationDate = user.access_expires_at 
+                                ? new Date(user.access_expires_at)
+                                : (() => {
+                                    const d = new Date(user.created_at);
+                                    d.setFullYear(d.getFullYear() + 1);
+                                    return d;
+                                  })();
+                              const isExpired = expirationDate < new Date();
+                              
+                              if (isExpired && user.has_paid) {
+                                return (
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    className="border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
+                                    onClick={() => renewAccess(user.id)}
+                                    disabled={updating === user.id}
+                                  >
+                                    {updating === user.id ? (
+                                      <RefreshCw className="h-4 w-4 animate-spin" />
+                                    ) : (
+                                      <>
+                                        <RotateCcw className="h-4 w-4 mr-1" />
+                                        Renovar
+                                      </>
+                                    )}
+                                  </Button>
+                                );
+                              }
+                              return null;
+                            })()}
+                            <Button
+                              size="sm"
+                              variant={user.has_paid ? 'destructive' : 'default'}
+                              onClick={() => togglePaymentStatus(user.id, user.has_paid)}
+                              disabled={updating === user.id}
+                            >
+                              {updating === user.id ? (
+                                <RefreshCw className="h-4 w-4 animate-spin" />
+                              ) : user.has_paid ? (
+                                'Revogar'
+                              ) : (
+                                'Liberar'
+                              )}
+                            </Button>
+                          </div>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -287,6 +356,7 @@ const AdminPage = () => {
           <CardContent className="text-sm text-muted-foreground space-y-2">
             <p>• <strong>Liberar Acesso:</strong> Clique em "Liberar" para dar acesso ao curso após confirmar pagamento.</p>
             <p>• <strong>Revogar Acesso:</strong> Clique em "Revogar" para remover acesso de um usuário.</p>
+            <p>• <strong>Renovar Acesso:</strong> Para usuários com acesso expirado, clique em "Renovar" para estender por mais 1 ano.</p>
             <p>• <strong>Busca:</strong> Use a barra de busca para filtrar por nome, email ou telefone.</p>
             <p>• <strong>Atualizar:</strong> Clique no botão de refresh para recarregar a lista de usuários.</p>
           </CardContent>
