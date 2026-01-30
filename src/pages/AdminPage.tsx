@@ -8,7 +8,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from '@/hooks/use-toast';
 import { Users, Shield, Search, CheckCircle, XCircle, LogOut, RefreshCw, RotateCcw, CreditCard, QrCode } from 'lucide-react';
 
@@ -112,41 +111,6 @@ const AdminPage = () => {
     }
     
     setUpdating(null);
-  };
-
-  const updatePaymentMethod = async (userId: string, method: PaymentMethod) => {
-    setUpdating(userId);
-    
-    const { error } = await supabase
-      .from('profiles')
-      .update({ payment_method: method })
-      .eq('id', userId);
-
-    if (error) {
-      console.error('Error updating payment method:', error);
-      toast({
-        title: 'Erro',
-        description: 'Não foi possível atualizar a forma de pagamento.',
-        variant: 'destructive',
-      });
-    } else {
-      toast({
-        title: 'Sucesso',
-        description: 'Forma de pagamento atualizada!',
-      });
-      fetchUsers();
-    }
-    
-    setUpdating(null);
-  };
-
-  const getPaymentMethodLabel = (method: PaymentMethod) => {
-    switch (method) {
-      case 'pix': return 'PIX';
-      case 'cartao': return 'Cartão';
-      case 'outro': return 'Outro';
-      default: return '-';
-    }
   };
 
   const filteredUsers = users.filter(user =>
@@ -314,45 +278,26 @@ const AdminPage = () => {
                           })()}
                         </TableCell>
                         <TableCell>
-                          <Select
-                            value={user.payment_method || ''}
-                            onValueChange={(value) => updatePaymentMethod(user.id, value as PaymentMethod)}
-                            disabled={updating === user.id}
-                          >
-                            <SelectTrigger className="w-28 h-8 text-xs">
-                              <SelectValue placeholder="Selecionar">
-                                {user.payment_method === 'pix' && (
-                                  <span className="flex items-center gap-1">
-                                    <QrCode className="h-3 w-3" />
-                                    PIX
-                                  </span>
-                                )}
-                                {user.payment_method === 'cartao' && (
-                                  <span className="flex items-center gap-1">
-                                    <CreditCard className="h-3 w-3" />
-                                    Cartão
-                                  </span>
-                                )}
-                                {user.payment_method === 'outro' && 'Outro'}
-                                {!user.payment_method && '-'}
-                              </SelectValue>
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="pix">
-                                <span className="flex items-center gap-2">
-                                  <QrCode className="h-4 w-4" />
-                                  PIX
-                                </span>
-                              </SelectItem>
-                              <SelectItem value="cartao">
-                                <span className="flex items-center gap-2">
-                                  <CreditCard className="h-4 w-4" />
-                                  Cartão
-                                </span>
-                              </SelectItem>
-                              <SelectItem value="outro">Outro</SelectItem>
-                            </SelectContent>
-                          </Select>
+                          {user.payment_method === 'pix' && (
+                            <Badge variant="outline" className="border-primary/50 text-primary">
+                              <QrCode className="h-3 w-3 mr-1" />
+                              PIX
+                            </Badge>
+                          )}
+                          {user.payment_method === 'cartao' && (
+                            <Badge variant="outline" className="border-blue-500/50 text-blue-400">
+                              <CreditCard className="h-3 w-3 mr-1" />
+                              Cartão
+                            </Badge>
+                          )}
+                          {user.payment_method === 'outro' && (
+                            <Badge variant="outline" className="border-muted-foreground/50 text-muted-foreground">
+                              Outro
+                            </Badge>
+                          )}
+                          {!user.payment_method && (
+                            <span className="text-muted-foreground text-sm">-</span>
+                          )}
                         </TableCell>
                         <TableCell>
                           {user.has_paid ? (
