@@ -17,8 +17,9 @@ export const useAdminCheck = () => {
 
       try {
         // Call the has_role function to check admin status
+        // The function expects app_role enum type
         const { data, error } = await supabase
-          .rpc('has_role', { _user_id: user.id, _role: 'admin' });
+          .rpc('has_role', { _user_id: user.id, _role: 'admin' as 'admin' | 'moderator' | 'user' });
 
         if (error) {
           console.error('Error checking admin role:', error);
