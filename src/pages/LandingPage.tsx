@@ -241,12 +241,23 @@ const LandingPage = () => {
             <CardContent className="p-6">
               <h3 className="text-xl font-bold text-white mb-4 text-center">Pagamento via PIX</h3>
               <div className="bg-secondary/50 rounded-lg p-4 mb-4">
-                <p className="text-sm text-muted-foreground mb-2">Chave PIX (Email):</p>
-                <p className="text-primary font-mono break-all">pagamento@exameshodan.com.br</p>
+                <p className="text-sm text-muted-foreground mb-2">Chave PIX (CNPJ):</p>
+                <p className="text-primary font-mono break-all">62.333.509/0001-03</p>
               </div>
               <div className="bg-secondary/50 rounded-lg p-4 mb-4">
                 <p className="text-sm text-muted-foreground mb-2">Valor:</p>
                 <p className="text-2xl font-bold text-primary">R$ 197,00</p>
+              </div>
+              <div className="bg-primary/20 border border-primary/50 rounded-lg p-4 mb-4">
+                <p className="text-sm text-muted-foreground mb-2">WhatsApp para enviar comprovante:</p>
+                <a 
+                  href="https://wa.me/5561996634944" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-primary font-bold text-lg hover:underline"
+                >
+                  (61) 99663-4944
+                </a>
               </div>
               <p className="text-sm text-muted-foreground mb-4 text-center">
                 Após o pagamento, envie o comprovante para nosso WhatsApp para liberação do acesso.
