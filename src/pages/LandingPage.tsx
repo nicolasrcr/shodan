@@ -14,7 +14,7 @@ const LandingPage = () => {
     { icon: Video, text: "Vídeos demonstrativos" },
     { icon: Award, text: "Flashcards para memorização" },
     { icon: Users, text: "Quizzes interativos" },
-    { icon: Shield, text: "Acesso vitalício" },
+    { icon: Shield, text: "Acesso por 1 ano" },
     { icon: Clock, text: "Estude no seu ritmo" },
   ];
 
@@ -152,7 +152,7 @@ const LandingPage = () => {
             Investimento <span className="text-primary">Acessível</span>
           </h2>
           <p className="text-muted-foreground text-center mb-12">
-            Acesso completo e vitalício por um valor único
+            Acesso completo por 1 ano por um valor único
           </p>
           
           <Card className="card-red rounded-3xl overflow-hidden">
@@ -165,7 +165,7 @@ const LandingPage = () => {
                     ))}
                   </div>
                   <h3 className="text-2xl font-bold text-white mb-2">Guia Completo Exame Shodan</h3>
-                  <p className="text-muted-foreground mb-4">Acesso vitalício a todo o conteúdo</p>
+                  <p className="text-muted-foreground mb-4">Acesso por 1 ano a todo o conteúdo</p>
                   <ul className="space-y-2 text-sm text-muted-foreground">
                     <li className="flex items-center gap-2">
                       <Check className="w-4 h-4 text-primary" /> 17 módulos completos

@@ -59,7 +59,7 @@ const PaymentRequired = () => {
           <CardContent className="p-8 md:p-12">
             <div className="text-center">
               <h2 className="text-2xl font-bold text-white mb-2">Guia Completo Exame Shodan</h2>
-              <p className="text-muted-foreground mb-6">Acesso vitalício a todo o conteúdo</p>
+              <p className="text-muted-foreground mb-6">Acesso por 1 ano a todo o conteúdo</p>
               
               <ul className="space-y-2 text-sm text-muted-foreground mb-8 inline-block text-left">
                 <li className="flex items-center gap-2">
