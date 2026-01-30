@@ -9,6 +9,7 @@ interface UserProfile {
   phone: string;
   has_paid: boolean;
   created_at: string;
+  access_expires_at: string | null;
 }
 
 interface AuthContextType {

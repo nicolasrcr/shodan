@@ -71,10 +71,14 @@ const CursoPage = () => {
     return <PaymentRequired />;
   }
 
-  // Check if access has expired (1 year after registration)
-  const registrationDate = new Date(profile.created_at);
-  const expirationDate = new Date(registrationDate);
-  expirationDate.setFullYear(expirationDate.getFullYear() + 1);
+  // Check if access has expired using access_expires_at column
+  const expirationDate = profile.access_expires_at 
+    ? new Date(profile.access_expires_at)
+    : (() => {
+        const d = new Date(profile.created_at);
+        d.setFullYear(d.getFullYear() + 1);
+        return d;
+      })();
   
   if (expirationDate < new Date()) {
     return <AccessExpired expirationDate={expirationDate} />;
