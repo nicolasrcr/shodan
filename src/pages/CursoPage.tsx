@@ -25,6 +25,7 @@ import VideosSection from "@/components/VideosSection";
 import QuizzesSection from "@/components/QuizzesSection";
 import FlashcardsSection from "@/components/FlashcardsSection";
 import PaymentRequired from "@/components/PaymentRequired";
+import AccessExpired from "@/components/AccessExpired";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { LogOut, User } from "lucide-react";
@@ -68,6 +69,15 @@ const CursoPage = () => {
   // Check if user has paid
   if (!profile?.has_paid) {
     return <PaymentRequired />;
+  }
+
+  // Check if access has expired (1 year after registration)
+  const registrationDate = new Date(profile.created_at);
+  const expirationDate = new Date(registrationDate);
+  expirationDate.setFullYear(expirationDate.getFullYear() + 1);
+  
+  if (expirationDate < new Date()) {
+    return <AccessExpired expirationDate={expirationDate} />;
   }
 
   const renderSection = () => {
