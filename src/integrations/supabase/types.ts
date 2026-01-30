@@ -22,6 +22,7 @@ export type Database = {
           has_paid: boolean
           id: string
           name: string
+          payment_method: Database["public"]["Enums"]["payment_method"] | null
           phone: string
           updated_at: string
         }
@@ -32,6 +33,7 @@ export type Database = {
           has_paid?: boolean
           id: string
           name: string
+          payment_method?: Database["public"]["Enums"]["payment_method"] | null
           phone: string
           updated_at?: string
         }
@@ -42,6 +44,7 @@ export type Database = {
           has_paid?: boolean
           id?: string
           name?: string
+          payment_method?: Database["public"]["Enums"]["payment_method"] | null
           phone?: string
           updated_at?: string
         }
@@ -80,6 +83,7 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
+      payment_method: "pix" | "cartao" | "outro"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -208,6 +212,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "moderator", "user"],
+      payment_method: ["pix", "cartao", "outro"],
     },
   },
 } as const
