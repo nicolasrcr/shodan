@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { toast } from '@/hooks/use-toast';
-import { Users, Shield, Search, CheckCircle, XCircle, LogOut, RefreshCw, RotateCcw, CreditCard, QrCode } from 'lucide-react';
+import { Users, Shield, Search, CheckCircle, XCircle, LogOut, RefreshCw, RotateCcw, CreditCard, QrCode, TrendingUp } from 'lucide-react';
 import StatCard from '@/components/admin/StatCard';
 
 type PaymentMethod = 'pix' | 'cartao' | 'outro' | null;
@@ -124,6 +124,11 @@ const AdminPage = () => {
     total: users.length,
     paid: users.filter(u => u.has_paid).length,
     unpaid: users.filter(u => !u.has_paid).length,
+    pix: users.filter(u => u.payment_method === 'pix').length,
+    cartao: users.filter(u => u.payment_method === 'cartao').length,
+    conversionRate: users.length > 0 
+      ? Math.round((users.filter(u => u.has_paid).length / users.length) * 100) 
+      : 0,
   };
 
   // Show loading while checking admin status
@@ -164,7 +169,7 @@ const AdminPage = () => {
 
       <main className="max-w-7xl mx-auto px-4 py-8">
         {/* Stats Cards with Glow Effects */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
           <StatCard
             icon={<Users className="h-5 w-5" />}
             title="Total de Usuários"
@@ -182,6 +187,24 @@ const AdminPage = () => {
             title="Aguardando Pagamento"
             value={stats.unpaid}
             variant="orange"
+          />
+          <StatCard
+            icon={<QrCode className="h-5 w-5" />}
+            title="Pagamento PIX"
+            value={stats.pix}
+            variant="gold"
+          />
+          <StatCard
+            icon={<CreditCard className="h-5 w-5" />}
+            title="Pagamento Cartão"
+            value={stats.cartao}
+            variant="blue"
+          />
+          <StatCard
+            icon={<TrendingUp className="h-5 w-5" />}
+            title="Taxa de Conversão"
+            value={`${stats.conversionRate}%`}
+            variant="green"
           />
         </div>
 

@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 interface StatCardProps {
   icon: ReactNode;
   title: string;
-  value: number;
+  value: number | string;
   variant?: 'gold' | 'green' | 'orange' | 'blue';
 }
 
