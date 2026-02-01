@@ -10,6 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import { toast } from '@/hooks/use-toast';
 import { Users, Shield, Search, CheckCircle, XCircle, LogOut, RefreshCw, RotateCcw, CreditCard, QrCode } from 'lucide-react';
+import StatCard from '@/components/admin/StatCard';
 
 type PaymentMethod = 'pix' | 'cartao' | 'outro' | null;
 
@@ -162,43 +163,26 @@ const AdminPage = () => {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 py-8">
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <Card className="border-primary/20 bg-card/50">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                <Users className="h-4 w-4" />
-                Total de Usuários
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-3xl font-bold text-primary">{stats.total}</p>
-            </CardContent>
-          </Card>
-
-          <Card className="border-green-500/20 bg-card/50">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-500" />
-                Acessos Liberados
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-3xl font-bold text-green-500">{stats.paid}</p>
-            </CardContent>
-          </Card>
-
-          <Card className="border-orange-500/20 bg-card/50">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                <XCircle className="h-4 w-4 text-orange-500" />
-                Aguardando Pagamento
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-3xl font-bold text-orange-500">{stats.unpaid}</p>
-            </CardContent>
-          </Card>
+        {/* Stats Cards with Glow Effects */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <StatCard
+            icon={<Users className="h-5 w-5" />}
+            title="Total de Usuários"
+            value={stats.total}
+            variant="gold"
+          />
+          <StatCard
+            icon={<CheckCircle className="h-5 w-5" />}
+            title="Acessos Liberados"
+            value={stats.paid}
+            variant="green"
+          />
+          <StatCard
+            icon={<XCircle className="h-5 w-5" />}
+            title="Aguardando Pagamento"
+            value={stats.unpaid}
+            variant="orange"
+          />
         </div>
 
         {/* Users Table */}

@@ -1,9 +1,39 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion, type Variants } from "framer-motion";
 import { Check, Star, Shield, Clock, Award, Users, BookOpen, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import shodanImage from "@/assets/shodan-hero.png";
+
+// Animation variants with proper typing
+const fadeInUp: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+};
+
+const fadeInLeft: Variants = {
+  hidden: { opacity: 0, x: -30 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.6 } }
+};
+
+const fadeInRight: Variants = {
+  hidden: { opacity: 0, x: 30 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.6 } }
+};
+
+const staggerContainer: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.2 }
+  }
+};
+
+const scaleIn: Variants = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
+};
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -56,13 +86,22 @@ const LandingPage = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="py-16 md:py-24 px-4">
+      <section className="py-16 md:py-24 px-4 overflow-hidden">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <div className="inline-block px-4 py-2 bg-primary/20 rounded-full">
+            <motion.div 
+              className="space-y-6"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={fadeInLeft}
+            >
+              <motion.div 
+                className="inline-block px-4 py-2 bg-primary/20 rounded-full"
+                variants={scaleIn}
+              >
                 <span className="text-primary text-sm font-semibold">🥋 Curso Completo</span>
-              </div>
+              </motion.div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
                 Domine o Conteúdo do
                 <span className="text-primary block">Exame Shodan</span>
@@ -86,8 +125,14 @@ const LandingPage = () => {
                   Ver Detalhes
                 </Button>
               </div>
-            </div>
-            <div className="relative">
+            </motion.div>
+            <motion.div 
+              className="relative"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={fadeInRight}
+            >
               <div className="w-full aspect-square max-w-md mx-auto rounded-2xl overflow-hidden border-4 border-primary/30 shadow-gold">
                 <img 
                   src={shodanImage} 
@@ -95,130 +140,187 @@ const LandingPage = () => {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="absolute -bottom-4 -right-4 bg-card border border-primary/30 rounded-xl p-4 shadow-lg">
+              <motion.div 
+                className="absolute -bottom-4 -right-4 bg-card border border-primary/30 rounded-xl p-4 shadow-lg"
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4, duration: 0.5 }}
+              >
                 <p className="text-primary font-serif text-2xl">初段</p>
                 <p className="text-xs text-muted-foreground">Primeiro Dan</p>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* Benefits Section */}
-      <section className="py-16 px-4 bg-card/50">
+      <section className="py-16 px-4 bg-card/50 overflow-hidden">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-white text-center mb-12">
+          <motion.h2 
+            className="text-3xl font-bold text-white text-center mb-12"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={fadeInUp}
+          >
             O que você vai <span className="text-primary">encontrar</span>
-          </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          </motion.h2>
+          <motion.div 
+            className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={staggerContainer}
+          >
             {benefits.map((benefit, index) => (
-              <Card key={index} className="card-judo group">
-                <CardContent className="flex items-center gap-4 p-6">
-                  <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center group-hover:bg-primary/30 transition-colors">
-                    <benefit.icon className="w-6 h-6 text-primary" />
-                  </div>
-                  <span className="text-white font-medium">{benefit.text}</span>
-                </CardContent>
-              </Card>
+              <motion.div key={index} variants={scaleIn}>
+                <Card className="card-judo group h-full">
+                  <CardContent className="flex items-center gap-4 p-6">
+                    <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center group-hover:bg-primary/30 transition-colors">
+                      <benefit.icon className="w-6 h-6 text-primary" />
+                    </div>
+                    <span className="text-white font-medium">{benefit.text}</span>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Modules Section */}
-      <section className="py-16 px-4">
+      <section className="py-16 px-4 overflow-hidden">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-white text-center mb-4">
-            Conteúdo <span className="text-primary">Completo</span>
-          </h2>
-          <p className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
-            Tudo que você precisa saber para o exame teórico, organizado de forma didática
-          </p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={fadeInUp}
+          >
+            <h2 className="text-3xl font-bold text-white text-center mb-4">
+              Conteúdo <span className="text-primary">Completo</span>
+            </h2>
+            <p className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
+              Tudo que você precisa saber para o exame teórico, organizado de forma didática
+            </p>
+          </motion.div>
+          <motion.div 
+            className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={staggerContainer}
+          >
             {modules.map((module, index) => (
-              <div key={index} className="flex items-center gap-3 p-4 bg-card/50 rounded-lg border border-primary/10">
+              <motion.div 
+                key={index} 
+                className="flex items-center gap-3 p-4 bg-card/50 rounded-lg border border-primary/10 hover:border-primary/30 transition-colors"
+                variants={scaleIn}
+              >
                 <Check className="w-5 h-5 text-primary flex-shrink-0" />
                 <span className="text-white">{module}</span>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="py-16 px-4 bg-gradient-to-b from-card/50 to-background">
+      <section id="pricing" className="py-16 px-4 bg-gradient-to-b from-card/50 to-background overflow-hidden">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-white text-center mb-4">
-            Investimento <span className="text-primary">Acessível</span>
-          </h2>
-          <p className="text-muted-foreground text-center mb-12">
-            Acesso completo por 1 ano por um valor único
-          </p>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={fadeInUp}
+          >
+            <h2 className="text-3xl font-bold text-white text-center mb-4">
+              Investimento <span className="text-primary">Acessível</span>
+            </h2>
+            <p className="text-muted-foreground text-center mb-12">
+              Acesso completo por 1 ano por um valor único
+            </p>
+          </motion.div>
           
-          <Card className="card-red rounded-3xl overflow-hidden">
-            <CardContent className="p-8 md:p-12">
-              <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-                <div className="text-center md:text-left">
-                  <div className="flex items-center justify-center md:justify-start gap-2 mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-5 h-5 fill-primary text-primary" />
-                    ))}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={scaleIn}
+          >
+            <Card className="card-red rounded-3xl overflow-hidden">
+              <CardContent className="p-8 md:p-12">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+                  <div className="text-center md:text-left">
+                    <div className="flex items-center justify-center md:justify-start gap-2 mb-4">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-5 h-5 fill-primary text-primary" />
+                      ))}
+                    </div>
+                    <h3 className="text-2xl font-bold text-white mb-2">Guia Completo Exame Shodan</h3>
+                    <p className="text-muted-foreground mb-4">Acesso por 1 ano a todo o conteúdo</p>
+                    <ul className="space-y-2 text-sm text-muted-foreground">
+                      <li className="flex items-center gap-2">
+                        <Check className="w-4 h-4 text-primary" /> 17 módulos completos
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <Check className="w-4 h-4 text-primary" /> Flashcards e Quizzes
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <Check className="w-4 h-4 text-primary" /> Atualizações incluídas
+                      </li>
+                    </ul>
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-2">Guia Completo Exame Shodan</h3>
-                  <p className="text-muted-foreground mb-4">Acesso por 1 ano a todo o conteúdo</p>
-                  <ul className="space-y-2 text-sm text-muted-foreground">
-                    <li className="flex items-center gap-2">
-                      <Check className="w-4 h-4 text-primary" /> 17 módulos completos
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="w-4 h-4 text-primary" /> Flashcards e Quizzes
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="w-4 h-4 text-primary" /> Atualizações incluídas
-                    </li>
-                  </ul>
+                  
+                  <div className="text-center">
+                    <div className="mb-2">
+                      <span className="text-muted-foreground line-through text-lg">R$ 397</span>
+                    </div>
+                    <div className="text-5xl md:text-6xl font-bold text-primary mb-2">
+                      R$ 197
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-6">
+                      pagamento único
+                    </p>
+                    <div className="space-y-3">
+                      <Button 
+                        onClick={() => navigate('/cadastro')}
+                        className="btn-gold w-full text-lg py-6"
+                      >
+                        💳 Pagar com Cartão
+                      </Button>
+                      <Button 
+                        onClick={() => setShowPixModal(true)}
+                        variant="outline"
+                        className="w-full border-primary text-primary hover:bg-primary hover:text-secondary py-6"
+                      >
+                        📱 Pagar com PIX
+                      </Button>
+                    </div>
+                  </div>
                 </div>
-                
-                <div className="text-center">
-                  <div className="mb-2">
-                    <span className="text-muted-foreground line-through text-lg">R$ 397</span>
-                  </div>
-                  <div className="text-5xl md:text-6xl font-bold text-primary mb-2">
-                    R$ 197
-                  </div>
-                  <p className="text-sm text-muted-foreground mb-6">
-                    pagamento único
-                  </p>
-                  <div className="space-y-3">
-                    <Button 
-                      onClick={() => navigate('/cadastro')}
-                      className="btn-gold w-full text-lg py-6"
-                    >
-                      💳 Pagar com Cartão
-                    </Button>
-                    <Button 
-                      onClick={() => setShowPixModal(true)}
-                      variant="outline"
-                      className="w-full border-primary text-primary hover:bg-primary hover:text-secondary py-6"
-                    >
-                      📱 Pagar com PIX
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </motion.div>
         </div>
       </section>
 
       {/* Quote Section */}
-      <section className="py-16 px-4">
-        <div className="max-w-4xl mx-auto text-center">
+      <section className="py-16 px-4 overflow-hidden">
+        <motion.div 
+          className="max-w-4xl mx-auto text-center"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={fadeInUp}
+        >
           <p className="text-xl md:text-2xl text-primary italic mb-4">
             "O objetivo final do Judô não é a vitória sobre os outros, mas o aperfeiçoamento de si mesmo."
           </p>
           <p className="text-muted-foreground">— Jigoro Kano</p>
-        </div>
+        </motion.div>
       </section>
 
       {/* Footer */}
