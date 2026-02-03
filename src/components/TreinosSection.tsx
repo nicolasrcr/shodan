@@ -141,7 +141,7 @@ const TreinosSection = () => {
         </p>
       </div>
       
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
         {ukemiTypes.map((ukemi, index) => (
           <div key={index} className="card-red p-5">
             <div className="flex items-center gap-3 mb-3">
@@ -155,6 +155,47 @@ const TreinosSection = () => {
             <p className="text-xs text-muted-foreground">{ukemi.details}</p>
           </div>
         ))}
+      </div>
+
+      {/* Vídeos de Ukemi */}
+      <div className="card-judo p-5 mb-10">
+        <h4 className="font-semibold text-white mb-4 flex items-center gap-2">
+          <span>🎬</span> Vídeos Demonstrativos de Ukemi
+        </h4>
+        <p className="text-sm text-foreground/70 mb-4">
+          Assista à demonstração completa de todas as técnicas de queda pelo Kodokan oficial.
+        </p>
+        <a 
+          href="https://www.youtube.com/watch?v=VoktcQAxEPg"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block group overflow-hidden rounded-xl border border-border/50 hover:border-primary transition-colors"
+        >
+          <div className="relative aspect-video bg-background/50">
+            <img 
+              src="https://img.youtube.com/vi/VoktcQAxEPg/maxresdefault.jpg"
+              alt="Demonstração de Ukemi - Técnicas de Queda"
+              className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+              loading="lazy"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = "https://img.youtube.com/vi/VoktcQAxEPg/hqdefault.jpg";
+              }}
+            />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-16 h-16 rounded-full bg-red-600 flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
+                <span className="text-white text-2xl ml-1">▶</span>
+              </div>
+            </div>
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+              <p className="text-white font-semibold">Ukemi - Técnicas de Queda (Kodokan)</p>
+              <p className="text-xs text-white/70">Demonstração oficial de Mae-Ukemi, Ushiro-Ukemi, Yoko-Ukemi e Zenpo-Kaiten-Ukemi</p>
+            </div>
+          </div>
+        </a>
+        <p className="text-xs text-muted-foreground mt-3 flex items-center gap-1">
+          <span>⚠️</span> Ao clicar, você será redirecionado para o YouTube
+        </p>
       </div>
 
       {/* Métodos de Treino */}
