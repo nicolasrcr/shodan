@@ -197,6 +197,68 @@ const flashcardsData: Record<string, { title: string; icon: string; cards: Flash
       { front: 'Sokuho', back: 'Para o lado / Lateral', category: 'ukemi' },
     ]
   },
+  placar: {
+    title: 'Sistema de Placar',
+    icon: '🏆',
+    cards: [
+      // Siglas do Placar
+      { front: 'I (no placar)', back: 'Ippon - Ponto completo, vitória imediata', category: 'placar' },
+      { front: 'W (no placar)', back: 'Waza-ari - Técnica existe, meio ponto (2W = Ippon)', category: 'placar' },
+      { front: 'Y (no placar)', back: 'Yuko - Pontuação menor (regras 2025)', category: 'placar' },
+      { front: 'GS (no placar)', back: 'Golden Score - Tempo extra para desempate', category: 'placar' },
+      { front: 'FG (no placar)', back: 'Fusen-Gachi - Vitória por ausência do adversário', category: 'placar' },
+      { front: 'KG (no placar)', back: 'Kiken-Gachi - Vitória por desistência do adversário', category: 'placar' },
+      { front: 'HM (no placar)', back: 'Hansoku-Make - Desqualificação (faltas graves ou 3 Shidos)', category: 'placar' },
+      
+      // Teclas de Controle Geral
+      { front: 'Tecla ESPAÇO', back: 'Inicia/para o cronômetro principal da luta', category: 'placar' },
+      { front: 'Tecla 9', back: 'Zera o cronômetro principal', category: 'placar' },
+      { front: 'Tecla 0', back: 'Zera o cronômetro de imobilização (Osaekomi)', category: 'placar' },
+      { front: 'Tecla 1', back: 'Inicia/para o cronômetro de imobilização', category: 'placar' },
+      
+      // Teclas do Atleta Branco
+      { front: 'Tecla Q', back: 'Ippon (I) para o atleta BRANCO', category: 'placar' },
+      { front: 'Tecla W', back: 'Waza-ari (W) para o atleta BRANCO', category: 'placar' },
+      { front: 'Tecla E', back: 'Yuko (Y) para o atleta BRANCO', category: 'placar' },
+      { front: 'Tecla R', back: 'Shido (penalidade) para o atleta BRANCO', category: 'placar' },
+      
+      // Teclas do Atleta Azul
+      { front: 'Tecla Y', back: 'Ippon (I) para o atleta AZUL', category: 'placar' },
+      { front: 'Tecla U', back: 'Waza-ari (W) para o atleta AZUL', category: 'placar' },
+      { front: 'Tecla I', back: 'Yuko (Y) para o atleta AZUL', category: 'placar' },
+      { front: 'Tecla O (letra)', back: 'Shido (penalidade) para o atleta AZUL', category: 'placar' },
+      
+      // Teclas de Função
+      { front: 'Tecla F4', back: 'Vitória por Fusen-Gachi (FG) - ausência', category: 'placar' },
+      { front: 'Tecla F5', back: 'Vitória por Kiken-Gachi (KG) - desistência', category: 'placar' },
+      { front: 'Tecla F6', back: 'Vitória por Hansoku-Make (HM) - desqualificação', category: 'placar' },
+      { front: 'Tecla F7', back: 'Ativa o Golden Score (GS)', category: 'placar' },
+      { front: 'Tecla F8', back: 'Editar nomes dos atletas', category: 'placar' },
+      { front: 'Tecla F9', back: 'Reiniciar tudo (nova luta)', category: 'placar' },
+      
+      // Conceitos de Pontuação
+      { front: 'Ippon por projeção', back: 'Adversário cai de costas com força, velocidade e controle', category: 'placar' },
+      { front: 'Ippon por imobilização', back: '20 segundos de imobilização válida (Osaekomi)', category: 'placar' },
+      { front: 'Ippon por finalização', back: 'Adversário bate (Maitta) em estrangulamento ou chave', category: 'placar' },
+      { front: 'Waza-ari por imobilização', back: '10 a 19 segundos de imobilização', category: 'placar' },
+      { front: 'Waza-ari Awasete Ippon', back: 'Dois Waza-ari somados = Ippon (vitória)', category: 'placar' },
+      { front: 'Yuko por imobilização', back: '5 a 9 segundos de imobilização (regras 2025)', category: 'placar' },
+      
+      // Penalidades
+      { front: 'Shido', back: 'Penalidade leve por conduta passiva ou faltas menores', category: 'placar' },
+      { front: '3 Shidos', back: 'Resulta em Hansoku-Make (desqualificação)', category: 'placar' },
+      { front: 'Hansoku-Make direto', back: 'Por falta grave (ex: ataque à coluna, golpe proibido)', category: 'placar' },
+      { front: 'Matte', back: 'Comando para parar a luta temporariamente', category: 'placar' },
+      { front: 'Sono-mama', back: 'Comando para "congelar" na posição atual', category: 'placar' },
+      { front: 'Yoshi', back: 'Comando para continuar após Sono-mama', category: 'placar' },
+      
+      // Tempos Oficiais
+      { front: 'Tempo de luta Sub-13', back: '3 minutos', category: 'placar' },
+      { front: 'Tempo de luta Sub-15/18', back: '4 minutos', category: 'placar' },
+      { front: 'Tempo de luta Sênior', back: '4 a 5 minutos (masculino/feminino)', category: 'placar' },
+      { front: 'Golden Score', back: 'Tempo extra ilimitado até alguém pontuar ou ser penalizado', category: 'placar' },
+    ]
+  },
 };
 
 const FlashcardsSection = () => {
