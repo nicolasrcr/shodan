@@ -16,6 +16,7 @@ import KatasSection from "@/components/KatasSection";
 import NageNoKataSection from "@/components/NageNoKataSection";
 import KatameNoKataSection from "@/components/KatameNoKataSection";
 import TreinosSection from "@/components/TreinosSection";
+import PlacarSection from "@/components/PlacarSection";
 import OrganizacaoSection from "@/components/OrganizacaoSection";
 import EscolarSection from "@/components/EscolarSection";
 import SocorrosSection from "@/components/SocorrosSection";
@@ -107,6 +108,8 @@ const CursoPage = () => {
         return <KatameNoKataSection />;
       case "treinos":
         return <TreinosSection />;
+      case "placar":
+        return <PlacarSection />;
       case "regras":
         return <RegrasSection />;
       case "regras2025":
