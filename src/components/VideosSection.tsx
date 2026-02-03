@@ -170,12 +170,12 @@ const VideosSection = () => {
                     <Badge 
                       variant={video.gokyo === 'Kinshi' ? 'destructive' : 'secondary'}
                       className={`absolute top-1 right-1 text-[10px] px-1.5 py-0.5 ${
-                        video.gokyo === 'Ikkyo' ? 'bg-green-600 hover:bg-green-700' :
-                        video.gokyo === 'Nikyo' ? 'bg-blue-600 hover:bg-blue-700' :
-                        video.gokyo === 'Sankyo' ? 'bg-purple-600 hover:bg-purple-700' :
-                        video.gokyo === 'Yonkyo' ? 'bg-orange-600 hover:bg-orange-700' :
-                        video.gokyo === 'Gokyo' ? 'bg-cyan-600 hover:bg-cyan-700' :
-                        video.gokyo === 'Shinmeisho' ? 'bg-amber-600 hover:bg-amber-700' :
+                        video.gokyo === 'Ikkyo' ? 'bg-yellow-500 hover:bg-yellow-600 text-black' :
+                        video.gokyo === 'Nikyo' ? 'bg-orange-500 hover:bg-orange-600' :
+                        video.gokyo === 'Sankyo' ? 'bg-green-600 hover:bg-green-700' :
+                        video.gokyo === 'Yonkyo' ? 'bg-blue-600 hover:bg-blue-700' :
+                        video.gokyo === 'Gokyo' ? 'bg-amber-800 hover:bg-amber-900' :
+                        video.gokyo === 'Shinmeisho' ? 'bg-gray-600 hover:bg-gray-700' :
                         video.gokyo === 'Kinshi' ? 'bg-red-700 hover:bg-red-800' : ''
                       }`}
                     >

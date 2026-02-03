@@ -3,12 +3,12 @@ import { gokyoData } from "@/data/judoData";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 
-const kyoColors: Record<string, { bg: string; text: string; label: string }> = {
-  ikkyo: { bg: 'bg-green-600', text: 'text-green-400', label: 'Ikkyo (1º)' },
-  nikyo: { bg: 'bg-blue-600', text: 'text-blue-400', label: 'Nikyo (2º)' },
-  sankyo: { bg: 'bg-purple-600', text: 'text-purple-400', label: 'Sankyo (3º)' },
-  yonkyo: { bg: 'bg-orange-600', text: 'text-orange-400', label: 'Yonkyo (4º)' },
-  gokyo: { bg: 'bg-cyan-600', text: 'text-cyan-400', label: 'Gokyo (5º)' },
+const kyoColors: Record<string, { bg: string; text: string; label: string; kyu: string }> = {
+  ikkyo: { bg: 'bg-yellow-500', text: 'text-yellow-400', label: 'Ikkyo (1º)', kyu: '5º Kyu' },
+  nikyo: { bg: 'bg-orange-500', text: 'text-orange-400', label: 'Nikyo (2º)', kyu: '4º Kyu' },
+  sankyo: { bg: 'bg-green-600', text: 'text-green-400', label: 'Sankyo (3º)', kyu: '3º Kyu' },
+  yonkyo: { bg: 'bg-blue-600', text: 'text-blue-400', label: 'Yonkyo (4º)', kyu: '2º Kyu' },
+  gokyo: { bg: 'bg-amber-800', text: 'text-amber-600', label: 'Gokyo (5º)', kyu: '1º Kyu' },
 };
 
 const GokyoSection = () => {
@@ -46,8 +46,8 @@ const GokyoSection = () => {
             onClick={() => setActiveGroup(key as keyof typeof gokyoData)}
           >
             <div className={cn("w-3 h-3 rounded-full", color.bg)} />
-            <span className={cn("text-xs font-medium", activeGroup === key ? "text-white" : color.text)}>
-              {color.label}
+            <span className={cn("text-xs font-medium", activeGroup === key ? (key === 'ikkyo' ? "text-black" : "text-white") : color.text)}>
+              {color.label} - {color.kyu}
             </span>
           </div>
         ))}
@@ -82,10 +82,11 @@ const GokyoSection = () => {
               className={cn(
                 "absolute top-2 right-2 text-[10px]",
                 currentColor.bg,
+                activeGroup === 'ikkyo' ? "text-black" : "text-white",
                 "hover:opacity-90"
               )}
             >
-              {currentColor.label}
+              {currentColor.kyu}
             </Badge>
             <div className="flex items-start justify-between mb-2">
               <span className={cn(
