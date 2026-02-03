@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, RotateCcw, Shuffle } from 'lucide-react';
+import { ChevronLeft, ChevronRight, RotateCcw, Shuffle, Layers, Check } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Button } from '@/components/ui/button';
 
 interface Flashcard {
   front: string;
@@ -199,20 +201,62 @@ const flashcardsData: Record<string, { title: string; icon: string; cards: Flash
 
 const FlashcardsSection = () => {
   const [currentDeck, setCurrentDeck] = useState<string | null>(null);
+  const [isCombinedMode, setIsCombinedMode] = useState(false);
+  const [selectedDecks, setSelectedDecks] = useState<string[]>([]);
+  const [showDeckSelector, setShowDeckSelector] = useState(false);
   const [cardIndex, setCardIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [shuffledCards, setShuffledCards] = useState<Flashcard[]>([]);
   const [studied, setStudied] = useState(0);
 
   useEffect(() => {
-    if (currentDeck) {
+    if (currentDeck && !isCombinedMode) {
       const cards = [...flashcardsData[currentDeck].cards];
       setShuffledCards(cards);
       setCardIndex(0);
       setIsFlipped(false);
       setStudied(0);
     }
-  }, [currentDeck]);
+  }, [currentDeck, isCombinedMode]);
+
+  const startCombinedMode = () => {
+    if (selectedDecks.length === 0) return;
+    
+    // Combine cards from all selected decks
+    const combinedCards: Flashcard[] = [];
+    selectedDecks.forEach(deckKey => {
+      combinedCards.push(...flashcardsData[deckKey].cards);
+    });
+    
+    // Shuffle the combined deck
+    for (let i = combinedCards.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [combinedCards[i], combinedCards[j]] = [combinedCards[j], combinedCards[i]];
+    }
+    
+    setShuffledCards(combinedCards);
+    setCardIndex(0);
+    setIsFlipped(false);
+    setStudied(0);
+    setIsCombinedMode(true);
+    setShowDeckSelector(false);
+  };
+
+  const toggleDeckSelection = (deckKey: string) => {
+    setSelectedDecks(prev => 
+      prev.includes(deckKey) 
+        ? prev.filter(k => k !== deckKey)
+        : [...prev, deckKey]
+    );
+  };
+
+  const selectAllDecks = () => {
+    setSelectedDecks(Object.keys(flashcardsData));
+  };
+
+  const clearSelection = () => {
+    setSelectedDecks([]);
+  };
 
   const shuffleDeck = () => {
     const cards = [...shuffledCards];
@@ -246,7 +290,98 @@ const FlashcardsSection = () => {
     setStudied(0);
   };
 
-  if (!currentDeck) {
+  const backToMenu = () => {
+    setCurrentDeck(null);
+    setIsCombinedMode(false);
+    setShowDeckSelector(false);
+  };
+
+  // Deck selector modal
+  if (showDeckSelector) {
+    const totalCards = selectedDecks.reduce((acc, key) => acc + flashcardsData[key].cards.length, 0);
+    
+    return (
+      <div className="animate-fade-in">
+        <h2 className="section-title">
+          <span className="section-title-icon">混</span>
+          Modo Combinado - Selecione os Decks
+        </h2>
+
+        <div className="card-judo mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <button
+              onClick={() => setShowDeckSelector(false)}
+              className="text-sm text-muted-foreground hover:text-white transition-colors"
+            >
+              ← Voltar
+            </button>
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" onClick={selectAllDecks}>
+                Selecionar Todos
+              </Button>
+              <Button variant="outline" size="sm" onClick={clearSelection}>
+                Limpar
+              </Button>
+            </div>
+          </div>
+
+          <p className="text-sm text-foreground/70 mb-6">
+            Selecione as categorias que deseja estudar juntas. Os cards serão embaralhados aleatoriamente.
+          </p>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
+            {Object.entries(flashcardsData).map(([key, deck]) => (
+              <label
+                key={key}
+                className={`flex items-center gap-3 p-4 rounded-xl border cursor-pointer transition-all ${
+                  selectedDecks.includes(key)
+                    ? 'border-primary bg-primary/10'
+                    : 'border-border/50 hover:border-primary/50'
+                }`}
+              >
+                <Checkbox
+                  checked={selectedDecks.includes(key)}
+                  onCheckedChange={() => toggleDeckSelection(key)}
+                />
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xl text-primary font-serif">{deck.icon}</span>
+                    <span className="font-medium text-white text-sm">{deck.title}</span>
+                  </div>
+                  <span className="text-xs text-muted-foreground">{deck.cards.length} cards</span>
+                </div>
+                {selectedDecks.includes(key) && (
+                  <Check className="w-4 h-4 text-primary" />
+                )}
+              </label>
+            ))}
+          </div>
+
+          <div className="flex items-center justify-between p-4 bg-muted/20 rounded-xl">
+            <div>
+              <p className="text-sm text-white">
+                <span className="text-primary font-semibold">{selectedDecks.length}</span> deck(s) selecionado(s)
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Total: <span className="text-primary">{totalCards}</span> cards
+              </p>
+            </div>
+            <Button
+              onClick={startCombinedMode}
+              disabled={selectedDecks.length === 0}
+              className="bg-primary hover:bg-primary/90"
+            >
+              <Shuffle className="w-4 h-4 mr-2" />
+              Iniciar Estudo
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Main menu
+  if (!currentDeck && !isCombinedMode) {
     return (
       <div className="animate-fade-in">
         <h2 className="section-title">
@@ -260,6 +395,29 @@ const FlashcardsSection = () => {
             Clique no card para virar e ver a tradução!
           </p>
         </div>
+
+        {/* Combined Mode Button */}
+        <button
+          onClick={() => setShowDeckSelector(true)}
+          className="w-full card-red p-6 mb-6 text-left hover:border-primary/50 transition-colors group"
+        >
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 rounded-xl bg-primary/20 flex items-center justify-center group-hover:scale-105 transition-transform">
+              <Layers className="w-7 h-7 text-primary" />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-semibold text-white text-lg">Modo Combinado</h3>
+              <p className="text-sm text-foreground/70">
+                Misture cards de diferentes categorias para um estudo mais completo
+              </p>
+            </div>
+            <span className="text-primary text-2xl group-hover:translate-x-1 transition-transform">→</span>
+          </div>
+        </button>
+
+        <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-4">
+          Decks Individuais
+        </h3>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {Object.entries(flashcardsData).map(([key, deck]) => (
@@ -283,39 +441,51 @@ const FlashcardsSection = () => {
           ))}
         </div>
 
-        <div className="card-red p-6 mt-8">
+        <div className="card-judo p-6 mt-8">
           <h3 className="font-semibold text-white mb-2">💡 Como Estudar</h3>
           <ul className="space-y-1 text-sm text-foreground/70">
             <li>• Clique no card para ver a tradução</li>
             <li>• Use as setas para navegar entre os cards</li>
             <li>• Embaralhe o deck para um estudo aleatório</li>
-            <li>• Repita até memorizar todos os termos</li>
+            <li>• Use o <strong className="text-primary">Modo Combinado</strong> para misturar categorias</li>
           </ul>
         </div>
       </div>
     );
   }
 
-  const deck = flashcardsData[currentDeck];
+  // Get deck info for display
+  const deckTitle = isCombinedMode 
+    ? `Modo Combinado (${selectedDecks.length} decks)`
+    : flashcardsData[currentDeck!].title;
+  const deckIcon = isCombinedMode ? '混' : flashcardsData[currentDeck!].icon;
+
   const currentCard = shuffledCards[cardIndex];
 
   return (
     <div className="animate-fade-in">
       <h2 className="section-title">
-        <span className="section-title-icon">{deck.icon}</span>
-        {deck.title}
+        <span className="section-title-icon">{deckIcon}</span>
+        {deckTitle}
       </h2>
 
       <div className="card-judo mb-6">
         <div className="flex items-center justify-between mb-4">
           <button
-            onClick={() => setCurrentDeck(null)}
+            onClick={backToMenu}
             className="text-sm text-muted-foreground hover:text-white transition-colors"
           >
             ← Voltar aos Decks
           </button>
-          <div className="text-sm text-primary">
-            {cardIndex + 1} / {shuffledCards.length}
+          <div className="flex items-center gap-3">
+            {isCombinedMode && currentCard && (
+              <span className="text-xs px-2 py-1 rounded-full bg-primary/20 text-primary">
+                {flashcardsData[currentCard.category]?.title || currentCard.category}
+              </span>
+            )}
+            <div className="text-sm text-primary">
+              {cardIndex + 1} / {shuffledCards.length}
+            </div>
           </div>
         </div>
 
