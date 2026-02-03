@@ -8,8 +8,7 @@ import LandingPage from "./pages/LandingPage";
 import AuthPage from "./pages/AuthPage";
 import CursoPage from "./pages/CursoPage";
 import AdminPage from "./pages/AdminPage";
-import RecuperarSenhaPage from "./pages/RecuperarSenhaPage";
-import RedefinirSenhaPage from "./pages/RedefinirSenhaPage";
+import PasswordPage from "./pages/PasswordPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,8 +24,9 @@ const App = () => (
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<AuthPage />} />
             <Route path="/cadastro" element={<AuthPage />} />
-            <Route path="/recuperar-senha" element={<RecuperarSenhaPage />} />
-            <Route path="/redefinir-senha" element={<RedefinirSenhaPage />} />
+            <Route path="/recuperar-senha" element={<PasswordPage />} />
+            <Route path="/redefinir-senha" element={<PasswordPage />} />
+            <Route path="/senha" element={<PasswordPage />} />
             <Route path="/curso" element={<CursoPage />} />
             <Route path="/admin" element={<AdminPage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
