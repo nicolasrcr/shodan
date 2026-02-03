@@ -363,6 +363,37 @@ const quizData: Record<string, QuizCategory> = {
       { q: 'Quantas medalhas olímpicas o Brasil tem no Judô?', o: ['15+', '20+', '25+', '30+'], c: 2 },
     ]
   },
+  ukemi: {
+    title: 'Ukemi - Técnicas de Queda',
+    icon: '受',
+    questions: [
+      { q: 'O que significa "Ukemi"?', o: ['Técnica de ataque', 'Corpo que recebe (queda)', 'Projeção', 'Imobilização'], c: 1 },
+      { q: 'Qual Ukemi é usado para quedas para TRÁS?', o: ['Mae-Ukemi', 'Yoko-Ukemi', 'Ushiro-Ukemi', 'Zenpo-Kaiten-Ukemi'], c: 2 },
+      { q: 'Qual Ukemi é usado para quedas LATERAIS?', o: ['Mae-Ukemi', 'Yoko-Ukemi', 'Ushiro-Ukemi', 'Zenpo-Kaiten-Ukemi'], c: 1 },
+      { q: 'Qual Ukemi é usado para quedas para FRENTE?', o: ['Mae-Ukemi', 'Yoko-Ukemi', 'Ushiro-Ukemi', 'Outen-Ukemi'], c: 0 },
+      { q: 'O que é Zenpo-Kaiten-Ukemi?', o: ['Queda para trás', 'Rolamento para frente', 'Queda lateral', 'Queda frontal'], c: 1 },
+      { q: 'Qual é o sinônimo de Ushiro-Ukemi?', o: ['Zenpo-Ukemi', 'Sokuho-Ukemi', 'Koho-Ukemi', 'Mae-Ukemi'], c: 2 },
+      { q: 'Qual é o sinônimo de Yoko-Ukemi?', o: ['Zenpo-Ukemi', 'Sokuho-Ukemi', 'Koho-Ukemi', 'Mae-Ukemi'], c: 1 },
+      { q: 'Na Ushiro-Ukemi, onde deve estar o queixo?', o: ['Virado para cima', 'No peito', 'Para o lado', 'Relaxado'], c: 1 },
+      { q: 'Em qual ângulo os braços batem no tatame na Ushiro-Ukemi?', o: ['90°', '45°', '30°', '60°'], c: 1 },
+      { q: 'Qual Ukemi é essencial para projeções de sacrifício?', o: ['Ushiro-Ukemi', 'Yoko-Ukemi', 'Mae-Ukemi', 'Zenpo-Kaiten-Ukemi'], c: 3 },
+      { q: 'O que significa "Koho"?', o: ['Frente', 'Lado', 'Trás', 'Cima'], c: 2 },
+      { q: 'O que significa "Zenpo"?', o: ['Frente', 'Lado', 'Trás', 'Baixo'], c: 0 },
+      { q: 'O que significa "Sokuho"?', o: ['Frente', 'Lado', 'Trás', 'Rotação'], c: 1 },
+      { q: 'O que significa "Kaiten"?', o: ['Queda', 'Projeção', 'Rotação/Rolamento', 'Salto'], c: 2 },
+      { q: 'Qual Ukemi faz parte do Kodomo-no-Kata?', o: ['Ushiro-Ukemi', 'Mae-Ukemi', 'Outen-Ukemi', 'Zenpo-Kaiten-Ukemi'], c: 2 },
+      { q: 'O que é Outen-Ukemi?', o: ['Queda para trás', 'Queda para frente', 'Rolamento lateral', 'Projeção'], c: 2 },
+      { q: 'Qual Ukemi é fundamental para O-soto-gari?', o: ['Mae-Ukemi', 'Ushiro-Ukemi', 'Zenpo-Kaiten-Ukemi', 'Outen-Ukemi'], c: 1 },
+      { q: 'Qual Ukemi é usado em Harai-goshi?', o: ['Ushiro-Ukemi', 'Yoko-Ukemi', 'Mae-Ukemi', 'Koho-Ukemi'], c: 1 },
+      { q: 'Por que o Ukemi é considerado fundamental no Judô?', o: ['Para atacar melhor', 'Para segurança do praticante', 'Para vencer lutas', 'Para subir de faixa'], c: 1 },
+      { q: 'Quantos tipos principais de Ukemi existem?', o: ['3', '4', '5', '6'], c: 2 },
+      { q: 'Na Mae-Ukemi, qual parte do corpo absorve o impacto?', o: ['Costas', 'Ombros', 'Antebraços e palmas', 'Joelhos'], c: 2 },
+      { q: 'Na Zenpo-Kaiten-Ukemi, sobre qual parte do corpo se rola?', o: ['Cabeça', 'Ombro diagonal', 'Costas retas', 'Quadril'], c: 1 },
+      { q: 'Qual a posição correta das pernas na Ushiro-Ukemi?', o: ['Esticadas no chão', 'Elevadas', 'Cruzadas', 'Dobradas lateralmente'], c: 1 },
+      { q: 'O que deve fazer o rosto na Mae-Ukemi?', o: ['Olhar para frente', 'Virar para o lado', 'Olhar para baixo', 'Olhar para cima'], c: 1 },
+      { q: 'Quando o judoca deve dominar o Ukemi?', o: ['Após a faixa preta', 'Antes de progredir nas técnicas', 'Só em competições', 'Apenas em katas'], c: 1 },
+    ]
+  },
 };
 
 interface QuizProgress {

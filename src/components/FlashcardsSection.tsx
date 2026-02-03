@@ -176,6 +176,25 @@ const flashcardsData: Record<string, { title: string; icon: string; cards: Flash
       { front: 'Maitta', back: 'Desistir / Bater', category: 'arbitragem' },
     ]
   },
+  ukemi: {
+    title: 'Ukemi - Técnicas de Queda',
+    icon: '受',
+    cards: [
+      { front: 'Ukemi', back: 'Técnicas de amortecimento de queda - "corpo que recebe"', category: 'ukemi' },
+      { front: 'Ushiro-Ukemi', back: 'Queda para trás - queixo no peito, braços batem a 45°', category: 'ukemi' },
+      { front: 'Koho-Ukemi', back: 'Sinônimo de Ushiro-Ukemi - queda para trás', category: 'ukemi' },
+      { front: 'Yoko-Ukemi', back: 'Queda lateral - um braço bate no tatame, pernas afastadas', category: 'ukemi' },
+      { front: 'Sokuho-Ukemi', back: 'Sinônimo de Yoko-Ukemi - queda para o lado', category: 'ukemi' },
+      { front: 'Mae-Ukemi', back: 'Queda para frente - antebraços e palmas absorvem impacto', category: 'ukemi' },
+      { front: 'Zenpo-Ukemi', back: 'Sinônimo de Mae-Ukemi - queda frontal', category: 'ukemi' },
+      { front: 'Zenpo-Kaiten-Ukemi', back: 'Rolamento para frente - diagonal sobre o ombro', category: 'ukemi' },
+      { front: 'Outen-Ukemi', back: 'Rolamento lateral - usado em quedas complexas', category: 'ukemi' },
+      { front: 'Kaiten', back: 'Rotação / Rolamento', category: 'ukemi' },
+      { front: 'Koho', back: 'Para trás / Posterior', category: 'ukemi' },
+      { front: 'Zenpo', back: 'Para frente / Anterior', category: 'ukemi' },
+      { front: 'Sokuho', back: 'Para o lado / Lateral', category: 'ukemi' },
+    ]
+  },
 };
 
 const FlashcardsSection = () => {
