@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 
 interface VideoItem {
@@ -5,6 +6,37 @@ interface VideoItem {
   id: string;
   gokyo?: string;
 }
+
+const VideoThumbnail = ({ videoId, videoName }: { videoId: string; videoName: string }) => {
+  const [imgSrc, setImgSrc] = useState(`https://img.youtube.com/vi/${videoId}/mqdefault.jpg`);
+  const [hasError, setHasError] = useState(false);
+
+  const handleError = () => {
+    if (imgSrc.includes('mqdefault')) {
+      setImgSrc(`https://img.youtube.com/vi/${videoId}/default.jpg`);
+    } else if (imgSrc.includes('default.jpg') && !hasError) {
+      setHasError(true);
+    }
+  };
+
+  if (hasError) {
+    return (
+      <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
+        <span className="text-2xl">🥋</span>
+      </div>
+    );
+  }
+
+  return (
+    <img 
+      src={imgSrc}
+      alt={videoName}
+      className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+      loading="lazy"
+      onError={handleError}
+    />
+  );
+};
 
 const VideosSection = () => {
   const videoCategories = [
@@ -151,16 +183,7 @@ const VideosSection = () => {
                 className="card-judo group overflow-hidden p-0 hover:border-primary transition-colors"
               >
                 <div className="relative aspect-video bg-background/50">
-                  <img 
-                    src={`https://img.youtube.com/vi/${video.id}/hqdefault.jpg`}
-                    alt={video.name}
-                    className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
-                    loading="lazy"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = `https://img.youtube.com/vi/${video.id}/mqdefault.jpg`;
-                    }}
-                  />
+                  <VideoThumbnail videoId={video.id} videoName={video.name} />
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center group-hover:scale-110 transition-transform">
                       <span className="text-white text-sm ml-0.5">▶</span>
