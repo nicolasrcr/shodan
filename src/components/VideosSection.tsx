@@ -9,6 +9,16 @@ interface VideoItem {
 const VideosSection = () => {
   const videoCategories = [
     {
+      title: 'Ukemi (Técnicas de Queda)',
+      videos: [
+        { name: 'Ushiro-Ukemi', id: 'u4oHFVznIVY' },
+        { name: 'Yoko-Ukemi', id: 'KJFr5FINMIM' },
+        { name: 'Mae-Ukemi', id: 'ukSj8JM8cvI' },
+        { name: 'Zenpo-Kaiten-Ukemi', id: 'BvFpMr1Insw' },
+        { name: 'Ukemi Completo', id: 'VoktcQAxEPg' },
+      ] as VideoItem[]
+    },
+    {
       title: 'Te-Waza (Técnicas de Mão)',
       videos: [
         { name: 'Seoi-nage', id: 'zIq0xI0ogxk', gokyo: 'Ikkyo' },

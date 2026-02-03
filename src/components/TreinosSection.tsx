@@ -56,35 +56,40 @@ const TreinosSection = () => {
       kanji: '後受身', 
       desc: 'Amortecimento de queda para TRÁS',
       details: 'Queixo no peito, braços batem no tatame a 45°, pernas elevadas. Fundamental para projeções como O-soto-gari.',
-      icon: '⬇️'
+      icon: '⬇️',
+      videoId: 'u4oHFVznIVY'
     },
     { 
       name: 'Yoko-Ukemi / Sokuho-Ukemi', 
       kanji: '横受身', 
       desc: 'Amortecimento de queda para o LADO',
       details: 'Queda lateral com um braço batendo no tatame, pernas afastadas. Usada em projeções laterais como Harai-goshi.',
-      icon: '↔️'
+      icon: '↔️',
+      videoId: 'KJFr5FINMIM'
     },
     { 
       name: 'Mae-Ukemi / Zenpo-Ukemi', 
       kanji: '前受身', 
       desc: 'Amortecimento de queda para FRENTE',
       details: 'Queda frontal com antebraços e palmas absorvendo o impacto. Rosto virado para o lado.',
-      icon: '⬆️'
+      icon: '⬆️',
+      videoId: 'ukSj8JM8cvI'
     },
     { 
       name: 'Zenpo-Kaiten-Ukemi', 
       kanji: '前方回転受身', 
       desc: 'Rolamento para FRENTE',
       details: 'Rolamento diagonal sobre o ombro, terminando em posição de defesa. Essencial para projeções de sacrifício.',
-      icon: '🔄'
+      icon: '🔄',
+      videoId: 'BvFpMr1Insw'
     },
     { 
       name: 'Outen-Ukemi', 
       kanji: '横転受身', 
       desc: 'Rolamento para o LADO',
       details: 'Rolamento lateral usado em quedas complexas. Faz parte do Kodomo-no-Kata (formas infantis).',
-      icon: '↩️'
+      icon: '↩️',
+      videoId: 'VoktcQAxEPg'
     },
   ];
 
@@ -152,48 +157,63 @@ const TreinosSection = () => {
               </div>
             </div>
             <p className="text-sm text-foreground/80 mb-2">{ukemi.desc}</p>
-            <p className="text-xs text-muted-foreground">{ukemi.details}</p>
+            <p className="text-xs text-muted-foreground mb-3">{ukemi.details}</p>
+            <a 
+              href={`https://www.youtube.com/watch?v=${ukemi.videoId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-xs text-primary hover:text-white transition-colors"
+            >
+              <span className="w-5 h-5 rounded-full bg-red-600 flex items-center justify-center">
+                <span className="text-white text-[8px] ml-0.5">▶</span>
+              </span>
+              Ver vídeo
+            </a>
           </div>
         ))}
       </div>
 
-      {/* Vídeos de Ukemi */}
+      {/* Vídeos de Ukemi - Galeria */}
       <div className="card-judo p-5 mb-10">
         <h4 className="font-semibold text-white mb-4 flex items-center gap-2">
           <span>🎬</span> Vídeos Demonstrativos de Ukemi
         </h4>
         <p className="text-sm text-foreground/70 mb-4">
-          Assista à demonstração completa de todas as técnicas de queda pelo Kodokan oficial.
+          Clique em cada vídeo para assistir à demonstração detalhada de cada técnica de queda.
         </p>
-        <a 
-          href="https://www.youtube.com/watch?v=VoktcQAxEPg"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block group overflow-hidden rounded-xl border border-border/50 hover:border-primary transition-colors"
-        >
-          <div className="relative aspect-video bg-background/50">
-            <img 
-              src="https://img.youtube.com/vi/VoktcQAxEPg/maxresdefault.jpg"
-              alt="Demonstração de Ukemi - Técnicas de Queda"
-              className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
-              loading="lazy"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.src = "https://img.youtube.com/vi/VoktcQAxEPg/hqdefault.jpg";
-              }}
-            />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-16 h-16 rounded-full bg-red-600 flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
-                <span className="text-white text-2xl ml-1">▶</span>
+        
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mb-4">
+          {ukemiTypes.map((ukemi, index) => (
+            <a 
+              key={index}
+              href={`https://www.youtube.com/watch?v=${ukemi.videoId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group overflow-hidden rounded-xl border border-border/50 hover:border-primary transition-colors"
+            >
+              <div className="relative aspect-video bg-background/50">
+                <img 
+                  src={`https://img.youtube.com/vi/${ukemi.videoId}/hqdefault.jpg`}
+                  alt={ukemi.name}
+                  className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <span className="text-white text-xs ml-0.5">▶</span>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-              <p className="text-white font-semibold">Ukemi - Técnicas de Queda (Kodokan)</p>
-              <p className="text-xs text-white/70">Demonstração oficial de Mae-Ukemi, Ushiro-Ukemi, Yoko-Ukemi e Zenpo-Kaiten-Ukemi</p>
-            </div>
-          </div>
-        </a>
-        <p className="text-xs text-muted-foreground mt-3 flex items-center gap-1">
+              <div className="p-2 text-center bg-muted/20">
+                <p className="text-[10px] font-medium text-white group-hover:text-primary transition-colors truncate">
+                  {ukemi.name.split(' / ')[0]}
+                </p>
+              </div>
+            </a>
+          ))}
+        </div>
+        
+        <p className="text-xs text-muted-foreground flex items-center gap-1">
           <span>⚠️</span> Ao clicar, você será redirecionado para o YouTube
         </p>
       </div>
