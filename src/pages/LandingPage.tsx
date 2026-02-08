@@ -4,6 +4,8 @@ import { motion, type Variants } from "framer-motion";
 import { Check, Star, Shield, Clock, Award, Users, BookOpen, Video, Phone, Mail, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useLanguage } from "@/contexts/LanguageContext";
+import LanguageToggle from "@/components/LanguageToggle";
 import shodanImage from "@/assets/shodan-hero.png";
 
 // Animation variants with proper typing
@@ -37,30 +39,31 @@ const scaleIn: Variants = {
 
 const LandingPage = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [showPixModal, setShowPixModal] = useState(false);
 
   const benefits = [
-    { icon: BookOpen, text: "17 seções de conteúdo completo" },
-    { icon: Video, text: "Vídeos demonstrativos" },
-    { icon: Award, text: "Flashcards para memorização" },
-    { icon: Users, text: "Quizzes interativos" },
-    { icon: Shield, text: "Acesso por 1 ano" },
-    { icon: Clock, text: "Estude no seu ritmo" },
+    { icon: BookOpen, textKey: "benefits.content" },
+    { icon: Video, textKey: "benefits.videos" },
+    { icon: Award, textKey: "benefits.flashcards" },
+    { icon: Users, textKey: "benefits.quizzes" },
+    { icon: Shield, textKey: "benefits.access" },
+    { icon: Clock, textKey: "benefits.pace" },
   ];
 
-  const modules = [
-    "História do Judô e Jigoro Kano",
-    "Princípios e Filosofia",
-    "Etiqueta e Conduta no Dojo",
-    "Nomenclatura Japonesa Completa",
-    "Gokyo - 40 Técnicas de Projeção",
-    "Katame-Waza - Técnicas de Solo",
-    "Nage no Kata - 15 Técnicas",
-    "Katame no Kata - 15 Técnicas",
-    "Regras de Arbitragem 2025",
-    "Organização Desportiva",
-    "Judô Escolar e Inclusivo",
-    "Primeiros Socorros no Tatame",
+  const moduleKeys = [
+    "modules.history",
+    "modules.principles",
+    "modules.etiquette",
+    "modules.nomenclature",
+    "modules.gokyo",
+    "modules.katame",
+    "modules.nagekata",
+    "modules.katamekata",
+    "modules.rules",
+    "modules.organization",
+    "modules.school",
+    "modules.firstaid",
   ];
 
   return (
@@ -71,17 +74,20 @@ const LandingPage = () => {
           <div className="flex items-center gap-3">
             <span className="text-4xl font-serif text-primary">柔道</span>
             <div>
-              <h1 className="text-lg font-bold text-white">Exame Shodan</h1>
-              <p className="text-xs text-foreground/70">Preparação para Faixa Preta</p>
+              <h1 className="text-lg font-bold text-white">{t("header.title")}</h1>
+              <p className="text-xs text-foreground/70">{t("header.subtitle")}</p>
             </div>
           </div>
-          <Button 
-            onClick={() => navigate('/login')}
-            variant="outline"
-            className="border-primary text-primary hover:bg-primary hover:text-secondary"
-          >
-            Entrar
-          </Button>
+          <div className="flex items-center gap-3">
+            <LanguageToggle />
+            <Button 
+              onClick={() => navigate('/login')}
+              variant="outline"
+              className="border-primary text-primary hover:bg-primary hover:text-secondary"
+            >
+              {t("header.login")}
+            </Button>
+          </div>
         </div>
       </header>
 
@@ -100,29 +106,28 @@ const LandingPage = () => {
                 className="inline-block px-4 py-2 bg-primary/20 rounded-full"
                 variants={scaleIn}
               >
-                <span className="text-primary text-sm font-semibold">🥋 Curso Completo</span>
+                <span className="text-primary text-sm font-semibold">{t("hero.badge")}</span>
               </motion.div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
-                Domine o Conteúdo do
-                <span className="text-primary block">Exame Shodan</span>
+                {t("hero.title1")}
+                <span className="text-primary block">{t("hero.title2")}</span>
               </h1>
               <p className="text-lg text-muted-foreground">
-                O guia mais completo para sua preparação para a Faixa Preta 1º Dan. 
-                Todo o conhecimento teórico que você precisa em um só lugar.
+                {t("hero.description")}
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button 
                   onClick={() => navigate('/cadastro')}
                   className="btn-gold text-lg px-8 py-6"
                 >
-                  Quero Me Preparar Agora
+                  {t("hero.cta")}
                 </Button>
                 <Button 
                   onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
                   variant="outline"
                   className="border-primary/50 text-primary hover:bg-primary/10 text-lg px-8 py-6"
                 >
-                  Ver Detalhes
+                  {t("hero.details")}
                 </Button>
               </div>
             </motion.div>
@@ -148,7 +153,7 @@ const LandingPage = () => {
                 transition={{ delay: 0.4, duration: 0.5 }}
               >
                 <p className="text-primary font-serif text-2xl">初段</p>
-                <p className="text-xs text-muted-foreground">Primeiro Dan</p>
+                <p className="text-xs text-muted-foreground">{t("hero.firstDan")}</p>
               </motion.div>
             </motion.div>
           </div>
@@ -165,7 +170,7 @@ const LandingPage = () => {
             viewport={{ once: true, margin: "-50px" }}
             variants={fadeInUp}
           >
-            O que você vai <span className="text-primary">encontrar</span>
+            {t("benefits.title1")} <span className="text-primary">{t("benefits.title2")}</span>
           </motion.h2>
           <motion.div 
             className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
@@ -181,7 +186,7 @@ const LandingPage = () => {
                     <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center group-hover:bg-primary/30 transition-colors">
                       <benefit.icon className="w-6 h-6 text-primary" />
                     </div>
-                    <span className="text-white font-medium">{benefit.text}</span>
+                    <span className="text-white font-medium">{t(benefit.textKey)}</span>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -200,10 +205,10 @@ const LandingPage = () => {
             variants={fadeInUp}
           >
             <h2 className="text-3xl font-bold text-white text-center mb-4">
-              Conteúdo <span className="text-primary">Completo</span>
+              {t("modules.title1")} <span className="text-primary">{t("modules.title2")}</span>
             </h2>
             <p className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
-              Tudo que você precisa saber para o exame teórico, organizado de forma didática
+              {t("modules.subtitle")}
             </p>
           </motion.div>
           <motion.div 
@@ -213,14 +218,14 @@ const LandingPage = () => {
             viewport={{ once: true, margin: "-50px" }}
             variants={staggerContainer}
           >
-            {modules.map((module, index) => (
+            {moduleKeys.map((key, index) => (
               <motion.div 
                 key={index} 
                 className="flex items-center gap-3 p-4 bg-card/50 rounded-lg border border-primary/10 hover:border-primary/30 transition-colors"
                 variants={scaleIn}
               >
                 <Check className="w-5 h-5 text-primary flex-shrink-0" />
-                <span className="text-white">{module}</span>
+                <span className="text-white">{t(key)}</span>
               </motion.div>
             ))}
           </motion.div>
@@ -237,10 +242,10 @@ const LandingPage = () => {
             variants={fadeInUp}
           >
             <h2 className="text-3xl font-bold text-white text-center mb-4">
-              Investimento <span className="text-primary">Acessível</span>
+              {t("pricing.title1")} <span className="text-primary">{t("pricing.title2")}</span>
             </h2>
             <p className="text-muted-foreground text-center mb-12">
-              Acesso completo por 1 ano por um valor único
+              {t("pricing.subtitle")}
             </p>
           </motion.div>
           
@@ -259,17 +264,17 @@ const LandingPage = () => {
                         <Star key={i} className="w-5 h-5 fill-primary text-primary" />
                       ))}
                     </div>
-                    <h3 className="text-2xl font-bold text-white mb-2">Guia Completo Exame Shodan</h3>
-                    <p className="text-muted-foreground mb-4">Acesso por 1 ano a todo o conteúdo</p>
+                    <h3 className="text-2xl font-bold text-white mb-2">{t("pricing.productName")}</h3>
+                    <p className="text-muted-foreground mb-4">{t("pricing.accessPeriod")}</p>
                     <ul className="space-y-2 text-sm text-muted-foreground">
                       <li className="flex items-center gap-2">
-                        <Check className="w-4 h-4 text-primary" /> 17 módulos completos
+                        <Check className="w-4 h-4 text-primary" /> {t("pricing.modules")}
                       </li>
                       <li className="flex items-center gap-2">
-                        <Check className="w-4 h-4 text-primary" /> Flashcards e Quizzes
+                        <Check className="w-4 h-4 text-primary" /> {t("pricing.flashcardsQuizzes")}
                       </li>
                       <li className="flex items-center gap-2">
-                        <Check className="w-4 h-4 text-primary" /> Atualizações incluídas
+                        <Check className="w-4 h-4 text-primary" /> {t("pricing.updates")}
                       </li>
                     </ul>
                   </div>
@@ -282,21 +287,21 @@ const LandingPage = () => {
                       R$ 197
                     </div>
                     <p className="text-sm text-muted-foreground mb-6">
-                      pagamento único
+                      {t("pricing.singlePayment")}
                     </p>
                     <div className="space-y-3">
                       <Button 
                         onClick={() => navigate('/cadastro')}
                         className="btn-gold w-full text-lg py-6"
                       >
-                        💳 Pagar com Cartão
+                        {t("pricing.cardPayment")}
                       </Button>
                       <Button 
                         onClick={() => setShowPixModal(true)}
                         variant="outline"
                         className="w-full border-primary text-primary hover:bg-primary hover:text-secondary py-6"
                       >
-                        📱 Pagar com PIX
+                        {t("pricing.pixPayment")}
                       </Button>
                     </div>
                   </div>
@@ -317,9 +322,9 @@ const LandingPage = () => {
           variants={fadeInUp}
         >
           <p className="text-xl md:text-2xl text-primary italic mb-4">
-            "O objetivo final do Judô não é a vitória sobre os outros, mas o aperfeiçoamento de si mesmo."
+            {t("quote.text")}
           </p>
-          <p className="text-muted-foreground">— Jigoro Kano</p>
+          <p className="text-muted-foreground">{t("quote.author")}</p>
         </motion.div>
       </section>
 
@@ -347,14 +352,14 @@ const LandingPage = () => {
           <div className="grid md:grid-cols-2 gap-8 mb-8">
             {/* Links Section */}
             <div>
-              <h4 className="text-primary font-semibold uppercase tracking-wider text-sm mb-4">Links</h4>
+              <h4 className="text-primary font-semibold uppercase tracking-wider text-sm mb-4">{t("footer.links")}</h4>
               <ul className="space-y-3">
                 <li>
                   <button 
                     onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
                     className="text-muted-foreground hover:text-white transition-colors"
                   >
-                    Recursos
+                    {t("footer.resources")}
                   </button>
                 </li>
                 <li>
@@ -362,17 +367,17 @@ const LandingPage = () => {
                     onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
                     className="text-muted-foreground hover:text-white transition-colors"
                   >
-                    Planos
+                    {t("footer.plans")}
                   </button>
                 </li>
                 <li>
                   <a href="#" className="text-muted-foreground hover:text-white transition-colors">
-                    Depoimentos
+                    {t("footer.testimonials")}
                   </a>
                 </li>
                 <li>
                   <a href="#" className="text-muted-foreground hover:text-white transition-colors">
-                    Política de Privacidade
+                    {t("footer.privacy")}
                   </a>
                 </li>
               </ul>
@@ -380,7 +385,7 @@ const LandingPage = () => {
 
             {/* Contact Section */}
             <div>
-              <h4 className="text-primary font-semibold uppercase tracking-wider text-sm mb-4">Contato</h4>
+              <h4 className="text-primary font-semibold uppercase tracking-wider text-sm mb-4">{t("footer.contact")}</h4>
               <ul className="space-y-3">
                 <li>
                   <a 
@@ -413,10 +418,10 @@ const LandingPage = () => {
           {/* Separator */}
           <div className="border-t border-border/30 pt-6">
             <p className="text-center text-muted-foreground text-sm mb-2">
-              © 2026 Shodan EDU. Todos os direitos reservados.
+              {t("footer.copyright")}
             </p>
             <p className="text-center text-muted-foreground text-sm">
-              Feito com <span className="text-red-500">❤️</span> para o Judô brasileiro
+              {t("footer.madeWith")} <span className="text-red-500">❤️</span> {t("footer.forJudo")}
             </p>
           </div>
         </div>
@@ -440,17 +445,17 @@ const LandingPage = () => {
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
           <Card className="max-w-md w-full bg-card border-primary/30">
             <CardContent className="p-6">
-              <h3 className="text-xl font-bold text-white mb-4 text-center">Pagamento via PIX</h3>
+              <h3 className="text-xl font-bold text-white mb-4 text-center">{t("pix.title")}</h3>
               <div className="bg-secondary/50 rounded-lg p-4 mb-4">
-                <p className="text-sm text-muted-foreground mb-2">Chave PIX (CNPJ):</p>
+                <p className="text-sm text-muted-foreground mb-2">{t("pix.key")}</p>
                 <p className="text-primary font-mono break-all">62.333.509/0001-03</p>
               </div>
               <div className="bg-secondary/50 rounded-lg p-4 mb-4">
-                <p className="text-sm text-muted-foreground mb-2">Valor:</p>
+                <p className="text-sm text-muted-foreground mb-2">{t("pix.value")}</p>
                 <p className="text-2xl font-bold text-primary">R$ 197,00</p>
               </div>
               <div className="bg-primary/20 border border-primary/50 rounded-lg p-4 mb-4">
-                <p className="text-sm text-muted-foreground mb-2">WhatsApp para enviar comprovante:</p>
+                <p className="text-sm text-muted-foreground mb-2">{t("pix.whatsapp")}</p>
                 <a 
                   href="https://wa.me/5561996634944" 
                   target="_blank" 
@@ -461,7 +466,7 @@ const LandingPage = () => {
                 </a>
               </div>
               <p className="text-sm text-muted-foreground mb-4 text-center">
-                Após o pagamento, envie o comprovante para nosso WhatsApp para liberação do acesso.
+                {t("pix.instructions")}
               </p>
               <div className="flex gap-3">
                 <Button 
@@ -469,13 +474,13 @@ const LandingPage = () => {
                   variant="outline"
                   className="flex-1 border-primary/50 text-primary"
                 >
-                  Fechar
+                  {t("pix.close")}
                 </Button>
                 <Button 
                   onClick={() => navigate('/cadastro')}
                   className="flex-1 btn-gold"
                 >
-                  Fazer Cadastro
+                  {t("pix.register")}
                 </Button>
               </div>
             </CardContent>
