@@ -1,148 +1,137 @@
+import { useLanguage } from "@/contexts/LanguageContext";
+
 const TreinosSection = () => {
-  const practiceForms = [
-    { 
-      kanji: '乱取り', 
-      romaji: 'Randori', 
-      title: 'Treinamento Livre', 
-      desc: 'Método para aprender técnicas de ataque e defesa movimentando-se livremente, sem causar dano ao outro. É a aplicação prática das técnicas em situação dinâmica.' 
-    },
-    { 
-      kanji: '形', 
-      romaji: 'Kata', 
-      title: 'Formas', 
-      desc: 'Método de aplicar técnicas pré-estabelecidas com um parceiro. Preserva a tradição e ensina os princípios fundamentais. Ex: Nage-no-Kata (Formas de Projeção).' 
-    },
-    { 
-      kanji: '講義', 
-      romaji: 'Kogi', 
-      title: 'Palestra', 
-      desc: 'Aulas orais sobre técnicas de Judô, aspectos espirituais, filosóficos, história e aplicação na vida social.' 
-    },
-    { 
-      kanji: '問答', 
-      romaji: 'Mondo', 
-      title: 'Perguntas e Respostas', 
-      desc: 'Aprendizagem através de perguntas e respostas mútuas entre professor e aluno. Estimula o pensamento crítico.' 
-    },
-    { 
-      kanji: '試合', 
-      romaji: 'Shiai', 
-      title: 'Competição', 
-      desc: 'Teste de desenvolvimento técnico em situações de combate real com pontuação. Aplica tudo que foi aprendido sob pressão.' 
-    },
-    { 
-      kanji: '打ち込み', 
-      romaji: 'Uchi-Komi', 
-      title: 'Entradas Repetidas', 
-      desc: 'Repetição sistemática das entradas das técnicas sem completar a projeção. Desenvolve automatismo, velocidade e precisão nos movimentos.' 
-    },
-    { 
-      kanji: '投げ込み', 
-      romaji: 'Nage-Komi', 
-      title: 'Projeções Completas', 
-      desc: 'Prática de projeções completas com o parceiro caindo. Desenvolve o timing, kuzushi (desequilíbrio) e a finalização das técnicas.' 
-    },
-    { 
-      kanji: '回し', 
-      romaji: 'Mawashi', 
-      title: 'Treinamento Rotativo', 
-      desc: 'Troca constante de parceiros durante o randori. Permite experimentar diferentes estilos, pesos e níveis técnicos.' 
-    },
-  ];
+  const { language } = useLanguage();
 
-  const ukemiTypes = [
-    { 
-      name: 'Ushiro-Ukemi / Koho-Ukemi', 
-      kanji: '後受身', 
-      desc: 'Amortecimento de queda para TRÁS',
-      details: 'Queixo no peito, braços batem no tatame a 45°, pernas elevadas. Fundamental para projeções como O-soto-gari.',
-      icon: '⬇️',
-      videoId: 'u4oHFVznIVY'
-    },
-    { 
-      name: 'Yoko-Ukemi / Sokuho-Ukemi', 
-      kanji: '横受身', 
-      desc: 'Amortecimento de queda para o LADO',
-      details: 'Queda lateral com um braço batendo no tatame, pernas afastadas. Usada em projeções laterais como Harai-goshi.',
-      icon: '↔️',
-      videoId: 'KJFr5FINMIM'
-    },
-    { 
-      name: 'Mae-Ukemi / Zenpo-Ukemi', 
-      kanji: '前受身', 
-      desc: 'Amortecimento de queda para FRENTE',
-      details: 'Queda frontal com antebraços e palmas absorvendo o impacto. Rosto virado para o lado.',
-      icon: '⬆️',
-      videoId: 'ukSj8JM8cvI'
-    },
-    { 
-      name: 'Zenpo-Kaiten-Ukemi', 
-      kanji: '前方回転受身', 
-      desc: 'Rolamento para FRENTE',
-      details: 'Rolamento diagonal sobre o ombro, terminando em posição de defesa. Essencial para projeções de sacrifício.',
-      icon: '🔄',
-      videoId: 'BvFpMr1Insw'
-    },
-    { 
-      name: 'Outen-Ukemi', 
-      kanji: '横転受身', 
-      desc: 'Rolamento para o LADO',
-      details: 'Rolamento lateral usado em quedas complexas. Faz parte do Kodomo-no-Kata (formas infantis).',
-      icon: '↩️',
-      videoId: 'VoktcQAxEPg'
-    },
-  ];
+  const practiceForms = language === 'pt'
+    ? [
+        { kanji: '乱取り', romaji: 'Randori', title: 'Treinamento Livre', desc: 'Método para aprender técnicas de ataque e defesa movimentando-se livremente, sem causar dano ao outro.' },
+        { kanji: '形', romaji: 'Kata', title: 'Formas', desc: 'Método de aplicar técnicas pré-estabelecidas com um parceiro. Preserva a tradição e ensina os princípios fundamentais.' },
+        { kanji: '講義', romaji: 'Kogi', title: 'Palestra', desc: 'Aulas orais sobre técnicas de Judô, aspectos espirituais, filosóficos, história e aplicação na vida social.' },
+        { kanji: '問答', romaji: 'Mondo', title: 'Perguntas e Respostas', desc: 'Aprendizagem através de perguntas e respostas mútuas entre professor e aluno.' },
+        { kanji: '試合', romaji: 'Shiai', title: 'Competição', desc: 'Teste de desenvolvimento técnico em situações de combate real com pontuação.' },
+        { kanji: '打ち込み', romaji: 'Uchi-Komi', title: 'Entradas Repetidas', desc: 'Repetição sistemática das entradas das técnicas sem completar a projeção.' },
+        { kanji: '投げ込み', romaji: 'Nage-Komi', title: 'Projeções Completas', desc: 'Prática de projeções completas com o parceiro caindo.' },
+        { kanji: '回し', romaji: 'Mawashi', title: 'Treinamento Rotativo', desc: 'Troca constante de parceiros durante o randori.' },
+      ]
+    : [
+        { kanji: '乱取り', romaji: 'Randori', title: 'Free Practice', desc: 'Method of learning attack and defense techniques moving freely, without causing harm.' },
+        { kanji: '形', romaji: 'Kata', title: 'Forms', desc: 'Method of applying pre-established techniques with a partner. Preserves tradition and teaches fundamental principles.' },
+        { kanji: '講義', romaji: 'Kogi', title: 'Lecture', desc: 'Oral classes on Judo techniques, spiritual, philosophical aspects, history and social life application.' },
+        { kanji: '問答', romaji: 'Mondo', title: 'Questions and Answers', desc: 'Learning through mutual questions and answers between teacher and student.' },
+        { kanji: '試合', romaji: 'Shiai', title: 'Competition', desc: 'Test of technical development in real combat situations with scoring.' },
+        { kanji: '打ち込み', romaji: 'Uchi-Komi', title: 'Repeated Entries', desc: 'Systematic repetition of technique entries without completing the throw.' },
+        { kanji: '投げ込み', romaji: 'Nage-Komi', title: 'Full Throws', desc: 'Practice of complete throws with partner falling.' },
+        { kanji: '回し', romaji: 'Mawashi', title: 'Rotational Training', desc: 'Constant partner switching during randori.' },
+      ];
 
-  const trainingTips = [
-    { icon: '🔄', title: 'Aquecimento', desc: 'Sempre inicie com aquecimento geral e específico para evitar lesões' },
-    { icon: '🎯', title: 'Foco', desc: 'Concentre-se em poucas técnicas por treino para melhor absorção' },
-    { icon: '🤝', title: 'Parceiro', desc: 'Respeite seu parceiro - ele é essencial para seu desenvolvimento' },
-    { icon: '📊', title: 'Progressão', desc: 'Evolua gradualmente: básico → intermediário → avançado' },
-    { icon: '🧘', title: 'Ukemi', desc: 'Pratique quedas regularmente - é a base da segurança no Judô' },
-    { icon: '💪', title: 'Recuperação', desc: 'Descanse adequadamente entre treinos intensos' },
-    { icon: '📝', title: 'Anotações', desc: 'Mantenha um diário de treinos para acompanhar sua evolução' },
-    { icon: '🎥', title: 'Vídeos', desc: 'Grave seus treinos para análise técnica posterior' },
-  ];
+  const ukemiTypes = language === 'pt'
+    ? [
+        { name: 'Ushiro-Ukemi / Koho-Ukemi', kanji: '後受身', desc: 'Amortecimento de queda para TRÁS', details: 'Queixo no peito, braços batem no tatame a 45°, pernas elevadas.', icon: '⬇️', videoId: 'u4oHFVznIVY' },
+        { name: 'Yoko-Ukemi / Sokuho-Ukemi', kanji: '横受身', desc: 'Amortecimento de queda para o LADO', details: 'Queda lateral com um braço batendo no tatame, pernas afastadas.', icon: '↔️', videoId: 'KJFr5FINMIM' },
+        { name: 'Mae-Ukemi / Zenpo-Ukemi', kanji: '前受身', desc: 'Amortecimento de queda para FRENTE', details: 'Queda frontal com antebraços e palmas absorvendo o impacto.', icon: '⬆️', videoId: 'ukSj8JM8cvI' },
+        { name: 'Zenpo-Kaiten-Ukemi', kanji: '前方回転受身', desc: 'Rolamento para FRENTE', details: 'Rolamento diagonal sobre o ombro, terminando em posição de defesa.', icon: '🔄', videoId: 'BvFpMr1Insw' },
+        { name: 'Outen-Ukemi', kanji: '横転受身', desc: 'Rolamento para o LADO', details: 'Rolamento lateral usado em quedas complexas.', icon: '↩️', videoId: 'VoktcQAxEPg' },
+      ]
+    : [
+        { name: 'Ushiro-Ukemi / Koho-Ukemi', kanji: '後受身', desc: 'Backward breakfall', details: 'Chin to chest, arms slap mat at 45°, legs elevated.', icon: '⬇️', videoId: 'u4oHFVznIVY' },
+        { name: 'Yoko-Ukemi / Sokuho-Ukemi', kanji: '横受身', desc: 'Side breakfall', details: 'Side fall with one arm slapping the mat, legs apart.', icon: '↔️', videoId: 'KJFr5FINMIM' },
+        { name: 'Mae-Ukemi / Zenpo-Ukemi', kanji: '前受身', desc: 'Forward breakfall', details: 'Front fall with forearms and palms absorbing impact.', icon: '⬆️', videoId: 'ukSj8JM8cvI' },
+        { name: 'Zenpo-Kaiten-Ukemi', kanji: '前方回転受身', desc: 'Forward roll', details: 'Diagonal roll over shoulder, ending in defense position.', icon: '🔄', videoId: 'BvFpMr1Insw' },
+        { name: 'Outen-Ukemi', kanji: '横転受身', desc: 'Side roll', details: 'Side roll used in complex falls.', icon: '↩️', videoId: 'VoktcQAxEPg' },
+      ];
 
-  const classStructure = [
-    { num: 1, title: 'Saudação e Aquecimento', time: '10-15 min', desc: 'Rei, alongamento geral e específico, preparação corporal' },
-    { num: 2, title: 'Ukemi (Quedas)', time: '10 min', desc: 'Mae-ukemi, ushiro-ukemi, yoko-ukemi, zenpo-kaiten' },
-    { num: 3, title: 'Técnica Principal', time: '30-40 min', desc: 'Uchi-komi, Nage-komi, técnicas de solo, combinações' },
-    { num: 4, title: 'Randori e Encerramento', time: '20-30 min', desc: 'Treino livre (tachi-waza e ne-waza), saudação final' },
-  ];
+  const trainingTips = language === 'pt'
+    ? [
+        { icon: '🔄', title: 'Aquecimento', desc: 'Sempre inicie com aquecimento geral e específico' },
+        { icon: '🎯', title: 'Foco', desc: 'Concentre-se em poucas técnicas por treino' },
+        { icon: '🤝', title: 'Parceiro', desc: 'Respeite seu parceiro - ele é essencial' },
+        { icon: '📊', title: 'Progressão', desc: 'Evolua gradualmente: básico → avançado' },
+        { icon: '🧘', title: 'Ukemi', desc: 'Pratique quedas regularmente' },
+        { icon: '💪', title: 'Recuperação', desc: 'Descanse adequadamente entre treinos' },
+        { icon: '📝', title: 'Anotações', desc: 'Mantenha um diário de treinos' },
+        { icon: '🎥', title: 'Vídeos', desc: 'Grave seus treinos para análise' },
+      ]
+    : [
+        { icon: '🔄', title: 'Warm-up', desc: 'Always start with general and specific warm-up' },
+        { icon: '🎯', title: 'Focus', desc: 'Focus on few techniques per session' },
+        { icon: '🤝', title: 'Partner', desc: 'Respect your partner - they are essential' },
+        { icon: '📊', title: 'Progression', desc: 'Progress gradually: basic → advanced' },
+        { icon: '🧘', title: 'Ukemi', desc: 'Practice falls regularly' },
+        { icon: '💪', title: 'Recovery', desc: 'Rest adequately between training sessions' },
+        { icon: '📝', title: 'Notes', desc: 'Keep a training journal' },
+        { icon: '🎥', title: 'Videos', desc: 'Record your training for analysis' },
+      ];
 
-  const physicalPreparation = [
-    { icon: '🏃', title: 'Resistência', desc: 'Corrida, corda, circuitos aeróbicos para manter ritmo no combate' },
-    { icon: '💪', title: 'Força', desc: 'Musculação funcional, exercícios com peso corporal, pegada' },
-    { icon: '🤸', title: 'Flexibilidade', desc: 'Alongamentos dinâmicos e estáticos para amplitude de movimento' },
-    { icon: '⚡', title: 'Explosão', desc: 'Pliometria, sprints, movimentos rápidos para entradas' },
-    { icon: '🧠', title: 'Coordenação', desc: 'Exercícios de agilidade, mudança de direção, timing' },
-    { icon: '🎯', title: 'Grip', desc: 'Fortalecimento de pegada com gi, toalhas, caneleiras' },
-  ];
+  const classStructure = language === 'pt'
+    ? [
+        { num: 1, title: 'Saudação e Aquecimento', time: '10-15 min', desc: 'Rei, alongamento geral e específico' },
+        { num: 2, title: 'Ukemi (Quedas)', time: '10 min', desc: 'Mae-ukemi, ushiro-ukemi, yoko-ukemi, zenpo-kaiten' },
+        { num: 3, title: 'Técnica Principal', time: '30-40 min', desc: 'Uchi-komi, Nage-komi, técnicas de solo' },
+        { num: 4, title: 'Randori e Encerramento', time: '20-30 min', desc: 'Treino livre, saudação final' },
+      ]
+    : [
+        { num: 1, title: 'Greeting and Warm-up', time: '10-15 min', desc: 'Rei, general and specific stretching' },
+        { num: 2, title: 'Ukemi (Breakfalls)', time: '10 min', desc: 'Mae-ukemi, ushiro-ukemi, yoko-ukemi, zenpo-kaiten' },
+        { num: 3, title: 'Main Technique', time: '30-40 min', desc: 'Uchi-komi, Nage-komi, ground techniques' },
+        { num: 4, title: 'Randori and Closing', time: '20-30 min', desc: 'Free practice, final greeting' },
+      ];
+
+  const physicalPreparation = language === 'pt'
+    ? [
+        { icon: '🏃', title: 'Resistência', desc: 'Corrida, corda, circuitos aeróbicos' },
+        { icon: '💪', title: 'Força', desc: 'Musculação funcional, peso corporal' },
+        { icon: '🤸', title: 'Flexibilidade', desc: 'Alongamentos dinâmicos e estáticos' },
+        { icon: '⚡', title: 'Explosão', desc: 'Pliometria, sprints, movimentos rápidos' },
+        { icon: '🧠', title: 'Coordenação', desc: 'Exercícios de agilidade, timing' },
+        { icon: '🎯', title: 'Grip', desc: 'Fortalecimento de pegada com gi' },
+      ]
+    : [
+        { icon: '🏃', title: 'Endurance', desc: 'Running, rope, aerobic circuits' },
+        { icon: '💪', title: 'Strength', desc: 'Functional weight training, bodyweight' },
+        { icon: '🤸', title: 'Flexibility', desc: 'Dynamic and static stretching' },
+        { icon: '⚡', title: 'Explosiveness', desc: 'Plyometrics, sprints, fast movements' },
+        { icon: '🧠', title: 'Coordination', desc: 'Agility exercises, timing' },
+        { icon: '🎯', title: 'Grip', desc: 'Grip strengthening with gi' },
+      ];
+
+  const progressionLevels = language === 'pt'
+    ? {
+        beginner: { title: 'Iniciante', items: ['Ukemi (quedas) - base de tudo', '2-3 técnicas por grupo', 'Movimentação básica', 'Etiqueta e saudações'] },
+        intermediate: { title: 'Intermediário', items: ['Gokyo completo', 'Combinações de técnicas', 'Ne-waza (solo)', 'Randori regular'] },
+        advanced: { title: 'Avançado', items: ['Tokui-waza (especialização)', 'Renraku-waza (encadeamentos)', 'Katas formais', 'Estratégia competitiva'] },
+      }
+    : {
+        beginner: { title: 'Beginner', items: ['Ukemi (breakfalls) - foundation', '2-3 techniques per group', 'Basic movement', 'Etiquette and greetings'] },
+        intermediate: { title: 'Intermediate', items: ['Complete Gokyo', 'Technique combinations', 'Ne-waza (ground)', 'Regular randori'] },
+        advanced: { title: 'Advanced', items: ['Tokui-waza (specialization)', 'Renraku-waza (combinations)', 'Formal katas', 'Competitive strategy'] },
+      };
 
   return (
     <div className="animate-fade-in">
       <h2 className="section-title">
         <span className="section-title-icon">練</span>
-        Treinamentos - Métodos de Prática
+        {language === 'pt' ? 'Treinamentos - Métodos de Prática' : 'Training - Practice Methods'}
       </h2>
 
       <div className="card-judo mb-8">
         <p className="text-sm text-foreground/70">
-          O Judô possui diversos métodos de treinamento, cada um com objetivos específicos. 
-          A combinação equilibrada dessas formas desenvolve o judoca completo técnica, física e mentalmente.
+          {language === 'pt'
+            ? 'O Judô possui diversos métodos de treinamento, cada um com objetivos específicos. A combinação equilibrada dessas formas desenvolve o judoca completo técnica, física e mentalmente.'
+            : 'Judo has various training methods, each with specific objectives. The balanced combination of these forms develops the complete judoka technically, physically and mentally.'}
         </p>
       </div>
 
-      {/* Ukemi - Tipos de Quedas */}
+      {/* Ukemi */}
       <h3 className="text-lg font-semibold text-primary flex items-center gap-2 mb-4">
-        <span>🤸</span> Ukemi - Técnicas de Queda
+        <span>🤸</span> Ukemi - {language === 'pt' ? 'Técnicas de Queda' : 'Breakfall Techniques'}
       </h3>
       
       <div className="card-judo mb-6">
         <p className="text-sm text-foreground/70 mb-4">
-          <strong>Ukemi</strong> (受身) significa "corpo que recebe". São as técnicas de amortecimento de queda, 
-          fundamentais para a segurança no Judô. Um judoca deve dominar todas as formas de ukemi antes de progredir nas técnicas.
+          {language === 'pt'
+            ? <><strong>Ukemi</strong> (受身) significa "corpo que recebe". São as técnicas de amortecimento de queda, fundamentais para a segurança no Judô.</>
+            : <><strong>Ukemi</strong> (受身) means "receiving body". These are breakfall techniques, fundamental for safety in Judo.</>}
         </p>
       </div>
       
@@ -167,19 +156,19 @@ const TreinosSection = () => {
               <span className="w-5 h-5 rounded-full bg-red-600 flex items-center justify-center">
                 <span className="text-white text-[8px] ml-0.5">▶</span>
               </span>
-              Ver vídeo
+              {language === 'pt' ? 'Ver vídeo' : 'Watch video'}
             </a>
           </div>
         ))}
       </div>
 
-      {/* Vídeos de Ukemi - Galeria */}
+      {/* Vídeos de Ukemi */}
       <div className="card-judo p-5 mb-10">
         <h4 className="font-semibold text-white mb-4 flex items-center gap-2">
-          <span>🎬</span> Vídeos Demonstrativos de Ukemi
+          <span>🎬</span> {language === 'pt' ? 'Vídeos Demonstrativos de Ukemi' : 'Ukemi Demonstration Videos'}
         </h4>
         <p className="text-sm text-foreground/70 mb-4">
-          Clique em cada vídeo para assistir à demonstração detalhada de cada técnica de queda.
+          {language === 'pt' ? 'Clique em cada vídeo para assistir à demonstração detalhada.' : 'Click each video to watch the detailed demonstration.'}
         </p>
         
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mb-4">
@@ -214,13 +203,13 @@ const TreinosSection = () => {
         </div>
         
         <p className="text-xs text-muted-foreground flex items-center gap-1">
-          <span>⚠️</span> Ao clicar, você será redirecionado para o YouTube
+          <span>⚠️</span> {language === 'pt' ? 'Ao clicar, você será redirecionado para o YouTube' : 'Clicking will redirect you to YouTube'}
         </p>
       </div>
 
       {/* Métodos de Treino */}
       <h3 className="text-lg font-semibold text-primary flex items-center gap-2 mb-4">
-        <span>🥋</span> Métodos de Treinamento
+        <span>🥋</span> {language === 'pt' ? 'Métodos de Treinamento' : 'Training Methods'}
       </h3>
       
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
@@ -240,7 +229,7 @@ const TreinosSection = () => {
 
       {/* Estrutura da Aula */}
       <h3 className="text-lg font-semibold text-primary flex items-center gap-2 mb-4">
-        <span>📋</span> Estrutura Típica de uma Aula
+        <span>📋</span> {language === 'pt' ? 'Estrutura Típica de uma Aula' : 'Typical Class Structure'}
       </h3>
       
       <div className="card-red p-6 mb-10">
@@ -260,7 +249,7 @@ const TreinosSection = () => {
 
       {/* Preparação Física */}
       <h3 className="text-lg font-semibold text-primary flex items-center gap-2 mb-4">
-        <span>🏋️</span> Preparação Física Específica
+        <span>🏋️</span> {language === 'pt' ? 'Preparação Física Específica' : 'Specific Physical Preparation'}
       </h3>
       
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
@@ -277,7 +266,7 @@ const TreinosSection = () => {
 
       {/* Dicas de Treino */}
       <h3 className="text-lg font-semibold text-primary flex items-center gap-2 mb-4">
-        <span>💡</span> Dicas de Treinamento
+        <span>💡</span> {language === 'pt' ? 'Dicas de Treinamento' : 'Training Tips'}
       </h3>
       
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -294,36 +283,27 @@ const TreinosSection = () => {
 
       {/* Progressão de Treino */}
       <h3 className="text-lg font-semibold text-primary flex items-center gap-2 mb-4 mt-10">
-        <span>📈</span> Progressão Recomendada
+        <span>📈</span> {language === 'pt' ? 'Progressão Recomendada' : 'Recommended Progression'}
       </h3>
       
       <div className="card-judo">
         <div className="grid sm:grid-cols-3 gap-6">
           <div className="text-center p-4 bg-green-500/10 border border-green-500/30 rounded-xl">
-            <h4 className="font-semibold text-green-400 mb-2">Iniciante</h4>
+            <h4 className="font-semibold text-green-400 mb-2">{progressionLevels.beginner.title}</h4>
             <ul className="text-xs text-foreground/70 space-y-1 text-left">
-              <li>• Ukemi (quedas) - base de tudo</li>
-              <li>• 2-3 técnicas por grupo</li>
-              <li>• Movimentação básica</li>
-              <li>• Etiqueta e saudações</li>
+              {progressionLevels.beginner.items.map((item, i) => <li key={i}>• {item}</li>)}
             </ul>
           </div>
           <div className="text-center p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-xl">
-            <h4 className="font-semibold text-yellow-400 mb-2">Intermediário</h4>
+            <h4 className="font-semibold text-yellow-400 mb-2">{progressionLevels.intermediate.title}</h4>
             <ul className="text-xs text-foreground/70 space-y-1 text-left">
-              <li>• Gokyo completo</li>
-              <li>• Combinações de técnicas</li>
-              <li>• Ne-waza (solo)</li>
-              <li>• Randori regular</li>
+              {progressionLevels.intermediate.items.map((item, i) => <li key={i}>• {item}</li>)}
             </ul>
           </div>
           <div className="text-center p-4 bg-red-500/10 border border-red-500/30 rounded-xl">
-            <h4 className="font-semibold text-red-400 mb-2">Avançado</h4>
+            <h4 className="font-semibold text-red-400 mb-2">{progressionLevels.advanced.title}</h4>
             <ul className="text-xs text-foreground/70 space-y-1 text-left">
-              <li>• Tokui-waza (especialização)</li>
-              <li>• Renraku-waza (encadeamentos)</li>
-              <li>• Katas formais</li>
-              <li>• Estratégia competitiva</li>
+              {progressionLevels.advanced.items.map((item, i) => <li key={i}>• {item}</li>)}
             </ul>
           </div>
         </div>
