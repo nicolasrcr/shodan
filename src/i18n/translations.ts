@@ -130,6 +130,7 @@ export const translations = {
     "auth.passwordsDontMatch": "As senhas não coincidem",
     "auth.emailAlreadyRegistered": "Este email já está cadastrado. Tente fazer login.",
     "auth.rateLimitReached": "Limite de envio de emails atingido. Aguarde alguns minutos e tente novamente.",
+    "auth.weakPassword": "A senha é muito fraca ou comum. Escolha uma senha mais segura.",
     "auth.createAccountError": "Erro ao criar conta. Tente novamente.",
     
     // Password Page
@@ -456,6 +457,7 @@ export const translations = {
     "auth.passwordsDontMatch": "Passwords don't match",
     "auth.emailAlreadyRegistered": "This email is already registered. Try logging in.",
     "auth.rateLimitReached": "Email send limit reached. Wait a few minutes and try again.",
+    "auth.weakPassword": "The password is too weak or common. Please choose a more secure password.",
     "auth.createAccountError": "Error creating account. Try again.",
     
     // Password Page
