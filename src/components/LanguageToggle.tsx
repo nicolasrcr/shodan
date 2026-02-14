@@ -16,7 +16,7 @@ const LanguageToggle = () => {
         )}
         aria-label="Português"
       >
-        <span>🇵🇹</span>
+        <span>🇧🇷</span>
         PT
       </button>
       <button
@@ -29,7 +29,7 @@ const LanguageToggle = () => {
         )}
         aria-label="English"
       >
-        <span>🇬🇧</span>
+        <span>🇺🇸</span>
         EN
       </button>
     </div>
