@@ -1,73 +1,57 @@
-# Welcome to your Lovable project
+# ShodanExame – Preparação para Faixa Preta de Judô
 
-## Project info
+Curso completo de preparação para o Exame Shodan (Faixa Preta) de Judô.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Stack
 
-## How can I edit this code?
+- React + Vite + TypeScript
+- Tailwind CSS + shadcn/ui
+- Lovable Cloud (Supabase) — Auth, DB, Edge Functions
+- Mercado Pago — Pagamentos (PIX + Cartão)
 
-There are several ways of editing your application.
+## Rotas
 
-**Use Lovable**
+| Rota | Descrição |
+|------|-----------|
+| `/` | Landing page |
+| `/login` | Login |
+| `/cadastro` | Cadastro |
+| `/curso` | Curso (protegido) |
+| `/conta` | Minha Conta |
+| `/simulado` | Simulado (30 questões, 60min) |
+| `/desempenho` | Histórico de tentativas |
+| `/planos` | Planos e preços |
+| `/admin` | Painel administrativo |
+| `/payment-success` | Confirmação de pagamento |
+| `/payment-failure` | Falha no pagamento |
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## Edge Functions
 
-Changes made via Lovable will be committed automatically to this repo.
+- `mercadopago-checkout` — Cria preferência de pagamento (PIX ou Cartão)
+- `mercadopago-webhook` — Processa notificações do Mercado Pago
+- `create-admin` — Bootstrap de admin (protegido por secret)
 
-**Use your preferred IDE**
+## Criar Admin (Bootstrap)
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+1. Encontre o `userId` do usuário no banco de dados (tabela `profiles`)
+2. Execute o curl:
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+```bash
+curl -X POST https://ghmjjrmunjvuavnxukgi.supabase.co/functions/v1/create-admin \
+  -H "Content-Type: application/json" \
+  -H "x-admin-secret: SEU_ADMIN_BOOTSTRAP_SECRET" \
+  -d '{"userId": "UUID_DO_USUARIO"}'
+```
 
-Follow these steps:
+## Desenvolvimento Local
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
 npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## Testes
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+```sh
+npm test
+```
