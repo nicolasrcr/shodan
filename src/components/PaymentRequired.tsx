@@ -13,21 +13,20 @@ const PaymentRequired = () => {
   const navigate = useNavigate();
   const { profile, user, signOut } = useAuth();
   const { t } = useLanguage();
-  const [showPixModal, setShowPixModal] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [isProcessing, setIsProcessing] = useState<'pix' | 'cartao' | null>(null);
 
   const handleSignOut = async () => {
     await signOut();
     navigate('/');
   };
 
-  const handleCardPayment = async () => {
+  const handlePayment = async (method: 'pix' | 'cartao') => {
     if (!user || !profile) {
       toast.error(t("common.error"));
       return;
     }
 
-    setIsProcessing(true);
+    setIsProcessing(method);
     try {
       const { data, error } = await supabase.functions.invoke('mercadopago-checkout', {
         body: {
@@ -35,6 +34,7 @@ const PaymentRequired = () => {
           userId: user.id,
           userEmail: profile.email,
           userName: profile.name,
+          preferredMethod: method,
         },
       });
 
@@ -49,7 +49,7 @@ const PaymentRequired = () => {
       console.error('Payment error:', error);
       toast.error(error.message || t("common.error"));
     } finally {
-      setIsProcessing(false);
+      setIsProcessing(null);
     }
   };
 
@@ -126,24 +126,29 @@ const PaymentRequired = () => {
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 
-                  onClick={handleCardPayment}
-                  disabled={isProcessing}
+                  onClick={() => handlePayment('cartao')}
+                  disabled={isProcessing !== null}
                   className="btn-gold text-lg py-6 px-8"
                 >
-                  {isProcessing ? (
+                  {isProcessing === 'cartao' ? (
                     <Loader2 className="w-5 h-5 mr-2 animate-spin" />
                   ) : (
                     <CreditCard className="w-5 h-5 mr-2" />
                   )}
-                  {isProcessing ? t("common.processing") : t("payment.payWithCard")}
+                  {isProcessing === 'cartao' ? t("common.processing") : t("payment.payWithCard")}
                 </Button>
                 <Button 
-                  onClick={() => setShowPixModal(true)}
+                  onClick={() => handlePayment('pix')}
+                  disabled={isProcessing !== null}
                   variant="outline"
                   className="border-primary text-primary hover:bg-primary hover:text-secondary text-lg py-6 px-8"
                 >
-                  <Smartphone className="w-5 h-5 mr-2" />
-                  {t("payment.payWithPix")}
+                  {isProcessing === 'pix' ? (
+                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                  ) : (
+                    <Smartphone className="w-5 h-5 mr-2" />
+                  )}
+                  {isProcessing === 'pix' ? t("common.processing") : t("payment.payWithPix")}
                 </Button>
               </div>
             </div>
@@ -165,49 +170,6 @@ const PaymentRequired = () => {
           </p>
         </div>
       </main>
-
-      {/* PIX Modal */}
-      {showPixModal && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <Card className="max-w-md w-full bg-card border-primary/30">
-            <CardContent className="p-6">
-              <h3 className="text-xl font-bold text-white mb-4 text-center">{t("pix.title")}</h3>
-              <div className="bg-secondary/50 rounded-lg p-4 mb-4">
-                <p className="text-sm text-muted-foreground mb-2">{t("pix.key")}</p>
-                <p className="text-primary font-mono break-all">62.333.509/0001-03</p>
-              </div>
-              <div className="bg-secondary/50 rounded-lg p-4 mb-4">
-                <p className="text-sm text-muted-foreground mb-2">{t("pix.value")}</p>
-                <p className="text-2xl font-bold text-primary">R$ 197,00</p>
-              </div>
-              <div className="bg-secondary/50 rounded-lg p-4 mb-4">
-                <p className="text-sm text-muted-foreground mb-2">{t("pix.yourEmail")}</p>
-                <p className="text-white font-mono text-sm">{profile?.email}</p>
-              </div>
-              <div className="bg-primary/20 border border-primary/50 rounded-lg p-4 mb-4">
-                <p className="text-sm text-muted-foreground mb-2">{t("pix.whatsapp")}</p>
-                <a 
-                  href="https://wa.me/5561996634944" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-primary font-bold text-lg hover:underline"
-                >
-                  (61) 99663-4944
-                </a>
-              </div>
-              <p className="text-sm text-muted-foreground mb-4 text-center">
-                {t("pix.instructionsDetailed")}
-              </p>
-              <Button 
-                onClick={() => setShowPixModal(false)}
-                className="w-full btn-gold"
-              >
-                {t("common.understood")}
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      )}
     </div>
   );
 };

@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      payments: {
+        Row: {
+          amount: number
+          created_at: string
+          currency: string
+          id: string
+          method: Database["public"]["Enums"]["payment_method"] | null
+          mp_payment_id: string
+          raw: Json | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          currency?: string
+          id?: string
+          method?: Database["public"]["Enums"]["payment_method"] | null
+          mp_payment_id: string
+          raw?: Json | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          currency?: string
+          id?: string
+          method?: Database["public"]["Enums"]["payment_method"] | null
+          mp_payment_id?: string
+          raw?: Json | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           access_expires_at: string | null
@@ -47,6 +83,66 @@ export type Database = {
           payment_method?: Database["public"]["Enums"]["payment_method"] | null
           phone?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      quiz_attempts: {
+        Row: {
+          answers: Json | null
+          created_at: string
+          duration_seconds: number | null
+          id: string
+          quiz_id: string
+          score: number
+          total: number
+          user_id: string
+        }
+        Insert: {
+          answers?: Json | null
+          created_at?: string
+          duration_seconds?: number | null
+          id?: string
+          quiz_id: string
+          score: number
+          total: number
+          user_id: string
+        }
+        Update: {
+          answers?: Json | null
+          created_at?: string
+          duration_seconds?: number | null
+          id?: string
+          quiz_id?: string
+          score?: number
+          total?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_progress: {
+        Row: {
+          completed: boolean
+          created_at: string
+          id: string
+          last_seen_at: string
+          section_id: string
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean
+          created_at?: string
+          id?: string
+          last_seen_at?: string
+          section_id: string
+          user_id: string
+        }
+        Update: {
+          completed?: boolean
+          created_at?: string
+          id?: string
+          last_seen_at?: string
+          section_id?: string
+          user_id?: string
         }
         Relationships: []
       }

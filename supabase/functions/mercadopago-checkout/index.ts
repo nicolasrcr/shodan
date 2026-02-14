@@ -1,5 +1,4 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -11,10 +10,10 @@ interface CheckoutRequest {
   userId: string;
   userEmail: string;
   userName: string;
+  preferredMethod?: 'pix' | 'cartao';
 }
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
@@ -25,13 +24,12 @@ serve(async (req) => {
       throw new Error('MERCADO_PAGO_ACCESS_TOKEN is not configured');
     }
 
-    const { type, userId, userEmail, userName }: CheckoutRequest = await req.json();
+    const { type, userId, userEmail, userName, preferredMethod }: CheckoutRequest = await req.json();
 
     if (!type || !userId || !userEmail) {
       throw new Error('Missing required fields: type, userId, userEmail');
     }
 
-    // Define pricing based on purchase type
     const isRenewal = type === 'renewal';
     const price = isRenewal ? 99.90 : 197.00;
     const title = isRenewal 
@@ -41,18 +39,34 @@ serve(async (req) => {
       ? 'Renovação do acesso ao curso por mais 12 meses'
       : 'Acesso completo ao curso preparatório para o Exame Shodan por 12 meses';
 
-    // Get the base URL for callbacks
     const supabaseUrl = Deno.env.get('SUPABASE_URL') || '';
     const projectId = supabaseUrl.match(/https:\/\/([^.]+)/)?.[1] || '';
     const webhookUrl = `https://${projectId}.supabase.co/functions/v1/mercadopago-webhook`;
     
-    // Frontend URLs for redirects
     const siteUrl = req.headers.get('origin') || 'https://shodanexame.lovable.app';
     const successUrl = `${siteUrl}/payment-success`;
     const failureUrl = `${siteUrl}/payment-failure`;
     const pendingUrl = `${siteUrl}/curso`;
 
-    // Create Mercado Pago preference
+    // Build excluded payment methods based on preference
+    const excludedPaymentMethods: { id: string }[] = [];
+    const excludedPaymentTypes: { id: string }[] = [];
+    
+    if (preferredMethod === 'pix') {
+      // When PIX preferred, exclude card types but keep PIX available
+      excludedPaymentTypes.push(
+        { id: 'credit_card' },
+        { id: 'debit_card' },
+        { id: 'prepaid_card' }
+      );
+    } else if (preferredMethod === 'cartao') {
+      // When card preferred, exclude bank transfer/PIX
+      excludedPaymentTypes.push(
+        { id: 'bank_transfer' },
+        { id: 'ticket' }
+      );
+    }
+
     const preferenceData = {
       items: [
         {
@@ -68,6 +82,10 @@ serve(async (req) => {
         email: userEmail,
         name: userName,
       },
+      payment_methods: {
+        excluded_payment_methods: excludedPaymentMethods,
+        excluded_payment_types: excludedPaymentTypes,
+      },
       external_reference: JSON.stringify({ userId, type }),
       back_urls: {
         success: successUrl,
@@ -79,7 +97,7 @@ serve(async (req) => {
       statement_descriptor: 'EXAME SHODAN',
       expires: true,
       expiration_date_from: new Date().toISOString(),
-      expiration_date_to: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // 24 hours
+      expiration_date_to: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
     };
 
     console.log('Creating Mercado Pago preference:', JSON.stringify(preferenceData, null, 2));

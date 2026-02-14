@@ -1,15 +1,48 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Check, Star, Crown, ArrowLeft, Smartphone, CreditCard } from "lucide-react";
+import { Check, Star, Crown, ArrowLeft, Smartphone, CreditCard, Loader2 } from "lucide-react";
 import LanguageToggle from "@/components/LanguageToggle";
+import { toast } from "sonner";
 
 const PlanosPage = () => {
   const navigate = useNavigate();
-  const { t } = useLanguage();
-  const [showPixModal, setShowPixModal] = useState(false);
+  const { user, profile } = useAuth();
+  const { t, language } = useLanguage();
+  const [isProcessing, setIsProcessing] = useState<string | null>(null);
+
+  const handlePayment = async (type: 'new' | 'renewal', method: 'pix' | 'cartao') => {
+    if (!user || !profile) {
+      navigate('/cadastro');
+      return;
+    }
+
+    setIsProcessing(`${type}-${method}`);
+    try {
+      const { data, error } = await supabase.functions.invoke('mercadopago-checkout', {
+        body: {
+          type,
+          userId: user.id,
+          userEmail: profile.email,
+          userName: profile.name,
+          preferredMethod: method,
+        },
+      });
+
+      if (error) throw error;
+      if (data?.initPoint) {
+        window.location.href = data.initPoint;
+      }
+    } catch (error: any) {
+      toast.error(error.message || 'Erro ao processar');
+    } finally {
+      setIsProcessing(null);
+    }
+  };
 
   const plans = [
     {
@@ -27,7 +60,7 @@ const PlanosPage = () => {
         t("plans.renewalFeature5")
       ],
       highlight: false,
-      cta: t("plans.renewCta")
+      type: 'renewal' as const,
     },
     {
       name: t("plans.fullAccess"),
@@ -47,7 +80,7 @@ const PlanosPage = () => {
         t("plans.fullAccessFeature8")
       ],
       highlight: true,
-      cta: t("plans.startNow")
+      type: 'new' as const,
     }
   ];
 
@@ -57,10 +90,7 @@ const PlanosPage = () => {
       <header className="bg-gradient-to-r from-secondary via-judo-red-dark to-secondary border-b-[3px] border-primary py-4">
         <div className="max-w-6xl mx-auto px-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <button 
-              onClick={() => navigate('/')}
-              className="text-muted-foreground hover:text-white transition-colors"
-            >
+            <button onClick={() => navigate('/')} className="text-muted-foreground hover:text-white transition-colors">
               <ArrowLeft className="w-6 h-6" />
             </button>
             <span className="text-4xl font-serif text-primary">柔道</span>
@@ -74,14 +104,12 @@ const PlanosPage = () => {
       </header>
 
       <main className="max-w-5xl mx-auto px-4 py-16">
-        {/* Title Section */}
+        {/* Title */}
         <div className="text-center mb-12">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
             {t("plans.investTitle")} <span className="text-primary">{t("plans.investHighlight")}</span>
           </h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            {t("plans.description")}
-          </p>
+          <p className="text-muted-foreground max-w-2xl mx-auto">{t("plans.description")}</p>
         </div>
 
         {/* Plans Grid */}
@@ -101,9 +129,7 @@ const PlanosPage = () => {
                 </div>
               )}
               <CardHeader className="text-center pb-4">
-                <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${
-                  plan.highlight ? 'bg-primary/20' : 'bg-muted'
-                }`}>
+                <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${plan.highlight ? 'bg-primary/20' : 'bg-muted'}`}>
                   <plan.icon className={`w-8 h-8 ${plan.highlight ? 'text-primary' : 'text-muted-foreground'}`} />
                 </div>
                 <h3 className="text-xl font-bold text-white">{plan.name}</h3>
@@ -112,22 +138,16 @@ const PlanosPage = () => {
               <CardContent className="text-center">
                 <div className="mb-6">
                   {plan.originalPrice && (
-                    <div className="text-muted-foreground line-through text-lg mb-1">
-                      R$ {plan.originalPrice}
-                    </div>
+                    <div className="text-muted-foreground line-through text-lg mb-1">R$ {plan.originalPrice}</div>
                   )}
-                  <div className={`text-4xl font-bold ${plan.highlight ? 'text-primary' : 'text-white'}`}>
-                    R$ {plan.price}
-                  </div>
+                  <div className={`text-4xl font-bold ${plan.highlight ? 'text-primary' : 'text-white'}`}>R$ {plan.price}</div>
                   <p className="text-sm text-muted-foreground">{plan.period}</p>
                 </div>
 
                 <ul className="space-y-3 text-left mb-8">
                   {plan.features.map((feature, index) => (
                     <li key={index} className="flex items-start gap-2">
-                      <Check className={`w-5 h-5 mt-0.5 flex-shrink-0 ${
-                        plan.highlight ? 'text-primary' : 'text-green-500'
-                      }`} />
+                      <Check className={`w-5 h-5 mt-0.5 flex-shrink-0 ${plan.highlight ? 'text-primary' : 'text-green-500'}`} />
                       <span className="text-sm text-foreground/80">{feature}</span>
                     </li>
                   ))}
@@ -135,19 +155,21 @@ const PlanosPage = () => {
 
                 <div className="flex flex-col gap-3">
                   <Button 
-                    onClick={() => navigate('/cadastro')}
+                    onClick={() => handlePayment(plan.type, 'cartao')}
+                    disabled={isProcessing !== null}
                     className={plan.highlight ? 'btn-gold' : 'bg-muted hover:bg-muted/80'}
                     size="lg"
                   >
-                    <CreditCard className="w-4 h-4 mr-2" />
-                    {plan.cta}
+                    {isProcessing === `${plan.type}-cartao` ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <CreditCard className="w-4 h-4 mr-2" />}
+                    {t("payment.payWithCard")}
                   </Button>
                   <Button 
-                    onClick={() => setShowPixModal(true)}
+                    onClick={() => handlePayment(plan.type, 'pix')}
+                    disabled={isProcessing !== null}
                     variant="outline"
                     className="border-primary/50 text-primary hover:bg-primary hover:text-secondary"
                   >
-                    <Smartphone className="w-4 h-4 mr-2" />
+                    {isProcessing === `${plan.type}-pix` ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Smartphone className="w-4 h-4 mr-2" />}
                     {t("payment.payWithPix")}
                   </Button>
                 </div>
@@ -162,27 +184,19 @@ const PlanosPage = () => {
           <div className="grid md:grid-cols-2 gap-6">
             <div>
               <h4 className="font-semibold text-white mb-2">{t("plans.faqAccess")}</h4>
-              <p className="text-sm text-muted-foreground">
-                {t("plans.faqAccessAnswer")}
-              </p>
+              <p className="text-sm text-muted-foreground">{t("plans.faqAccessAnswer")}</p>
             </div>
             <div>
               <h4 className="font-semibold text-white mb-2">{t("plans.faqMobile")}</h4>
-              <p className="text-sm text-muted-foreground">
-                {t("plans.faqMobileAnswer")}
-              </p>
+              <p className="text-sm text-muted-foreground">{t("plans.faqMobileAnswer")}</p>
             </div>
             <div>
               <h4 className="font-semibold text-white mb-2">{t("plans.faqExpire")}</h4>
-              <p className="text-sm text-muted-foreground">
-                {t("plans.faqExpireAnswer")}
-              </p>
+              <p className="text-sm text-muted-foreground">{t("plans.faqExpireAnswer")}</p>
             </div>
             <div>
               <h4 className="font-semibold text-white mb-2">{t("plans.faqSupport")}</h4>
-              <p className="text-sm text-muted-foreground">
-                {t("plans.faqSupportAnswer")}
-              </p>
+              <p className="text-sm text-muted-foreground">{t("plans.faqSupportAnswer")}</p>
             </div>
           </div>
         </div>
@@ -191,57 +205,12 @@ const PlanosPage = () => {
         <div className="text-center text-sm text-muted-foreground mt-8">
           <p>
             {t("plans.questions")}{' '}
-            <a 
-              href="https://wa.me/5561996634944" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-primary hover:underline font-medium"
-            >
+            <a href="https://wa.me/5561996634944" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">
               WhatsApp (61) 99663-4944
             </a>
           </p>
         </div>
       </main>
-
-      {/* PIX Modal */}
-      {showPixModal && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <Card className="max-w-md w-full bg-card border-primary/30">
-            <CardContent className="p-6">
-              <h3 className="text-xl font-bold text-white mb-4 text-center">{t("plans.pixTitle")}</h3>
-              <div className="bg-secondary/50 rounded-lg p-4 mb-4">
-                <p className="text-sm text-muted-foreground mb-2">{t("pix.key")}</p>
-                <p className="text-primary font-mono break-all">62.333.509/0001-03</p>
-              </div>
-              <div className="bg-secondary/50 rounded-lg p-4 mb-4">
-                <p className="text-sm text-muted-foreground mb-2">{t("plans.pixValues")}</p>
-                <p className="text-lg text-white">{t("plans.pixFullAccess")} <span className="text-primary font-bold">R$ 197,00</span></p>
-                <p className="text-lg text-white">{t("plans.pixRenewal")} <span className="text-primary font-bold">R$ 99,90</span></p>
-              </div>
-              <div className="bg-primary/20 border border-primary/50 rounded-lg p-4 mb-4">
-                <p className="text-sm text-muted-foreground mb-2">{t("plans.pixAfterPayment")}</p>
-                <a 
-                  href="https://wa.me/5561996634944" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-primary font-bold text-lg hover:underline"
-                >
-                  WhatsApp (61) 99663-4944
-                </a>
-              </div>
-              <p className="text-sm text-muted-foreground mb-4 text-center">
-                {t("plans.pixInstructions")}
-              </p>
-              <Button 
-                onClick={() => setShowPixModal(false)}
-                className="w-full btn-gold"
-              >
-                {t("common.understood")}
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      )}
     </div>
   );
 };

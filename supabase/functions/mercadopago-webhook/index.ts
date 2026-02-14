@@ -7,7 +7,6 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
@@ -27,11 +26,9 @@ serve(async (req) => {
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
-    // Parse webhook notification
     const body = await req.json();
     console.log('Webhook received:', JSON.stringify(body, null, 2));
 
-    // Mercado Pago sends different types of notifications
     if (body.type !== 'payment' && body.action !== 'payment.created' && body.action !== 'payment.updated') {
       console.log('Ignoring non-payment notification:', body.type || body.action);
       return new Response(JSON.stringify({ received: true }), {
@@ -39,7 +36,6 @@ serve(async (req) => {
       });
     }
 
-    // Get payment ID from the notification
     const paymentId = body.data?.id;
     if (!paymentId) {
       console.log('No payment ID in notification');
@@ -48,7 +44,6 @@ serve(async (req) => {
       });
     }
 
-    // Fetch payment details from Mercado Pago
     console.log('Fetching payment details for ID:', paymentId);
     const paymentResponse = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
       headers: {
@@ -73,7 +68,7 @@ serve(async (req) => {
       });
     }
 
-    // Parse external reference to get user info
+    // Parse external reference
     let externalRef;
     try {
       externalRef = JSON.parse(payment.external_reference || '{}');
@@ -88,9 +83,20 @@ serve(async (req) => {
       throw new Error('Missing userId in payment reference');
     }
 
-    console.log(`Processing ${type} payment for user:`, userId);
+    // Detect real payment method from MP response
+    const paymentTypeId = payment.payment_type_id; // 'credit_card', 'debit_card', 'bank_transfer', 'ticket', etc.
+    const paymentMethodId = payment.payment_method_id; // 'pix', 'visa', 'master', etc.
+    
+    let method: 'pix' | 'cartao' | 'outro' = 'outro';
+    if (paymentMethodId === 'pix' || paymentTypeId === 'bank_transfer') {
+      method = 'pix';
+    } else if (['credit_card', 'debit_card', 'prepaid_card'].includes(paymentTypeId)) {
+      method = 'cartao';
+    }
 
-    // Get current profile to calculate new expiration date
+    console.log(`Processing ${type} payment for user: ${userId}, method: ${method}`);
+
+    // Get current profile
     const { data: profile, error: fetchError } = await supabase
       .from('profiles')
       .select('access_expires_at, has_paid')
@@ -106,14 +112,12 @@ serve(async (req) => {
     let newExpirationDate: Date;
     
     if (type === 'renewal' && profile.access_expires_at) {
-      // For renewals, add 1 year from current expiration (or now if already expired)
       const currentExpiration = new Date(profile.access_expires_at);
       const now = new Date();
       const baseDate = currentExpiration > now ? currentExpiration : now;
       newExpirationDate = new Date(baseDate);
       newExpirationDate.setFullYear(newExpirationDate.getFullYear() + 1);
     } else {
-      // For new purchases, add 1 year from now
       newExpirationDate = new Date();
       newExpirationDate.setFullYear(newExpirationDate.getFullYear() + 1);
     }
@@ -124,13 +128,31 @@ serve(async (req) => {
       .update({
         has_paid: true,
         access_expires_at: newExpirationDate.toISOString(),
-        payment_method: 'cartao',
+        payment_method: method,
       })
       .eq('id', userId);
 
     if (updateError) {
       console.error('Error updating profile:', updateError);
       throw new Error(`Failed to update profile: ${updateError.message}`);
+    }
+
+    // Upsert payment record for audit
+    const { error: paymentError } = await supabase
+      .from('payments')
+      .upsert({
+        user_id: userId,
+        mp_payment_id: String(paymentId),
+        status: payment.status,
+        method: method,
+        amount: payment.transaction_amount,
+        currency: payment.currency_id || 'BRL',
+        raw: payment,
+      }, { onConflict: 'mp_payment_id' });
+
+    if (paymentError) {
+      console.error('Error upserting payment record:', paymentError);
+      // Don't throw - profile is already updated
     }
 
     console.log(`Successfully updated user ${userId} with expiration: ${newExpirationDate.toISOString()}`);
@@ -140,6 +162,7 @@ serve(async (req) => {
         success: true, 
         userId, 
         type,
+        method,
         newExpiration: newExpirationDate.toISOString() 
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -147,7 +170,6 @@ serve(async (req) => {
   } catch (error: unknown) {
     console.error('Webhook processing error:', error);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    // Return 200 to acknowledge receipt (prevent retries for non-recoverable errors)
     return new Response(
       JSON.stringify({ success: false, error: errorMessage }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
