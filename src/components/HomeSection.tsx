@@ -6,37 +6,15 @@ interface HomeSectionProps {
   onNavigate: (section: string) => void;
 }
 
-const homeCardsEn = [
-  { desc: 'Jigoro Kano, Kodokan and origins', section: 'historia' },
-  { desc: 'Philosophy and moral code', section: 'principios' },
-  { desc: 'Conduct, bowing and dojo', section: 'etiqueta' },
-  { desc: 'Japanese terms', section: 'nomenclatura' },
-  { desc: '40 throwing techniques', section: 'gokyo' },
-  { desc: 'Ground techniques', section: 'katameWaza' },
-  { desc: 'Nage-no-Kata and Katame-no-Kata', section: 'katas' },
-  { desc: '15 techniques in 5 groups', section: 'nageNoKata' },
-  { desc: '15 techniques in 3 groups', section: 'katameNoKata' },
-  { desc: 'Uchi-komi, Randori and methods', section: 'treinos' },
-  { desc: 'Scoring and penalties', section: 'placar' },
-  { desc: 'Refereeing and scoring', section: 'regras' },
-  { desc: 'New IJF rules', section: 'regras2025' },
-  { desc: 'Federations and categories', section: 'organizacao' },
-  { desc: 'Pedagogy and kids belts', section: 'escolar' },
-  { desc: 'Emergencies on tatami', section: 'socorros' },
-  { desc: 'ASD, ADHD and adaptations', section: 'inclusivo' },
-  { desc: 'Demo playlist', section: 'videos' },
-];
-
 const HomeSection = ({ onNavigate }: HomeSectionProps) => {
   const { t, language } = useLanguage();
 
   const cards = homeCards.map((card) => {
     const sectionData = sections.find(s => s.id === card.section);
-    const enData = homeCardsEn.find(e => e.section === card.section);
     return {
       ...card,
       title: language === 'en' && sectionData ? sectionData.labelEn : card.title,
-      desc: language === 'en' && enData ? enData.desc : card.desc,
+      desc: language === 'en' ? card.descEn : card.desc,
     };
   });
 
