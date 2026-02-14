@@ -38,8 +38,9 @@ const SearchBar = ({ onNavigate }: SearchBarProps) => {
   };
 
   const getSectionLabel = (id: string) => {
-    // This is simplified, for full i18n we'd need to translate sections list too
-    return sections.find((s) => s.id === id)?.label || id;
+    const s = sections.find((sec) => sec.id === id);
+    if (!s) return id;
+    return language === 'en' ? s.labelEn : s.label;
   };
 
   const placeholder = language === 'en' 

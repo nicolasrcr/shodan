@@ -7,14 +7,16 @@ interface ComingSoonSectionProps {
 }
 
 const ComingSoonSection = ({ section, onNavigate }: ComingSoonSectionProps) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const sectionInfo = sections.find(s => s.id === section);
+
+  const getLabel = (s: typeof sections[0]) => language === 'en' ? s.labelEn : s.label;
   
   return (
     <div className="animate-fade-in">
       <h2 className="section-title">
         <span className="section-title-icon">{sectionInfo?.icon || '📖'}</span>
-        {sectionInfo?.label || 'Seção'}
+        {sectionInfo ? getLabel(sectionInfo) : 'Seção'}
       </h2>
 
       <div className="card-judo text-center py-16">
@@ -23,7 +25,7 @@ const ComingSoonSection = ({ section, onNavigate }: ComingSoonSectionProps) => {
           {t("comingSoon.title")}
         </h3>
         <p className="text-muted-foreground mb-8 max-w-md mx-auto">
-          {t("comingSoon.description")} {sectionInfo?.label?.toLowerCase()}.
+          {t("comingSoon.description")} {sectionInfo ? getLabel(sectionInfo).toLowerCase() : ''}.
           {t("comingSoon.backSoon")}
         </p>
         <button 
@@ -40,16 +42,16 @@ const ComingSoonSection = ({ section, onNavigate }: ComingSoonSectionProps) => {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {['historia', 'principios', 'etiqueta', 'gokyo', 'katameWaza', 'regras'].map((id) => {
             const s = sections.find(sec => sec.id === id);
-            return (
+            return s ? (
               <button
                 key={id}
                 onClick={() => onNavigate(id)}
                 className="p-4 bg-card border border-primary/20 rounded-xl text-left hover:border-primary/50 transition-colors group"
               >
-                <span className="text-2xl font-serif text-primary block mb-2">{s?.icon}</span>
-                <span className="text-sm text-foreground group-hover:text-primary transition-colors">{s?.label}</span>
+                <span className="text-2xl font-serif text-primary block mb-2">{s.icon}</span>
+                <span className="text-sm text-foreground group-hover:text-primary transition-colors">{getLabel(s)}</span>
               </button>
-            );
+            ) : null;
           })}
         </div>
       </div>
