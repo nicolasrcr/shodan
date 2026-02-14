@@ -1,4 +1,4 @@
-import { homeCards } from "@/data/judoData";
+import { homeCards, sections } from "@/data/judoData";
 import SearchBar from "./SearchBar";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -6,34 +6,39 @@ interface HomeSectionProps {
   onNavigate: (section: string) => void;
 }
 
+const homeCardsEn = [
+  { desc: 'Jigoro Kano, Kodokan and origins', section: 'historia' },
+  { desc: 'Philosophy and moral code', section: 'principios' },
+  { desc: 'Conduct, bowing and dojo', section: 'etiqueta' },
+  { desc: 'Japanese terms', section: 'nomenclatura' },
+  { desc: '40 throwing techniques', section: 'gokyo' },
+  { desc: 'Ground techniques', section: 'katameWaza' },
+  { desc: 'Nage-no-Kata and Katame-no-Kata', section: 'katas' },
+  { desc: '15 techniques in 5 groups', section: 'nageNoKata' },
+  { desc: '15 techniques in 3 groups', section: 'katameNoKata' },
+  { desc: 'Uchi-komi, Randori and methods', section: 'treinos' },
+  { desc: 'Scoring and penalties', section: 'placar' },
+  { desc: 'Refereeing and scoring', section: 'regras' },
+  { desc: 'New IJF rules', section: 'regras2025' },
+  { desc: 'Federations and categories', section: 'organizacao' },
+  { desc: 'Pedagogy and kids belts', section: 'escolar' },
+  { desc: 'Emergencies on tatami', section: 'socorros' },
+  { desc: 'ASD, ADHD and adaptations', section: 'inclusivo' },
+  { desc: 'Demo playlist', section: 'videos' },
+];
+
 const HomeSection = ({ onNavigate }: HomeSectionProps) => {
   const { t, language } = useLanguage();
 
-  const translatedCards = {
-    pt: homeCards,
-    en: [
-      { title: 'History', desc: 'Jigoro Kano, Kodokan and origins', icon: '史', section: 'historia' },
-      { title: 'Principles', desc: 'Philosophy and moral code', icon: '心', section: 'principios' },
-      { title: 'Etiquette', desc: 'Conduct, bowing and dojo', icon: '礼', section: 'etiqueta' },
-      { title: 'Nomenclature', desc: 'Japanese terms', icon: '言', section: 'nomenclatura' },
-      { title: 'Gokyo', desc: '40 throwing techniques', icon: '投', section: 'gokyo' },
-      { title: 'Katame-Waza', desc: 'Ground techniques', icon: '固', section: 'katameWaza' },
-      { title: 'Katas', desc: 'Nage-no-Kata and Katame-no-Kata', icon: '形', section: 'katas' },
-      { title: 'Nage no Kata', desc: '15 techniques in 5 groups', icon: '投形', section: 'nageNoKata' },
-      { title: 'Katame no Kata', desc: '15 techniques in 3 groups', icon: '固形', section: 'katameNoKata' },
-      { title: 'Training', desc: 'Uchi-komi, Randori and methods', icon: '練', section: 'treinos' },
-      { title: 'Scoreboard', desc: 'Scoring and penalties', icon: '🏆', section: 'placar' },
-      { title: 'Rules', desc: 'Refereeing and scoring', icon: '則', section: 'regras' },
-      { title: '2025 Rules', desc: 'New IJF rules', icon: '新', section: 'regras2025' },
-      { title: 'Organization', desc: 'Federations and categories', icon: '🏟️', section: 'organizacao' },
-      { title: 'School Judo', desc: 'Pedagogy and kids belts', icon: '🎓', section: 'escolar' },
-      { title: 'First Aid', desc: 'Emergencies on tatami', icon: '🚑', section: 'socorros' },
-      { title: 'Inclusive', desc: 'ASD, ADHD and adaptations', icon: '♿', section: 'inclusivo' },
-      { title: 'Videos', desc: 'Demo playlist', icon: '映', section: 'videos' },
-    ]
-  };
-
-  const cards = language === 'en' ? translatedCards.en : translatedCards.pt;
+  const cards = homeCards.map((card) => {
+    const sectionData = sections.find(s => s.id === card.section);
+    const enData = homeCardsEn.find(e => e.section === card.section);
+    return {
+      ...card,
+      title: language === 'en' && sectionData ? sectionData.labelEn : card.title,
+      desc: language === 'en' && enData ? enData.desc : card.desc,
+    };
+  });
 
   return (
     <div className="animate-fade-in">
