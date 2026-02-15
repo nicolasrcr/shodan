@@ -11,8 +11,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from '@/hooks/use-toast';
-import { Users, Shield, Search, CheckCircle, XCircle, LogOut, RefreshCw, RotateCcw, CreditCard, QrCode, TrendingUp, Receipt } from 'lucide-react';
+import { Users, Shield, Search, CheckCircle, XCircle, LogOut, RefreshCw, RotateCcw, CreditCard, QrCode, TrendingUp, Receipt, ShieldAlert } from 'lucide-react';
 import StatCard from '@/components/admin/StatCard';
+import AdminSecurityTab from '@/components/admin/AdminSecurityTab';
 import LanguageToggle from '@/components/LanguageToggle';
 
 type PaymentMethod = 'pix' | 'cartao' | 'outro' | null;
@@ -192,6 +193,7 @@ const AdminPage = () => {
           <TabsList>
             <TabsTrigger value="users" className="gap-2"><Users className="h-4 w-4" />{language === 'pt' ? 'Usuários' : 'Users'}</TabsTrigger>
             <TabsTrigger value="payments" className="gap-2"><Receipt className="h-4 w-4" />{language === 'pt' ? 'Pagamentos' : 'Payments'}</TabsTrigger>
+            <TabsTrigger value="security" className="gap-2"><ShieldAlert className="h-4 w-4" />{language === 'pt' ? 'Segurança' : 'Security'}</TabsTrigger>
           </TabsList>
 
           {/* Users Tab */}
@@ -349,6 +351,11 @@ const AdminPage = () => {
                 )}
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Security Tab */}
+          <TabsContent value="security">
+            <AdminSecurityTab language={language} users={users.map(u => ({ id: u.id, name: u.name, email: u.email }))} />
           </TabsContent>
         </Tabs>
 

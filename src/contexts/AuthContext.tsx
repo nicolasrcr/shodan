@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import { logLoginEvent } from '@/services/security';
 
 interface UserProfile {
   id: string;
@@ -117,10 +118,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email: normalizeEmail(email),
       password
     });
+
+    if (!error && data.user) {
+      // Log login event for audit trail (fire-and-forget)
+      logLoginEvent(data.user.id).catch(console.error);
+    }
 
     return { error };
   };

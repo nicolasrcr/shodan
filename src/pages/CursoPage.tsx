@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCourseProgress } from "@/hooks/useCourseProgress";
+import { useUserSecurity } from "@/hooks/useUserSecurity";
 import { isAccessActive, getExpirationDate } from "@/lib/access";
 import Navigation from "@/components/Navigation";
 import HomeSection from "@/components/HomeSection";
@@ -40,12 +41,19 @@ const CursoPage = () => {
   const { t, language } = useLanguage();
   const [activeSection, setActiveSection] = useState("home");
   const { markSeen, toggleCompleted, getLastSeenSection, progressStats, isSectionCompleted } = useCourseProgress();
+  const { isBlocked, loading: secLoading } = useUserSecurity();
 
   useEffect(() => {
     if (!loading && !user) {
       navigate('/login');
     }
   }, [user, loading, navigate]);
+
+  useEffect(() => {
+    if (!secLoading && isBlocked) {
+      signOut().then(() => navigate('/blocked'));
+    }
+  }, [secLoading, isBlocked]);
 
   const handleNavigate = (section: string) => {
     setActiveSection(section);

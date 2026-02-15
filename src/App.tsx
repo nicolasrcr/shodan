@@ -16,6 +16,7 @@ import PaymentFailure from "./pages/PaymentFailure";
 import AccountPage from "./pages/AccountPage";
 import SimuladoPage from "./pages/SimuladoPage";
 import PerformancePage from "./pages/PerformancePage";
+import BlockedPage from "./pages/BlockedPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -43,6 +44,7 @@ const App = () => (
               <Route path="/desempenho" element={<PerformancePage />} />
               <Route path="/payment-success" element={<PaymentSuccess />} />
               <Route path="/payment-failure" element={<PaymentFailure />} />
+              <Route path="/blocked" element={<BlockedPage />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
