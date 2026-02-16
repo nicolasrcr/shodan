@@ -203,6 +203,7 @@ export type Database = {
           blocked_by: string | null
           blocked_reason: string | null
           is_blocked: boolean
+          must_reset_password: boolean
           updated_at: string
           user_id: string
         }
@@ -211,6 +212,7 @@ export type Database = {
           blocked_by?: string | null
           blocked_reason?: string | null
           is_blocked?: boolean
+          must_reset_password?: boolean
           updated_at?: string
           user_id: string
         }
@@ -219,7 +221,47 @@ export type Database = {
           blocked_by?: string | null
           blocked_reason?: string | null
           is_blocked?: boolean
+          must_reset_password?: boolean
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_sessions: {
+        Row: {
+          created_at: string
+          device_hash: string | null
+          id: string
+          ip: string | null
+          last_seen_at: string
+          revoke_reason: string | null
+          revoked_at: string | null
+          session_id: string
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          device_hash?: string | null
+          id?: string
+          ip?: string | null
+          last_seen_at?: string
+          revoke_reason?: string | null
+          revoked_at?: string | null
+          session_id: string
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          device_hash?: string | null
+          id?: string
+          ip?: string | null
+          last_seen_at?: string
+          revoke_reason?: string | null
+          revoked_at?: string | null
+          session_id?: string
+          user_agent?: string | null
           user_id?: string
         }
         Relationships: []
@@ -232,6 +274,16 @@ export type Database = {
           ips_24h: number | null
           last_login_at: string | null
           total_logins_24h: number | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
+      user_login_metrics_24h: {
+        Row: {
+          devices_24h: number | null
+          ips_24h: number | null
+          last_login_at: string | null
+          logins_24h: number | null
           user_id: string | null
         }
         Relationships: []

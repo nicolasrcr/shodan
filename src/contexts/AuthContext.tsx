@@ -1,7 +1,8 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, useRef, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
-import { logLoginEvent } from '@/services/security';
+import { registerLogin, clearSessionId } from '@/services/security';
+import { toast } from '@/hooks/use-toast';
 
 interface UserProfile {
   id: string;
@@ -31,6 +32,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  const heartbeatRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const normalizeEmail = (email: string) => email.trim().toLowerCase();
 
@@ -55,15 +57,49 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  // Heartbeat: detect concurrent sessions and force logout
   useEffect(() => {
-    // Set up auth state listener FIRST
+    if (heartbeatRef.current) {
+      clearInterval(heartbeatRef.current);
+      heartbeatRef.current = null;
+    }
+
+    if (!user) return;
+
+    heartbeatRef.current = setInterval(async () => {
+      try {
+        const res = await registerLogin("heartbeat");
+        if (res?.force_logout) {
+          clearSessionId();
+          await supabase.auth.signOut();
+          toast({
+            title: "Você foi desconectado",
+            description: res.blocked
+              ? (res.block_reason || "Sua conta foi bloqueada por segurança.")
+              : "Sua conta está ativa em outro dispositivo.",
+            variant: "destructive",
+          });
+        }
+      } catch (e) {
+        console.error("heartbeat error", e);
+      }
+    }, 60_000); // every 60s
+
+    return () => {
+      if (heartbeatRef.current) {
+        clearInterval(heartbeatRef.current);
+        heartbeatRef.current = null;
+      }
+    };
+  }, [user?.id]);
+
+  useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
         
         if (session?.user) {
-          // Use setTimeout to avoid potential deadlock with Supabase auth
           setTimeout(async () => {
             const profileData = await fetchProfile(session.user.id);
             setProfile(profileData);
@@ -76,7 +112,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     );
 
-    // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
@@ -113,7 +148,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return { error };
     }
 
-    // Profile is now created automatically by database trigger
     return { error: null };
   };
 
@@ -123,15 +157,60 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       password
     });
 
-    if (!error && data.user) {
-      // Log login event for audit trail (fire-and-forget)
-      logLoginEvent(data.user.id).catch(console.error);
+    if (error) return { error };
+
+    // Register login via edge function (captures IP, manages sessions)
+    try {
+      const res = await registerLogin("login");
+      if (res?.force_logout) {
+        clearSessionId();
+        await supabase.auth.signOut();
+        toast({
+          title: res.blocked ? "Acesso bloqueado" : "Sessão encerrada",
+          description: res.blocked
+            ? (res.block_reason || "Sua conta foi bloqueada por segurança.")
+            : "Detectamos uso da conta em outro dispositivo.",
+          variant: "destructive",
+        });
+        return { error: new Error(res.blocked ? "Conta bloqueada" : "Sessão encerrada") };
+      }
+    } catch (e) {
+      console.error("registerLogin failed", e);
     }
 
-    return { error };
+    // Check if user is blocked
+    if (data.user) {
+      const { data: sec } = await supabase
+        .from("user_security")
+        .select("is_blocked, blocked_reason, must_reset_password")
+        .eq("user_id", data.user.id)
+        .maybeSingle();
+
+      if (sec?.is_blocked) {
+        await supabase.auth.signOut();
+        toast({
+          title: "Acesso bloqueado",
+          description: sec.blocked_reason || "Sua conta foi bloqueada por segurança.",
+          variant: "destructive",
+        });
+        return { error: new Error("Conta bloqueada") };
+      }
+
+      if (sec?.must_reset_password) {
+        toast({
+          title: "Segurança",
+          description: "Detectamos atividade incomum. Troque sua senha para continuar.",
+          variant: "destructive",
+        });
+        // User will be redirected to password page by the calling component
+      }
+    }
+
+    return { error: null };
   };
 
   const signOut = async () => {
+    clearSessionId();
     await supabase.auth.signOut();
     setUser(null);
     setSession(null);
