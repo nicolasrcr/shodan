@@ -17,6 +17,21 @@ function getIp(req: Request) {
   );
 }
 
+async function getGeoFromIp(ip: string | null): Promise<{ city: string | null; country: string | null }> {
+  if (!ip) return { city: null, country: null };
+  try {
+    // ip-api.com: free, no key needed, 45 req/min limit (plenty for logins)
+    const res = await fetch(`http://ip-api.com/json/${ip}?fields=status,city,country`);
+    const data = await res.json();
+    if (data.status === "success") {
+      return { city: data.city || null, country: data.country || null };
+    }
+  } catch (e) {
+    console.error("Geo-IP lookup failed:", e);
+  }
+  return { city: null, country: null };
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -62,13 +77,16 @@ serve(async (req) => {
     const ip = getIp(req);
     const user_agent = req.headers.get("user-agent");
 
-    // (A) Register login event (only on login, not heartbeat)
+    // (A) Register login event with geo-IP (only on login, not heartbeat)
     if (kind === "login") {
+      const geo = await getGeoFromIp(ip);
       await supabase.from("auth_login_events").insert({
         user_id: userId,
         ip,
         user_agent,
         device_hash,
+        city: geo.city,
+        country: geo.country,
       });
     }
 
