@@ -26,6 +26,8 @@ interface LoginEvent {
   ip: string | null;
   user_agent: string | null;
   device_hash: string | null;
+  city: string | null;
+  country: string | null;
 }
 
 interface SecurityStatus {
@@ -264,6 +266,7 @@ export default function AdminSecurityTab({ language, users }: { language: string
                   <TableHeader>
                     <TableRow>
                       <TableHead><Clock className="h-4 w-4 inline mr-1" />{language === 'pt' ? 'Data/Hora' : 'Date/Time'}</TableHead>
+                      <TableHead>{language === 'pt' ? 'Localização' : 'Location'}</TableHead>
                       <TableHead>Device Hash</TableHead>
                       <TableHead>User Agent</TableHead>
                       <TableHead>IP</TableHead>
@@ -273,6 +276,7 @@ export default function AdminSecurityTab({ language, users }: { language: string
                     {loginEvents.map(ev => (
                       <TableRow key={ev.id}>
                         <TableCell className="text-sm whitespace-nowrap">{formatDate(ev.created_at)}</TableCell>
+                        <TableCell className="text-sm">{[ev.city, ev.country].filter(Boolean).join(', ') || '-'}</TableCell>
                         <TableCell className="font-mono text-xs">{shortHash(ev.device_hash)}</TableCell>
                         <TableCell className="text-xs text-muted-foreground max-w-[200px] truncate">{ev.user_agent || '-'}</TableCell>
                         <TableCell className="text-sm">{ev.ip || '-'}</TableCell>
