@@ -255,10 +255,10 @@ const VideosSection = () => {
 
   // === Ukemi (Técnicas de Queda) ===
   const ukemiVideos: VideoItem[] = [
-    { name: "Ushiro-ukemi", id: "u4oHFVznIVY", category: "ukemi" },
-    { name: "Yoko-ukemi", id: "KJFr5FINMIM", category: "ukemi" },
-    { name: "Mae-ukemi", id: "ukSj8JM8cvI", category: "ukemi" },
-    { name: "Zenpo-kaiten-ukemi", id: "BvFpMr1Insw", category: "ukemi" },
+    { name: "Ushiro-ukemi", id: "VoktcQAxEPg&t=21s", category: "ukemi" },
+    { name: "Yoko-ukemi", id: "VoktcQAxEPg&t=55s", category: "ukemi" },
+    { name: "Mae-ukemi", id: "VoktcQAxEPg&t=1m31s", category: "ukemi" },
+    { name: "Mae-mawari-ukemi", id: "VoktcQAxEPg&t=1m43s", category: "ukemi" },
     { name: "Ukemi Completo", id: "VoktcQAxEPg", category: "ukemi" },
   ];
 
