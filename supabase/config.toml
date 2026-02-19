@@ -11,3 +11,6 @@ verify_jwt = false
 
 [functions.log-login]
 verify_jwt = false
+
+[functions.notify-session-revoked]
+verify_jwt = false
