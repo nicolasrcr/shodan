@@ -45,6 +45,16 @@ export default function AdminSessionsPanel({ userId, language }: Props) {
 
   useEffect(() => { fetchSessions(); }, [userId]);
 
+  const sendRevocationNotification = async (targetUserId: string, revokedAll: boolean, reason?: string) => {
+    try {
+      await supabase.functions.invoke('notify-session-revoked', {
+        body: { userId: targetUserId, reason, revokedAll },
+      });
+    } catch (e) {
+      console.error('Failed to send revocation email:', e);
+    }
+  };
+
   const handleRevoke = async (sessionId: string, dbId: string) => {
     setRevokingId(dbId);
     const { error } = await supabase
@@ -59,6 +69,7 @@ export default function AdminSessionsPanel({ userId, language }: Props) {
       toast({ title: 'Erro', description: language === 'pt' ? 'Falha ao revogar sessão' : 'Failed to revoke session', variant: 'destructive' });
     } else {
       toast({ title: language === 'pt' ? 'Sessão revogada' : 'Session revoked' });
+      sendRevocationNotification(userId, false, 'Revogado pelo admin');
       fetchSessions();
     }
     setRevokingId(null);
@@ -79,6 +90,7 @@ export default function AdminSessionsPanel({ userId, language }: Props) {
       toast({ title: 'Erro', description: language === 'pt' ? 'Falha ao revogar sessões' : 'Failed to revoke sessions', variant: 'destructive' });
     } else {
       toast({ title: language === 'pt' ? 'Todas as sessões revogadas' : 'All sessions revoked' });
+      sendRevocationNotification(userId, true, 'Todas revogadas pelo admin');
       fetchSessions();
     }
     setRevokingId(null);
