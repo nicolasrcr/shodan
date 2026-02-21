@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { toast } from '@/hooks/use-toast';
-import { Wifi, WifiOff, RefreshCw, Trash2 } from 'lucide-react';
+import { Wifi, WifiOff, RefreshCw, Trash2, AlertTriangle } from 'lucide-react';
 
 interface UserSession {
   id: string;
@@ -99,6 +99,11 @@ export default function AdminSessionsPanel({ userId, language }: Props) {
   const formatDate = (d: string) => new Date(d).toLocaleString(language === 'pt' ? 'pt-BR' : 'en-US');
   const shortHash = (h: string | null) => h ? h.slice(0, 12) + '…' : '-';
   const activeSessions = sessions.filter(s => !s.revoked_at);
+  const hasConcurrent = activeSessions.length > 1;
+
+  // Count unique IPs and devices among active sessions
+  const uniqueIps = new Set(activeSessions.map(s => s.ip).filter(Boolean)).size;
+  const uniqueDevices = new Set(activeSessions.map(s => s.device_hash).filter(Boolean)).size;
 
   return (
     <Card className="border-primary/20 bg-card/50 mt-4">
@@ -108,6 +113,12 @@ export default function AdminSessionsPanel({ userId, language }: Props) {
             <Wifi className="h-5 w-5 text-primary" />
             {language === 'pt' ? 'Sessões' : 'Sessions'}
             <Badge variant="secondary" className="ml-1">{activeSessions.length} {language === 'pt' ? 'ativas' : 'active'}</Badge>
+            {hasConcurrent && (
+              <Badge variant="destructive" className="ml-1 flex items-center gap-1">
+                <AlertTriangle className="h-3 w-3" />
+                {language === 'pt' ? 'Simultâneas!' : 'Concurrent!'}
+              </Badge>
+            )}
           </CardTitle>
           <div className="flex gap-2">
             {activeSessions.length > 0 && (
@@ -123,6 +134,19 @@ export default function AdminSessionsPanel({ userId, language }: Props) {
         </div>
       </CardHeader>
       <CardContent>
+        {hasConcurrent && (
+          <div className="mb-4 p-3 rounded-lg bg-destructive/10 border border-destructive/30 text-sm">
+            <div className="flex items-center gap-2 font-semibold text-destructive mb-1">
+              <AlertTriangle className="h-4 w-4" />
+              {language === 'pt' ? 'Sessões simultâneas detectadas' : 'Concurrent sessions detected'}
+            </div>
+            <p className="text-muted-foreground">
+              {language === 'pt'
+                ? `${activeSessions.length} sessões ativas • ${uniqueIps} IP(s) distintos • ${uniqueDevices} dispositivo(s) distinto(s)`
+                : `${activeSessions.length} active sessions • ${uniqueIps} unique IP(s) • ${uniqueDevices} unique device(s)`}
+            </p>
+          </div>
+        )}
         {loading ? (
           <div className="text-center py-4">
             <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-primary mx-auto" />
