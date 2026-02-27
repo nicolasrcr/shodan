@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { gokyoData, extraGokyoData } from "@/data/judoData";
+import { extraGokyoDataEn } from "@/data/judoDataEn";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/contexts/LanguageContext";
