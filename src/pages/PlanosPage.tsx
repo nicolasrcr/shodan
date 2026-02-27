@@ -26,9 +26,6 @@ const PlanosPage = () => {
       const { data, error } = await supabase.functions.invoke('mercadopago-checkout', {
         body: {
           type,
-          userId: user.id,
-          userEmail: profile.email,
-          userName: profile.name,
           preferredMethod: method,
         },
       });

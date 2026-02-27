@@ -39,9 +39,6 @@ const AccessExpired = ({ expirationDate }: AccessExpiredProps) => {
       const { data, error } = await supabase.functions.invoke('mercadopago-checkout', {
         body: {
           type: 'renewal',
-          userId: user.id,
-          userEmail: profile.email,
-          userName: profile.name,
           preferredMethod: method,
         },
       });

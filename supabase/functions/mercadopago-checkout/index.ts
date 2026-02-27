@@ -1,17 +1,10 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
-
-interface CheckoutRequest {
-  type: 'new' | 'renewal';
-  userId: string;
-  userEmail: string;
-  userName: string;
-  preferredMethod?: 'pix' | 'cartao';
-}
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -19,16 +12,51 @@ serve(async (req) => {
   }
 
   try {
+    // Validate JWT
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader?.startsWith('Bearer ')) {
+      throw new Error('Unauthorized');
+    }
+
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+      global: { headers: { Authorization: authHeader } },
+    });
+
+    const token = authHeader.replace('Bearer ', '');
+    const { data: claimsData, error: claimsError } = await supabase.auth.getClaims(token);
+    if (claimsError || !claimsData?.claims?.sub) {
+      throw new Error('Invalid token');
+    }
+
+    const authenticatedUserId = claimsData.claims.sub as string;
+
+    // Fetch user profile server-side (never trust client data for payments)
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('email, name')
+      .eq('id', authenticatedUserId)
+      .single();
+
+    if (profileError || !profile) {
+      throw new Error('User not found');
+    }
+
     const MERCADO_PAGO_ACCESS_TOKEN = Deno.env.get('MERCADO_PAGO_ACCESS_TOKEN');
     if (!MERCADO_PAGO_ACCESS_TOKEN) {
       throw new Error('MERCADO_PAGO_ACCESS_TOKEN is not configured');
     }
 
-    const { type, userId, userEmail, userName, preferredMethod }: CheckoutRequest = await req.json();
+    const { type, preferredMethod }: { type: 'new' | 'renewal'; preferredMethod?: 'pix' | 'cartao' } = await req.json();
 
-    if (!type || !userId || !userEmail) {
-      throw new Error('Missing required fields: type, userId, userEmail');
+    if (!type) {
+      throw new Error('Missing required field: type');
     }
+
+    const userId = authenticatedUserId;
+    const userEmail = profile.email;
+    const userName = profile.name;
 
     const isRenewal = type === 'renewal';
     const price = isRenewal ? 99.90 : 197.00;
@@ -39,7 +67,6 @@ serve(async (req) => {
       ? 'Renovação do acesso ao curso por mais 12 meses'
       : 'Acesso completo ao curso preparatório para o Exame Shodan por 12 meses';
 
-    const supabaseUrl = Deno.env.get('SUPABASE_URL') || '';
     const projectId = supabaseUrl.match(/https:\/\/([^.]+)/)?.[1] || '';
     const webhookUrl = `https://${projectId}.supabase.co/functions/v1/mercadopago-webhook`;
     
@@ -48,19 +75,16 @@ serve(async (req) => {
     const failureUrl = `${siteUrl}/payment-failure`;
     const pendingUrl = `${siteUrl}/curso`;
 
-    // Build excluded payment methods based on preference
     const excludedPaymentMethods: { id: string }[] = [];
     const excludedPaymentTypes: { id: string }[] = [];
     
     if (preferredMethod === 'pix') {
-      // When PIX preferred, exclude card types but keep PIX available
       excludedPaymentTypes.push(
         { id: 'credit_card' },
         { id: 'debit_card' },
         { id: 'prepaid_card' }
       );
     } else if (preferredMethod === 'cartao') {
-      // When card preferred, exclude bank transfer/PIX
       excludedPaymentTypes.push(
         { id: 'bank_transfer' },
         { id: 'ticket' }
@@ -100,7 +124,7 @@ serve(async (req) => {
       expiration_date_to: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
     };
 
-    console.log('Creating Mercado Pago preference:', JSON.stringify(preferenceData, null, 2));
+    console.log('Creating Mercado Pago preference for user:', userId);
 
     const mpResponse = await fetch('https://api.mercadopago.com/checkout/preferences', {
       method: 'POST',
@@ -132,9 +156,10 @@ serve(async (req) => {
   } catch (error: unknown) {
     console.error('Error creating checkout:', error);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const status = errorMessage === 'Unauthorized' || errorMessage === 'Invalid token' ? 401 : 500;
     return new Response(
       JSON.stringify({ success: false, error: errorMessage }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      { status, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
 });
