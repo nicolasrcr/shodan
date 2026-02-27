@@ -137,6 +137,48 @@ const flashcardsData: Record<string, { title: string; icon: string; cards: Flash
       { front: 'Yoko-gake', back: 'Gancho lateral (Gokyo)', category: 'gokyo' },
     ]
   },
+  habukareta: {
+    title: 'Habukareta-Waza (Excluídas)',
+    icon: '古',
+    cards: [
+      { front: 'Obi-Otoshi (帯落)', back: 'Queda pela faixa — Te-waza (3º Grupo original)', category: 'habukareta' },
+      { front: 'Hikikomi-Gaeshi (引込返)', back: 'Virada puxando — Ma-sutemi (4º Grupo original)', category: 'habukareta' },
+      { front: 'O-Soto-Otoshi (大外落)', back: 'Grande queda externa — Ashi-waza (4º Grupo original)', category: 'habukareta' },
+      { front: 'Daki-Wakare (抱分)', back: 'Separação abraçando — Yoko-sutemi (4º Grupo original)', category: 'habukareta' },
+      { front: 'Tawara-Gaeshi (俵返)', back: 'Virada do saco de arroz — Ma-sutemi (4º Grupo original)', category: 'habukareta' },
+      { front: 'Seoi-Otoshi (背負落)', back: 'Queda pelas costas — Te-waza (5º Grupo original)', category: 'habukareta' },
+      { front: 'Uchi-Makikomi (内巻込)', back: 'Enrolamento interno — Yoko-sutemi (5º Grupo original)', category: 'habukareta' },
+      { front: 'Yama-Arashi (山嵐)', back: 'Tempestade na montanha — Te-waza (5º Grupo original)', category: 'habukareta' },
+    ]
+  },
+  shinmeisho: {
+    title: 'Shinmeisho-no-Waza (Novos Nomes)',
+    icon: '新',
+    cards: [
+      { front: 'Morote-Gari (双手刈)', back: 'Ceifada com duas mãos — Te-waza', category: 'shinmeisho' },
+      { front: 'Kuchiki-Taoshi (朽木倒)', back: 'Derrubar árvore seca — Te-waza', category: 'shinmeisho' },
+      { front: 'Kibisu-Gaeshi (踵返)', back: 'Virada pelo calcanhar — Te-waza', category: 'shinmeisho' },
+      { front: 'Uchi-Mata-Sukashi (内股透)', back: 'Esquiva do Uchi-mata — Ashi-waza', category: 'shinmeisho' },
+      { front: 'Ko-Uchi-Gaeshi (小内返)', back: 'Contra do Ko-uchi — Ashi-waza', category: 'shinmeisho' },
+      { front: 'Obi-Tori-Gaeshi (帯取返)', back: 'Virada agarrando a faixa — Te-waza', category: 'shinmeisho' },
+      { front: 'Sode-Tsurikomi-Goshi (袖釣込腰)', back: 'Quadril puxando pela manga — Koshi-waza', category: 'shinmeisho' },
+      { front: 'Ippon-Seoi-Nage (一本背負投)', back: 'Projeção por um braço — Te-waza', category: 'shinmeisho' },
+      { front: 'Tsubame-Gaeshi (燕返)', back: 'Contra da andorinha — Ashi-waza', category: 'shinmeisho' },
+      { front: 'O-Soto-Gaeshi (大外返)', back: 'Contra do O-soto — Ashi-waza', category: 'shinmeisho' },
+      { front: 'O-Uchi-Gaeshi (大内返)', back: 'Contra do O-uchi — Ashi-waza', category: 'shinmeisho' },
+      { front: 'Hane-Goshi-Gaeshi (跳腰返)', back: 'Contra do Hane-goshi — Ashi-waza', category: 'shinmeisho' },
+      { front: 'Harai-Goshi-Gaeshi (払腰返)', back: 'Contra do Harai-goshi — Ashi-waza', category: 'shinmeisho' },
+      { front: 'Uchi-Mata-Gaeshi (内股返)', back: 'Contra do Uchi-mata — Ashi-waza', category: 'shinmeisho' },
+      { front: 'Kani-Basami (蟹挟)', back: 'Tesoura de caranguejo — Yoko-sutemi', category: 'shinmeisho' },
+      { front: 'Kawazu-Gake (河津掛)', back: 'Gancho Kawazu — Yoko-sutemi', category: 'shinmeisho' },
+      { front: 'O-Soto-Makikomi (大外巻込)', back: 'Enrolamento externo grande — Yoko-sutemi', category: 'shinmeisho' },
+      { front: 'Uchi-Mata-Makikomi (内股巻込)', back: 'Enrolamento do Uchi-mata — Yoko-sutemi', category: 'shinmeisho' },
+      { front: 'Harai-Makikomi (払巻込)', back: 'Enrolamento varrendo — Yoko-sutemi', category: 'shinmeisho' },
+      { front: 'Ko-Uchi-Makikomi (小内巻込)', back: 'Enrolamento interno pequeno — Yoko-sutemi', category: 'shinmeisho' },
+      { front: 'Uki-Gatame (浮固)', back: 'Imobilização flutuante — Osaekomi-waza', category: 'shinmeisho' },
+      { front: 'Ura-Gatame (裏固)', back: 'Imobilização por trás — Osaekomi-waza', category: 'shinmeisho' },
+    ]
+  },
   katame: {
     title: 'Katame-Waza - Técnicas de Solo',
     icon: '固',
