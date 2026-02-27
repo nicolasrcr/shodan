@@ -22,13 +22,13 @@ export const useAdminCheck = () => {
           .rpc('has_role', { _user_id: user.id, _role: 'admin' as 'admin' | 'moderator' | 'user' });
 
         if (error) {
-          console.error('Error checking admin role:', error);
+          if (import.meta.env.DEV) console.error('Error checking admin role:', error);
           setIsAdmin(false);
         } else {
           setIsAdmin(data === true);
         }
       } catch (err) {
-        console.error('Error checking admin role:', err);
+        if (import.meta.env.DEV) console.error('Error checking admin role:', err);
         setIsAdmin(false);
       }
 

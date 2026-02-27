@@ -69,18 +69,40 @@ serve(async (req) => {
     }
 
     // Parse external reference
-    let externalRef;
+    let externalRef: { userId?: unknown; type?: unknown };
     try {
       externalRef = JSON.parse(payment.external_reference || '{}');
     } catch (e) {
       console.error('Error parsing external_reference:', e);
-      throw new Error('Invalid external_reference format');
+      return new Response(JSON.stringify({ received: true, error: 'Invalid format' }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
 
     const { userId, type } = externalRef;
-    if (!userId) {
-      console.error('No userId in external_reference');
-      throw new Error('Missing userId in payment reference');
+
+    // Validate userId is a valid UUID
+    if (!userId || typeof userId !== 'string') {
+      console.error('Invalid or missing userId in external_reference');
+      return new Response(JSON.stringify({ received: true, error: 'Invalid userId' }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(userId)) {
+      console.error('userId is not a valid UUID');
+      return new Response(JSON.stringify({ received: true, error: 'Invalid userId format' }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Validate type
+    if (type !== 'new' && type !== 'renewal') {
+      console.error('Invalid type in external_reference:', type);
+      return new Response(JSON.stringify({ received: true, error: 'Invalid type' }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
 
     // Detect real payment method from MP response

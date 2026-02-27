@@ -51,7 +51,7 @@ const AccessExpired = ({ expirationDate }: AccessExpiredProps) => {
         throw new Error('Payment link error');
       }
     } catch (error: any) {
-      console.error('Payment error:', error);
+      if (import.meta.env.DEV) console.error('Payment error:', error);
       toast.error(error.message || t("common.error"));
     } finally {
       setIsProcessing(null);

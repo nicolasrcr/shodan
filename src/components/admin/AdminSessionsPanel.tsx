@@ -51,7 +51,7 @@ export default function AdminSessionsPanel({ userId, language }: Props) {
         body: { userId: targetUserId, reason, revokedAll },
       });
     } catch (e) {
-      console.error('Failed to send revocation email:', e);
+      if (import.meta.env.DEV) console.error('Failed to send revocation email:', e);
     }
   };
 

@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       .maybeSingle();
     
     if (error) {
-      console.error('Error fetching profile:', error);
+      if (import.meta.env.DEV) console.error('Error fetching profile:', error);
       return null;
     }
     return data as UserProfile | null;
@@ -69,7 +69,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       try {
         await registerLogin("heartbeat");
       } catch (e) {
-        console.error("heartbeat error", e);
+        if (import.meta.env.DEV) console.error("heartbeat error", e);
       }
     }, 60_000);
 
@@ -151,7 +151,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       await registerLogin("login");
     } catch (e) {
-      console.error("registerLogin failed", e);
+      if (import.meta.env.DEV) console.error("registerLogin failed", e);
     }
 
     return { error: null };

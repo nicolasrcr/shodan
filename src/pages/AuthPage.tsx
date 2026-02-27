@@ -172,7 +172,7 @@ const AuthPage = () => {
     );
 
     if (error) {
-      console.error('Signup error:', error.message, error);
+      if (import.meta.env.DEV) console.error('Signup error:', error.message, error);
       const msg = (error.message || '').toLowerCase();
       if (msg.includes('already registered') || msg.includes('already been registered') || msg.includes('user already registered')) {
         setCadastroError(t("auth.emailAlreadyRegistered"));
