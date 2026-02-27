@@ -94,6 +94,38 @@ export const searchIndex = [
   { section: 'videos', title: 'Vídeos', titleEn: 'Videos', keywords: 'video demonstração técnica assistir youtube', keywordsEn: 'video demonstration technique watch youtube' },
   { section: 'flashcardsMenu', title: 'Flashcards', titleEn: 'Flashcards', keywords: 'estudo cartão revisão memorização', keywordsEn: 'study card review memorization' },
   { section: 'quizMenu', title: 'Quizzes', titleEn: 'Quizzes', keywords: 'teste perguntas avaliação exame', keywordsEn: 'test questions assessment exam' },
+  // Extra Gokyo
+  { section: 'gokyo', title: 'Extra Gokyo', titleEn: 'Extra Gokyo', keywords: 'extra gokyo habukareta shinmeisho técnicas excluídas', keywordsEn: 'extra gokyo habukareta shinmeisho excluded techniques' },
+  { section: 'gokyo', title: 'Habukareta-Waza', titleEn: 'Habukareta-Waza', keywords: 'obi-otoshi hikikomi-gaeshi o-soto-otoshi daki-wakare tawara-gaeshi seoi-otoshi uchi-makikomi yama-arashi excluídas', keywordsEn: 'obi-otoshi hikikomi-gaeshi o-soto-otoshi daki-wakare tawara-gaeshi seoi-otoshi uchi-makikomi yama-arashi excluded' },
+  { section: 'gokyo', title: 'Shinmeisho-no-Waza', titleEn: 'Shinmeisho-no-Waza', keywords: 'morote-gari kuchiki-taoshi kibisu-gaeshi uchi-mata-sukashi ippon-seoi-nage kani-basami kawazu-gake novos nomes', keywordsEn: 'morote-gari kuchiki-taoshi kibisu-gaeshi uchi-mata-sukashi ippon-seoi-nage kani-basami kawazu-gake new names' },
+  // All Gokyo techniques for search
+  { section: 'gokyo', title: 'De-Ashi-Harai', titleEn: 'De-Ashi-Harai', keywords: 'varrer pé avança ikkyo 1 ashi-waza', keywordsEn: 'sweep advancing foot ikkyo 1 ashi-waza' },
+  { section: 'gokyo', title: 'Hiza-Guruma', titleEn: 'Hiza-Guruma', keywords: 'roda joelho ikkyo ashi-waza', keywordsEn: 'knee wheel ikkyo ashi-waza' },
+  { section: 'gokyo', title: 'Sasae-Tsurikomi-Ashi', titleEn: 'Sasae-Tsurikomi-Ashi', keywords: 'bloqueio pé levantando ikkyo ashi-waza', keywordsEn: 'propping drawing ankle ikkyo ashi-waza' },
+  { section: 'gokyo', title: 'Uki-Goshi', titleEn: 'Uki-Goshi', keywords: 'quadril flutuante ikkyo koshi-waza', keywordsEn: 'floating hip ikkyo koshi-waza' },
+  { section: 'gokyo', title: 'O-Goshi', titleEn: 'O-Goshi', keywords: 'grande quadril ikkyo koshi-waza', keywordsEn: 'major hip ikkyo koshi-waza' },
+  { section: 'gokyo', title: 'Ko-Soto-Gari', titleEn: 'Ko-Soto-Gari', keywords: 'pequena ceifada externa nikyo ashi-waza', keywordsEn: 'minor outer reap nikyo ashi-waza' },
+  { section: 'gokyo', title: 'Ko-Uchi-Gari', titleEn: 'Ko-Uchi-Gari', keywords: 'pequena ceifada interna nikyo ashi-waza', keywordsEn: 'minor inner reap nikyo ashi-waza' },
+  { section: 'gokyo', title: 'Koshi-Guruma', titleEn: 'Koshi-Guruma', keywords: 'roda quadril nikyo koshi-waza', keywordsEn: 'hip wheel nikyo koshi-waza' },
+  { section: 'gokyo', title: 'Tsurikomi-Goshi', titleEn: 'Tsurikomi-Goshi', keywords: 'quadril levantando puxando nikyo koshi-waza', keywordsEn: 'lifting pulling hip nikyo koshi-waza' },
+  { section: 'gokyo', title: 'Okuri-Ashi-Harai', titleEn: 'Okuri-Ashi-Harai', keywords: 'varrer pés deslizando nikyo ashi-waza', keywordsEn: 'sliding foot sweep nikyo ashi-waza' },
+  { section: 'gokyo', title: 'Tai-Otoshi', titleEn: 'Tai-Otoshi', keywords: 'queda corpo nikyo te-waza', keywordsEn: 'body drop nikyo te-waza' },
+  { section: 'gokyo', title: 'Tomoe-Nage', titleEn: 'Tomoe-Nage', keywords: 'projeção círculo sankyo ma-sutemi sacrifício', keywordsEn: 'circle throw sankyo ma-sutemi sacrifice' },
+  { section: 'gokyo', title: 'Kata-Guruma', titleEn: 'Kata-Guruma', keywords: 'roda ombros sankyo te-waza', keywordsEn: 'shoulder wheel sankyo te-waza' },
+  { section: 'gokyo', title: 'Sumi-Gaeshi', titleEn: 'Sumi-Gaeshi', keywords: 'virada canto yonkyo ma-sutemi', keywordsEn: 'corner reversal yonkyo ma-sutemi' },
+  { section: 'gokyo', title: 'Sukui-Nage', titleEn: 'Sukui-Nage', keywords: 'projeção concha yonkyo te-waza', keywordsEn: 'scoop throw yonkyo te-waza' },
+  // Video technique search entries
+  { section: 'videos', title: 'Seoi-nage (vídeo)', titleEn: 'Seoi-nage (video)', keywords: 'seoi nage costas projeção te-waza ikkyo video', keywordsEn: 'seoi nage back throw te-waza ikkyo video' },
+  { section: 'videos', title: 'O-Soto-Gari (vídeo)', titleEn: 'O-Soto-Gari (video)', keywords: 'o-soto-gari ceifa externa ashi-waza ikkyo video', keywordsEn: 'o-soto-gari outer reap ashi-waza ikkyo video' },
+  { section: 'videos', title: 'Uchi-Mata (vídeo)', titleEn: 'Uchi-Mata (video)', keywords: 'uchi-mata coxa interna ashi-waza nikyo video', keywordsEn: 'uchi-mata inner thigh ashi-waza nikyo video' },
+  { section: 'videos', title: 'Harai-Goshi (vídeo)', titleEn: 'Harai-Goshi (video)', keywords: 'harai-goshi quadril varrer koshi-waza nikyo video', keywordsEn: 'harai-goshi hip sweep koshi-waza nikyo video' },
+  { section: 'videos', title: 'Ippon-Seoi-Nage (vídeo)', titleEn: 'Ippon-Seoi-Nage (video)', keywords: 'ippon seoi nage ombro braço te-waza shinmeisho video', keywordsEn: 'ippon seoi nage shoulder arm te-waza shinmeisho video' },
+  { section: 'videos', title: 'Tomoe-Nage (vídeo)', titleEn: 'Tomoe-Nage (video)', keywords: 'tomoe nage círculo sacrifício sutemi video', keywordsEn: 'tomoe nage circle sacrifice sutemi video' },
+  { section: 'videos', title: 'Kesa-Gatame (vídeo)', titleEn: 'Kesa-Gatame (video)', keywords: 'kesa gatame imobilização osaekomi katame video', keywordsEn: 'kesa gatame pin osaekomi katame video' },
+  { section: 'videos', title: 'Juji-Gatame (vídeo)', titleEn: 'Juji-Gatame (video)', keywords: 'juji gatame chave braço cruz kansetsu video', keywordsEn: 'juji gatame armbar cross kansetsu video' },
+  { section: 'videos', title: 'Hadaka-Jime (vídeo)', titleEn: 'Hadaka-Jime (video)', keywords: 'hadaka jime estrangulamento nu shime video', keywordsEn: 'hadaka jime naked choke shime video' },
+  { section: 'videos', title: 'Sankaku-Jime (vídeo)', titleEn: 'Sankaku-Jime (video)', keywords: 'sankaku jime triângulo estrangulamento shime video', keywordsEn: 'sankaku jime triangle choke shime video' },
+  { section: 'videos', title: 'Ukemi (vídeo)', titleEn: 'Ukemi (video)', keywords: 'ukemi queda amortecimento ushiro yoko mae video', keywordsEn: 'ukemi fall breakfall ushiro yoko mae video' },
 ];
 
 export const historyData = {
