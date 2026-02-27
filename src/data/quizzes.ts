@@ -93,6 +93,39 @@ export const quizData: Record<string, QuizCategory> = {
       { q: 'Qual comando inicia a luta?', o: ['Matte', 'Hajime', 'Sore-made', 'Yoshi'], c: 1 },
     ],
   },
+  extraGokyo: {
+    title: 'Extra Gokyo',
+    icon: '外',
+    questions: [
+      // Habukareta-Waza
+      { q: 'O que significa "Habukareta-Waza"?', o: ['Técnicas proibidas', 'Técnicas excluídas', 'Técnicas novas', 'Técnicas secretas'], c: 1 },
+      { q: 'Em que ano as Habukareta-Waza foram removidas do Gokyo?', o: ['1895', '1900', '1920', '1982'], c: 2 },
+      { q: 'Quantas técnicas compõem as Habukareta-Waza?', o: ['5', '8', '10', '12'], c: 1 },
+      { q: 'O que significa Obi-Otoshi?', o: ['Queda pelo quadril', 'Queda pela faixa', 'Queda pelo ombro', 'Queda lateral'], c: 1 },
+      { q: 'Yama-Arashi significa:', o: ['Rio caudaloso', 'Vento forte', 'Tempestade na montanha', 'Neve na floresta'], c: 2 },
+      { q: 'A qual grupo pertence Seoi-Otoshi?', o: ['Ashi-waza', 'Koshi-waza', 'Te-waza', 'Ma-sutemi'], c: 2 },
+      { q: 'A qual grupo pertence Tawara-Gaeshi?', o: ['Te-waza', 'Yoko-sutemi', 'Ma-sutemi', 'Ashi-waza'], c: 2 },
+      { q: 'Daki-Wakare pertence a qual grupo?', o: ['Te-waza', 'Yoko-sutemi', 'Ma-sutemi', 'Koshi-waza'], c: 1 },
+      { q: 'O que significa Hikikomi-Gaeshi?', o: ['Virada saltando', 'Virada puxando', 'Virada girando', 'Virada empurrando'], c: 1 },
+      { q: 'Uchi-Makikomi é uma técnica de qual grupo?', o: ['Te-waza', 'Ma-sutemi', 'Yoko-sutemi', 'Ashi-waza'], c: 2 },
+      { q: 'De qual grupo original era O-Soto-Otoshi no Kyu-Gokyō?', o: ['3º Grupo', '4º Grupo', '5º Grupo', '2º Grupo'], c: 1 },
+      // Shinmeisho-no-Waza
+      { q: 'O que significa "Shinmeisho-no-Waza"?', o: ['Técnicas proibidas', 'Técnicas com novos nomes', 'Técnicas antigas', 'Técnicas de solo'], c: 1 },
+      { q: 'Quantas técnicas compõem as Shinmeisho-no-Waza?', o: ['15', '18', '20', '22'], c: 3 },
+      { q: 'O que significa Morote-Gari?', o: ['Ceifada simples', 'Ceifada com duas mãos', 'Ceifada interna', 'Ceifada circular'], c: 1 },
+      { q: 'Ippon-Seoi-Nage pertence a qual grupo?', o: ['Koshi-waza', 'Ashi-waza', 'Te-waza', 'Yoko-sutemi'], c: 2 },
+      { q: 'O que significa Kani-Basami?', o: ['Gancho lateral', 'Tesoura de caranguejo', 'Roda dupla', 'Enrolamento'], c: 1 },
+      { q: 'Sode-Tsurikomi-Goshi pertence a qual grupo?', o: ['Te-waza', 'Koshi-waza', 'Ashi-waza', 'Ma-sutemi'], c: 1 },
+      { q: 'Tsubame-Gaeshi significa:', o: ['Contra do tigre', 'Contra da andorinha', 'Contra da águia', 'Contra do leão'], c: 1 },
+      { q: 'Uchi-Mata-Gaeshi é uma contra-técnica de qual golpe?', o: ['O-soto-gari', 'Harai-goshi', 'Uchi-mata', 'Seoi-nage'], c: 2 },
+      { q: 'Uki-Gatame e Ura-Gatame são técnicas de qual tipo?', o: ['Projeção', 'Estrangulamento', 'Chave articular', 'Imobilização'], c: 3 },
+      { q: 'O que significa Kawazu-Gake?', o: ['Gancho Kawazu', 'Tesoura Kawazu', 'Roda Kawazu', 'Queda Kawazu'], c: 0 },
+      { q: 'O-Soto-Makikomi pertence a qual grupo?', o: ['Te-waza', 'Ashi-waza', 'Ma-sutemi', 'Yoko-sutemi'], c: 3 },
+      { q: 'Qual kanji representa Kani-Basami?', o: ['蟹挟', '河津掛', '燕返', '双手刈'], c: 0 },
+      { q: 'As Shinmeisho-no-Waza foram aceitas oficialmente em:', o: ['1920 e 1930', '1960 e 1970', '1982 e 1997', '2000 e 2010'], c: 2 },
+      { q: 'Kuchiki-Taoshi significa:', o: ['Derrubar bambu', 'Derrubar árvore seca', 'Derrubar pilar', 'Derrubar muro'], c: 1 },
+    ],
+  },
 };
 
 // Flatten all questions for simulado

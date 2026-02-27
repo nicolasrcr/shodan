@@ -226,17 +226,17 @@ const GokyoSection = () => {
               <div>
                 <h3 className="text-lg font-bold text-sky-400">Shinmeisho-no-Waza</h3>
                 <p className="text-xs text-muted-foreground">
-                  {language === 'pt' ? extraGokyoData.shinmeishoNoWaza.description : extraGokyoData.shinmeishoNoWaza.descriptionEn}
+                  {extra.shinmeishoNoWaza.description}
                 </p>
               </div>
             </div>
             <div className="card-judo mb-4">
               <p className="text-sm text-foreground/70">
-                {language === 'pt' ? extraGokyoData.shinmeishoNoWaza.info : extraGokyoData.shinmeishoNoWaza.infoEn}
+                {extra.shinmeishoNoWaza.info}
               </p>
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {extraGokyoData.shinmeishoNoWaza.techniques.map((technique) => (
+              {extra.shinmeishoNoWaza.techniques.map((technique) => (
                 <div key={technique.num} className="technique-card relative">
                   <Badge className="absolute top-2 right-2 text-[10px] bg-sky-600 text-white hover:opacity-90">
                     Shinmeisho
@@ -252,7 +252,7 @@ const GokyoSection = () => {
                   <h4 className="font-semibold text-white text-sm mb-1">{technique.name}</h4>
                   <p className="text-2xl font-serif mb-2 text-sky-400">{technique.kanji}</p>
                   <p className="text-xs text-muted-foreground">
-                    {language === 'pt' ? technique.translation : technique.translationEn}
+                    {technique.translation}
                   </p>
                 </div>
               ))}
