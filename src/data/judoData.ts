@@ -94,6 +94,38 @@ export const searchIndex = [
   { section: 'videos', title: 'Vídeos', titleEn: 'Videos', keywords: 'video demonstração técnica assistir youtube', keywordsEn: 'video demonstration technique watch youtube' },
   { section: 'flashcardsMenu', title: 'Flashcards', titleEn: 'Flashcards', keywords: 'estudo cartão revisão memorização', keywordsEn: 'study card review memorization' },
   { section: 'quizMenu', title: 'Quizzes', titleEn: 'Quizzes', keywords: 'teste perguntas avaliação exame', keywordsEn: 'test questions assessment exam' },
+  // Extra Gokyo
+  { section: 'gokyo', title: 'Extra Gokyo', titleEn: 'Extra Gokyo', keywords: 'extra gokyo habukareta shinmeisho técnicas excluídas', keywordsEn: 'extra gokyo habukareta shinmeisho excluded techniques' },
+  { section: 'gokyo', title: 'Habukareta-Waza', titleEn: 'Habukareta-Waza', keywords: 'obi-otoshi hikikomi-gaeshi o-soto-otoshi daki-wakare tawara-gaeshi seoi-otoshi uchi-makikomi yama-arashi excluídas', keywordsEn: 'obi-otoshi hikikomi-gaeshi o-soto-otoshi daki-wakare tawara-gaeshi seoi-otoshi uchi-makikomi yama-arashi excluded' },
+  { section: 'gokyo', title: 'Shinmeisho-no-Waza', titleEn: 'Shinmeisho-no-Waza', keywords: 'morote-gari kuchiki-taoshi kibisu-gaeshi uchi-mata-sukashi ippon-seoi-nage kani-basami kawazu-gake novos nomes', keywordsEn: 'morote-gari kuchiki-taoshi kibisu-gaeshi uchi-mata-sukashi ippon-seoi-nage kani-basami kawazu-gake new names' },
+  // All Gokyo techniques for search
+  { section: 'gokyo', title: 'De-Ashi-Harai', titleEn: 'De-Ashi-Harai', keywords: 'varrer pé avança ikkyo 1 ashi-waza', keywordsEn: 'sweep advancing foot ikkyo 1 ashi-waza' },
+  { section: 'gokyo', title: 'Hiza-Guruma', titleEn: 'Hiza-Guruma', keywords: 'roda joelho ikkyo ashi-waza', keywordsEn: 'knee wheel ikkyo ashi-waza' },
+  { section: 'gokyo', title: 'Sasae-Tsurikomi-Ashi', titleEn: 'Sasae-Tsurikomi-Ashi', keywords: 'bloqueio pé levantando ikkyo ashi-waza', keywordsEn: 'propping drawing ankle ikkyo ashi-waza' },
+  { section: 'gokyo', title: 'Uki-Goshi', titleEn: 'Uki-Goshi', keywords: 'quadril flutuante ikkyo koshi-waza', keywordsEn: 'floating hip ikkyo koshi-waza' },
+  { section: 'gokyo', title: 'O-Goshi', titleEn: 'O-Goshi', keywords: 'grande quadril ikkyo koshi-waza', keywordsEn: 'major hip ikkyo koshi-waza' },
+  { section: 'gokyo', title: 'Ko-Soto-Gari', titleEn: 'Ko-Soto-Gari', keywords: 'pequena ceifada externa nikyo ashi-waza', keywordsEn: 'minor outer reap nikyo ashi-waza' },
+  { section: 'gokyo', title: 'Ko-Uchi-Gari', titleEn: 'Ko-Uchi-Gari', keywords: 'pequena ceifada interna nikyo ashi-waza', keywordsEn: 'minor inner reap nikyo ashi-waza' },
+  { section: 'gokyo', title: 'Koshi-Guruma', titleEn: 'Koshi-Guruma', keywords: 'roda quadril nikyo koshi-waza', keywordsEn: 'hip wheel nikyo koshi-waza' },
+  { section: 'gokyo', title: 'Tsurikomi-Goshi', titleEn: 'Tsurikomi-Goshi', keywords: 'quadril levantando puxando nikyo koshi-waza', keywordsEn: 'lifting pulling hip nikyo koshi-waza' },
+  { section: 'gokyo', title: 'Okuri-Ashi-Harai', titleEn: 'Okuri-Ashi-Harai', keywords: 'varrer pés deslizando nikyo ashi-waza', keywordsEn: 'sliding foot sweep nikyo ashi-waza' },
+  { section: 'gokyo', title: 'Tai-Otoshi', titleEn: 'Tai-Otoshi', keywords: 'queda corpo nikyo te-waza', keywordsEn: 'body drop nikyo te-waza' },
+  { section: 'gokyo', title: 'Tomoe-Nage', titleEn: 'Tomoe-Nage', keywords: 'projeção círculo sankyo ma-sutemi sacrifício', keywordsEn: 'circle throw sankyo ma-sutemi sacrifice' },
+  { section: 'gokyo', title: 'Kata-Guruma', titleEn: 'Kata-Guruma', keywords: 'roda ombros sankyo te-waza', keywordsEn: 'shoulder wheel sankyo te-waza' },
+  { section: 'gokyo', title: 'Sumi-Gaeshi', titleEn: 'Sumi-Gaeshi', keywords: 'virada canto yonkyo ma-sutemi', keywordsEn: 'corner reversal yonkyo ma-sutemi' },
+  { section: 'gokyo', title: 'Sukui-Nage', titleEn: 'Sukui-Nage', keywords: 'projeção concha yonkyo te-waza', keywordsEn: 'scoop throw yonkyo te-waza' },
+  // Video technique search entries
+  { section: 'videos', title: 'Seoi-nage (vídeo)', titleEn: 'Seoi-nage (video)', keywords: 'seoi nage costas projeção te-waza ikkyo video', keywordsEn: 'seoi nage back throw te-waza ikkyo video' },
+  { section: 'videos', title: 'O-Soto-Gari (vídeo)', titleEn: 'O-Soto-Gari (video)', keywords: 'o-soto-gari ceifa externa ashi-waza ikkyo video', keywordsEn: 'o-soto-gari outer reap ashi-waza ikkyo video' },
+  { section: 'videos', title: 'Uchi-Mata (vídeo)', titleEn: 'Uchi-Mata (video)', keywords: 'uchi-mata coxa interna ashi-waza nikyo video', keywordsEn: 'uchi-mata inner thigh ashi-waza nikyo video' },
+  { section: 'videos', title: 'Harai-Goshi (vídeo)', titleEn: 'Harai-Goshi (video)', keywords: 'harai-goshi quadril varrer koshi-waza nikyo video', keywordsEn: 'harai-goshi hip sweep koshi-waza nikyo video' },
+  { section: 'videos', title: 'Ippon-Seoi-Nage (vídeo)', titleEn: 'Ippon-Seoi-Nage (video)', keywords: 'ippon seoi nage ombro braço te-waza shinmeisho video', keywordsEn: 'ippon seoi nage shoulder arm te-waza shinmeisho video' },
+  { section: 'videos', title: 'Tomoe-Nage (vídeo)', titleEn: 'Tomoe-Nage (video)', keywords: 'tomoe nage círculo sacrifício sutemi video', keywordsEn: 'tomoe nage circle sacrifice sutemi video' },
+  { section: 'videos', title: 'Kesa-Gatame (vídeo)', titleEn: 'Kesa-Gatame (video)', keywords: 'kesa gatame imobilização osaekomi katame video', keywordsEn: 'kesa gatame pin osaekomi katame video' },
+  { section: 'videos', title: 'Juji-Gatame (vídeo)', titleEn: 'Juji-Gatame (video)', keywords: 'juji gatame chave braço cruz kansetsu video', keywordsEn: 'juji gatame armbar cross kansetsu video' },
+  { section: 'videos', title: 'Hadaka-Jime (vídeo)', titleEn: 'Hadaka-Jime (video)', keywords: 'hadaka jime estrangulamento nu shime video', keywordsEn: 'hadaka jime naked choke shime video' },
+  { section: 'videos', title: 'Sankaku-Jime (vídeo)', titleEn: 'Sankaku-Jime (video)', keywords: 'sankaku jime triângulo estrangulamento shime video', keywordsEn: 'sankaku jime triangle choke shime video' },
+  { section: 'videos', title: 'Ukemi (vídeo)', titleEn: 'Ukemi (video)', keywords: 'ukemi queda amortecimento ushiro yoko mae video', keywordsEn: 'ukemi fall breakfall ushiro yoko mae video' },
 ];
 
 export const historyData = {
@@ -303,6 +335,57 @@ export const gokyoData = {
       { num: 40, name: "Yoko-Gake", kanji: "横掛", translation: "Gancho lateral", group: "Yoko-sutemi" },
     ]
   },
+};
+
+export const extraGokyoData = {
+  habukaretaWaza: {
+    name: "Habukareta-Waza",
+    description: "Técnicas Excluídas",
+    descriptionEn: "Excluded Techniques",
+    info: "Conjunto de técnicas que, originalmente, estavam incluídas na primeira versão do Go-Kyo (Kyu-Gokyō), porém foram retiradas em 1920 após uma revisão do Go-Kyo.",
+    infoEn: "Set of techniques that were originally included in the first version of the Go-Kyo (Kyu-Gokyō), but were removed in 1920 after a revision of the Go-Kyo.",
+    techniques: [
+      { num: 1, name: "Obi-Otoshi", kanji: "帯落", translation: "Queda pela faixa", translationEn: "Belt drop", group: "Te-waza", originalGroup: "3º Grupo" },
+      { num: 2, name: "Hikikomi-Gaeshi", kanji: "引込返", translation: "Virada puxando", translationEn: "Pulling reversal", group: "Ma-sutemi", originalGroup: "4º Grupo" },
+      { num: 3, name: "O-Soto-Otoshi", kanji: "大外落", translation: "Grande queda externa", translationEn: "Large outer drop", group: "Ashi-waza", originalGroup: "4º Grupo" },
+      { num: 4, name: "Daki-Wakare", kanji: "抱分", translation: "Separação abraçando", translationEn: "Hugging separation", group: "Yoko-sutemi", originalGroup: "4º Grupo" },
+      { num: 5, name: "Tawara-Gaeshi", kanji: "俵返", translation: "Virada do saco de arroz", translationEn: "Rice bag reversal", group: "Ma-sutemi", originalGroup: "4º Grupo" },
+      { num: 6, name: "Seoi-Otoshi", kanji: "背負落", translation: "Queda pelas costas", translationEn: "Back drop", group: "Te-waza", originalGroup: "5º Grupo" },
+      { num: 7, name: "Uchi-Makikomi", kanji: "内巻込", translation: "Enrolamento interno", translationEn: "Inner winding", group: "Yoko-sutemi", originalGroup: "5º Grupo" },
+      { num: 8, name: "Yama-Arashi", kanji: "山嵐", translation: "Tempestade na montanha", translationEn: "Mountain storm", group: "Te-waza", originalGroup: "5º Grupo" },
+    ]
+  },
+  shinmeishoNoWaza: {
+    name: "Shinmeisho-no-Waza",
+    description: "Técnicas com Novos Nomes",
+    descriptionEn: "Newly Named Techniques",
+    info: "Técnicas que foram adicionadas ao catálogo oficial do Kodokan após a revisão de 1920, com nomes novos ou reclassificações.",
+    infoEn: "Techniques that were added to the official Kodokan catalog after the 1920 revision, with new names or reclassifications.",
+    techniques: [
+      { num: 1, name: "Morote-Gari", kanji: "双手刈", translation: "Ceifada com duas mãos", translationEn: "Two-hand reap", group: "Te-waza" },
+      { num: 2, name: "Kuchiki-Taoshi", kanji: "朽木倒", translation: "Derrubar árvore seca", translationEn: "Dead tree drop", group: "Te-waza" },
+      { num: 3, name: "Kibisu-Gaeshi", kanji: "踵返", translation: "Virada pelo calcanhar", translationEn: "Heel reversal", group: "Te-waza" },
+      { num: 4, name: "Uchi-Mata-Sukashi", kanji: "内股透", translation: "Esquiva do Uchi-mata", translationEn: "Uchi-mata slip", group: "Ashi-waza" },
+      { num: 5, name: "Ko-Uchi-Gaeshi", kanji: "小内返", translation: "Contra do Ko-uchi", translationEn: "Ko-uchi counter", group: "Ashi-waza" },
+      { num: 6, name: "Obi-Tori-Gaeshi", kanji: "帯取返", translation: "Virada agarrando a faixa", translationEn: "Belt grab reversal", group: "Te-waza" },
+      { num: 7, name: "Sode-Tsurikomi-Goshi", kanji: "袖釣込腰", translation: "Quadril puxando pela manga", translationEn: "Sleeve lifting hip", group: "Koshi-waza" },
+      { num: 8, name: "Ippon-Seoi-Nage", kanji: "一本背負投", translation: "Projeção por um braço", translationEn: "One-arm shoulder throw", group: "Te-waza" },
+      { num: 9, name: "Tsubame-Gaeshi", kanji: "燕返", translation: "Contra da andorinha", translationEn: "Swallow counter", group: "Ashi-waza" },
+      { num: 10, name: "O-Soto-Gaeshi", kanji: "大外返", translation: "Contra do O-soto", translationEn: "O-soto counter", group: "Ashi-waza" },
+      { num: 11, name: "O-Uchi-Gaeshi", kanji: "大内返", translation: "Contra do O-uchi", translationEn: "O-uchi counter", group: "Ashi-waza" },
+      { num: 12, name: "Hane-Goshi-Gaeshi", kanji: "跳腰返", translation: "Contra do Hane-goshi", translationEn: "Hane-goshi counter", group: "Ashi-waza" },
+      { num: 13, name: "Harai-Goshi-Gaeshi", kanji: "払腰返", translation: "Contra do Harai-goshi", translationEn: "Harai-goshi counter", group: "Ashi-waza" },
+      { num: 14, name: "Uchi-Mata-Gaeshi", kanji: "内股返", translation: "Contra do Uchi-mata", translationEn: "Uchi-mata counter", group: "Ashi-waza" },
+      { num: 15, name: "Kani-Basami", kanji: "蟹挟", translation: "Tesoura de caranguejo", translationEn: "Crab scissors", group: "Yoko-sutemi" },
+      { num: 16, name: "Kawazu-Gake", kanji: "河津掛", translation: "Gancho Kawazu", translationEn: "Kawazu hook", group: "Yoko-sutemi" },
+      { num: 17, name: "O-Soto-Makikomi", kanji: "大外巻込", translation: "Enrolamento externo grande", translationEn: "Large outer winding", group: "Yoko-sutemi" },
+      { num: 18, name: "Uchi-Mata-Makikomi", kanji: "内股巻込", translation: "Enrolamento do Uchi-mata", translationEn: "Uchi-mata winding", group: "Yoko-sutemi" },
+      { num: 19, name: "Harai-Makikomi", kanji: "払巻込", translation: "Enrolamento varrendo", translationEn: "Sweeping winding", group: "Yoko-sutemi" },
+      { num: 20, name: "Ko-Uchi-Makikomi", kanji: "小内巻込", translation: "Enrolamento interno pequeno", translationEn: "Small inner winding", group: "Yoko-sutemi" },
+      { num: 21, name: "Uki-Gatame", kanji: "浮固", translation: "Imobilização flutuante", translationEn: "Floating hold", group: "Osaekomi-waza" },
+      { num: 22, name: "Ura-Gatame", kanji: "裏固", translation: "Imobilização por trás", translationEn: "Rear hold", group: "Osaekomi-waza" },
+    ]
+  }
 };
 
 export const katameData = {

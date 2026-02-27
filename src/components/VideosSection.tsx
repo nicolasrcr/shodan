@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { cn } from "@/lib/utils";
+import { Search } from "lucide-react";
 
 interface VideoItem {
   name: string;
   id: string;
   category?: string;
+  gokyoGroup?: string;
 }
 
 const VideoThumbnail = ({ videoId, videoName }: { videoId: string; videoName: string }) => {
@@ -41,15 +44,15 @@ const VideoThumbnail = ({ videoId, videoName }: { videoId: string; videoName: st
 
 const VideosSection = () => {
   const { language } = useLanguage();
+  const [activeGokyoFilter, setActiveGokyoFilter] = useState<string>("all");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const content = {
     pt: {
       title: "Vídeos - Demonstrações Técnicas",
-      warning:
-        "É necessário ter acesso à internet para visualizar os vídeos. Ao clicar, você será redirecionado para o YouTube.",
+      warning: "É necessário ter acesso à internet para visualizar os vídeos. Ao clicar, você será redirecionado para o YouTube.",
       attention: "ATENÇÃO:",
-      intro:
-        "Playlist completa de vídeos demonstrativos das 100 técnicas oficiais do Kodokan Judô, organizadas por categoria de técnica. Vídeos do Kodokan oficial e canais de referência mundial.",
+      intro: "Playlist completa de vídeos demonstrativos das técnicas oficiais do Kodokan Judô, organizadas por categoria de técnica e grupo de Gokyo. Vídeos do Kodokan oficial e canais de referência mundial.",
       studyTips: "Dicas para Estudo por Vídeo",
       howToStudy: "Como Estudar",
       whatToObserve: "O que Observar",
@@ -75,13 +78,13 @@ const VideosSection = () => {
         kansetsuWaza: "Kansetsu-waza — Chaves de Articulação",
         ukemi: "Ukemi — Técnicas de Queda",
       },
+      searchPlaceholder: "Buscar técnica...",
     },
     en: {
       title: "Videos - Technical Demonstrations",
       warning: "Internet access is required to view the videos. Clicking will redirect you to YouTube.",
       attention: "ATTENTION:",
-      intro:
-        "Complete playlist of demonstration videos of all 100 official Kodokan Judo techniques, organized by technique category. Videos from the official Kodokan and world reference channels.",
+      intro: "Complete playlist of demonstration videos of official Kodokan Judo techniques, organized by technique category and Gokyo group. Videos from the official Kodokan and world reference channels.",
       studyTips: "Video Study Tips",
       howToStudy: "How to Study",
       whatToObserve: "What to Observe",
@@ -107,24 +110,76 @@ const VideosSection = () => {
         kansetsuWaza: "Kansetsu-waza — Joint Locks",
         ukemi: "Ukemi — Falling Techniques",
       },
+      searchPlaceholder: "Search technique...",
     },
   };
 
   const t = content[language === "en" ? "en" : "pt"];
 
-  const categoryInfo: Record<string, { color: string; textColor: string; emoji: string; icon: string; badge: string }> =
-    {
-      teWaza: { color: "bg-blue-600", textColor: "text-white", emoji: "🤲", icon: "手", badge: "Te" },
-      koshiWaza: { color: "bg-purple-600", textColor: "text-white", emoji: "🔄", icon: "腰", badge: "Koshi" },
-      ashiWaza: { color: "bg-green-600", textColor: "text-white", emoji: "🦶", icon: "足", badge: "Ashi" },
-      sutemiWaza: { color: "bg-orange-500", textColor: "text-white", emoji: "⚡", icon: "捨", badge: "Sutemi" },
-      osaekomiWaza: { color: "bg-red-600", textColor: "text-white", emoji: "🔒", icon: "固", badge: "Osae" },
-      shimeWaza: { color: "bg-rose-700", textColor: "text-white", emoji: "🔗", icon: "絞", badge: "Shime" },
-      kansetsuWaza: { color: "bg-amber-700", textColor: "text-white", emoji: "🔧", icon: "関", badge: "Kansetsu" },
-      ukemi: { color: "bg-gray-600", textColor: "text-white", emoji: "🎬", icon: "受", badge: "Ukemi" },
-    };
+  const categoryInfo: Record<string, { color: string; textColor: string; emoji: string; icon: string; badge: string }> = {
+    teWaza: { color: "bg-blue-600", textColor: "text-white", emoji: "🤲", icon: "手", badge: "Te" },
+    koshiWaza: { color: "bg-purple-600", textColor: "text-white", emoji: "🔄", icon: "腰", badge: "Koshi" },
+    ashiWaza: { color: "bg-green-600", textColor: "text-white", emoji: "🦶", icon: "足", badge: "Ashi" },
+    sutemiWaza: { color: "bg-orange-500", textColor: "text-white", emoji: "⚡", icon: "捨", badge: "Sutemi" },
+    osaekomiWaza: { color: "bg-red-600", textColor: "text-white", emoji: "🔒", icon: "固", badge: "Osae" },
+    shimeWaza: { color: "bg-rose-700", textColor: "text-white", emoji: "🔗", icon: "絞", badge: "Shime" },
+    kansetsuWaza: { color: "bg-amber-700", textColor: "text-white", emoji: "🔧", icon: "関", badge: "Kansetsu" },
+    ukemi: { color: "bg-gray-600", textColor: "text-white", emoji: "🎬", icon: "受", badge: "Ukemi" },
+  };
 
-  // === NAGE-WAZA: Te-waza (16 Técnicas de Braço) ===
+  const gokyoGroups = [
+    { key: "all", label: language === 'pt' ? "Todos" : "All", color: "bg-primary" },
+    { key: "ikkyo", label: "Ikkyo (1º)", color: "bg-yellow-500", textClass: "text-black" },
+    { key: "nikyo", label: "Nikyo (2º)", color: "bg-orange-500" },
+    { key: "sankyo", label: "Sankyo (3º)", color: "bg-green-600" },
+    { key: "yonkyo", label: "Yonkyo (4º)", color: "bg-blue-600" },
+    { key: "gokyo5", label: "Gokyo (5º)", color: "bg-amber-800" },
+    { key: "extra", label: "Extra Gokyo", color: "bg-red-700" },
+    { key: "katame", label: "Katame-waza", color: "bg-rose-700" },
+    { key: "ukemi", label: "Ukemi", color: "bg-gray-600" },
+  ];
+
+  // Gokyo technique name mapping
+  const gokyoTechniqueMap: Record<string, string> = {
+    // Ikkyo
+    "De-ashi-harai": "ikkyo", "Hiza-guruma": "ikkyo", "Sasae-tsurikomi-ashi": "ikkyo",
+    "Uki-goshi": "ikkyo", "O-soto-gari": "ikkyo", "O-goshi": "ikkyo",
+    "O-uchi-gari": "ikkyo", "Seoi-nage": "ikkyo",
+    // Nikyo
+    "Ko-soto-gari": "nikyo", "Ko-uchi-gari": "nikyo", "Koshi-guruma": "nikyo",
+    "Tsurikomi-goshi": "nikyo", "Okuri-ashi-harai": "nikyo", "Tai-otoshi": "nikyo",
+    "Harai-goshi": "nikyo", "Uchi-mata": "nikyo",
+    // Sankyo
+    "Ko-soto-gake": "sankyo", "Tsuri-goshi": "sankyo", "Yoko-otoshi": "sankyo",
+    "Ashi-guruma": "sankyo", "Hane-goshi": "sankyo", "Harai-tsurikomi-ashi": "sankyo",
+    "Tomoe-nage": "sankyo", "Kata-guruma": "sankyo",
+    // Yonkyo
+    "Sumi-gaeshi": "yonkyo", "Tani-otoshi": "yonkyo", "Hane-makikomi": "yonkyo",
+    "Sukui-nage": "yonkyo", "Utsuri-goshi": "yonkyo", "O-guruma": "yonkyo",
+    "Soto-makikomi": "yonkyo", "Uki-otoshi": "yonkyo",
+    // Gokyo
+    "O-soto-guruma": "gokyo5", "Uki-waza": "gokyo5", "Yoko-wakare": "gokyo5",
+    "Yoko-guruma": "gokyo5", "Ushiro-goshi": "gokyo5", "Ura-nage": "gokyo5",
+    "Sumi-otoshi": "gokyo5", "Yoko-gake": "gokyo5",
+    // Extra Gokyo (Habukareta + Shinmeisho)
+    "Obi-otoshi": "extra", "Hikikomi-gaeshi": "extra", "O-soto-otoshi": "extra",
+    "Daki-wakare": "extra", "Tawara-gaeshi": "extra", "Seoi-otoshi": "extra",
+    "Uchi-makikomi": "extra", "Yama-arashi": "extra",
+    "Morote-gari": "extra", "Kuchiki-taoshi": "extra", "Kibisu-gaeshi": "extra",
+    "Uchi-mata-sukashi": "extra", "Ko-uchi-gaeshi": "extra", "Obi-tori-gaeshi": "extra",
+    "Sode-tsurikomi-goshi": "extra", "Ippon-seoi-nage": "extra",
+    "Tsubame-gaeshi": "extra", "O-soto-gaeshi": "extra", "O-uchi-gaeshi": "extra",
+    "Hane-goshi-gaeshi": "extra", "Harai-goshi-gaeshi": "extra", "Uchi-mata-gaeshi": "extra",
+    "Kani-basami": "extra", "Kawazu-gake": "extra",
+    "O-soto-makikomi": "extra", "Uchi-mata-makikomi": "extra", "Harai-makikomi": "extra",
+    "Ko-uchi-makikomi": "extra",
+  };
+
+  const getGokyoGroup = (name: string): string => {
+    return gokyoTechniqueMap[name] || "";
+  };
+
+  // === NAGE-WAZA: Te-waza ===
   const teWazaVideos: VideoItem[] = [
     { name: "Seoi-nage", id: "zIq0xI0ogxk", category: "teWaza" },
     { name: "Ippon-seoi-nage", id: "FQnOlCxo4oI", category: "teWaza" },
@@ -144,7 +199,6 @@ const VideosSection = () => {
     { name: "Ko-uchi-gaeshi", id: "_MWAdYi_LC4", category: "teWaza" },
   ];
 
-  // === NAGE-WAZA: Koshi-waza (10 Técnicas de Quadril) ===
   const koshiWazaVideos: VideoItem[] = [
     { name: "Uki-goshi", id: "bPKwtB4lyOQ", category: "koshiWaza" },
     { name: "O-goshi", id: "yhu1mfy2vJ4", category: "koshiWaza" },
@@ -158,7 +212,6 @@ const VideosSection = () => {
     { name: "Ushiro-goshi", id: "ORIYstuxYT8", category: "koshiWaza" },
   ];
 
-  // === NAGE-WAZA: Ashi-waza (21 Técnicas de Perna) ===
   const ashiWazaVideos: VideoItem[] = [
     { name: "De-ashi-harai", id: "4BUUvqxi_Kk", category: "ashiWaza" },
     { name: "Hiza-guruma", id: "JPJx9-oAVns", category: "ashiWaza" },
@@ -183,8 +236,6 @@ const VideosSection = () => {
     { name: "Uchi-mata-gaeshi", id: "Sy6sLWxkWYw", category: "ashiWaza" },
   ];
 
-  // === NAGE-WAZA: Sutemi-waza (21 Técnicas de Sacrifício) ===
-  // Ma-sutemi-waza (5) + Yoko-sutemi-waza (16)
   const sutemiWazaVideos: VideoItem[] = [
     { name: "Tomoe-nage", id: "880WbHvHv6A", category: "sutemiWaza" },
     { name: "Sumi-gaeshi", id: "5VhduA5xkbA", category: "sutemiWaza" },
@@ -209,7 +260,6 @@ const VideosSection = () => {
     { name: "Kawazu-gake", id: "w6G57bWACi0", category: "sutemiWaza" },
   ];
 
-  // === KATAME-WAZA: Osaekomi-waza (10 Imobilizações) ===
   const osaekomiWazaVideos: VideoItem[] = [
     { name: "Kesa-gatame", id: "NDaQuJOFBYk", category: "osaekomiWaza" },
     { name: "Kuzure-kesa-gatame", id: "Q2fb9jaoUFQ", category: "osaekomiWaza" },
@@ -223,7 +273,6 @@ const VideosSection = () => {
     { name: "Ura-gatame", id: "eeAHZB0v3XY", category: "osaekomiWaza" },
   ];
 
-  // === KATAME-WAZA: Shime-waza (12 Estrangulamentos) ===
   const shimeWazaVideos: VideoItem[] = [
     { name: "Nami-juji-jime", id: "k2cHry9HByQ", category: "shimeWaza" },
     { name: "Gyaku-juji-jime", id: "t3tQriIPdlI", category: "shimeWaza" },
@@ -239,7 +288,6 @@ const VideosSection = () => {
     { name: "Do-jime", id: "D_0fFcoIbvY", category: "shimeWaza" },
   ];
 
-  // === KATAME-WAZA: Kansetsu-waza (10 Chaves de Articulação) ===
   const kansetsuWazaVideos: VideoItem[] = [
     { name: "Ude-garami", id: "AIlTvZb4RlE", category: "kansetsuWaza" },
     { name: "Ude-hishigi-juji-gatame", id: "OWgSOlCuMXw", category: "kansetsuWaza" },
@@ -253,7 +301,6 @@ const VideosSection = () => {
     { name: "Ashi-garami", id: "BWWb0GoAtZw", category: "kansetsuWaza" },
   ];
 
-  // === Ukemi (Técnicas de Queda) ===
   const ukemiVideos: VideoItem[] = [
     { name: "Ushiro-ukemi", id: "VoktcQAxEPg&t=21s", category: "ukemi" },
     { name: "Yoko-ukemi", id: "VoktcQAxEPg&t=55s", category: "ukemi" },
@@ -273,6 +320,51 @@ const VideosSection = () => {
     { key: "ukemi", title: t.categories.ukemi, videos: ukemiVideos },
   ];
 
+  const filteredCategories = useMemo(() => {
+    return videoCategories.map(cat => {
+      let filteredVideos = cat.videos;
+
+      // Filter by gokyo group
+      if (activeGokyoFilter !== "all") {
+        if (activeGokyoFilter === "katame") {
+          // Show only katame-waza categories
+          if (!["osaekomiWaza", "shimeWaza", "kansetsuWaza"].includes(cat.key)) {
+            return { ...cat, videos: [] };
+          }
+        } else if (activeGokyoFilter === "ukemi") {
+          if (cat.key !== "ukemi") return { ...cat, videos: [] };
+        } else {
+          // Filter nage-waza by gokyo group
+          if (["osaekomiWaza", "shimeWaza", "kansetsuWaza", "ukemi"].includes(cat.key)) {
+            return { ...cat, videos: [] };
+          }
+          filteredVideos = filteredVideos.filter(v => getGokyoGroup(v.name) === activeGokyoFilter);
+        }
+      }
+
+      // Filter by search
+      if (searchQuery.length >= 2) {
+        const q = searchQuery.toLowerCase();
+        filteredVideos = filteredVideos.filter(v => v.name.toLowerCase().includes(q));
+      }
+
+      return { ...cat, videos: filteredVideos };
+    }).filter(cat => cat.videos.length > 0);
+  }, [activeGokyoFilter, searchQuery, videoCategories]);
+
+  const getGokyoBadge = (videoName: string) => {
+    const group = getGokyoGroup(videoName);
+    const groupMap: Record<string, { label: string; color: string; textClass?: string }> = {
+      ikkyo: { label: "1º", color: "bg-yellow-500", textClass: "text-black" },
+      nikyo: { label: "2º", color: "bg-orange-500" },
+      sankyo: { label: "3º", color: "bg-green-600" },
+      yonkyo: { label: "4º", color: "bg-blue-600" },
+      gokyo5: { label: "5º", color: "bg-amber-800" },
+      extra: { label: "Extra", color: "bg-red-700" },
+    };
+    return groupMap[group] || null;
+  };
+
   return (
     <div className="animate-fade-in">
       <h2 className="section-title">
@@ -280,6 +372,42 @@ const VideosSection = () => {
         {t.title}
       </h2>
 
+      {/* Search */}
+      <div className="relative max-w-md mb-6">
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder={t.searchPlaceholder}
+          className="search-input pr-10 text-sm"
+        />
+        <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-primary w-4 h-4" />
+      </div>
+
+      {/* Gokyo Group Filter */}
+      <div className="mb-6">
+        <h3 className="text-xs font-semibold text-muted-foreground mb-2 uppercase tracking-wider">
+          {language === 'pt' ? 'Filtrar por Grupo' : 'Filter by Group'}
+        </h3>
+        <div className="flex flex-wrap gap-2">
+          {gokyoGroups.map(g => (
+            <button
+              key={g.key}
+              onClick={() => setActiveGokyoFilter(g.key)}
+              className={cn(
+                "px-3 py-1.5 rounded-lg text-xs font-medium transition-all border",
+                activeGokyoFilter === g.key
+                  ? `${g.color} border-transparent text-white ${g.textClass || ''}`
+                  : "bg-card border-primary/20 text-muted-foreground hover:border-primary/40"
+              )}
+            >
+              {g.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Category Legend */}
       <div className="card-judo mb-6 p-4">
         <h3 className="text-sm font-semibold text-primary mb-3">
           🎯 {language === "en" ? "Categories by Technique Type" : "Categorias por Tipo de Técnica"}
@@ -289,9 +417,7 @@ const VideosSection = () => {
             .filter(([key]) => key !== "ukemi")
             .map(([key, info]) => (
               <div key={key} className="flex items-center gap-2">
-                <div
-                  className={`w-6 h-6 rounded-full ${info.color} flex items-center justify-center text-[10px] text-white font-bold`}
-                >
+                <div className={`w-6 h-6 rounded-full ${info.color} flex items-center justify-center text-[10px] text-white font-bold`}>
                   {info.icon}
                 </div>
                 <div>
@@ -317,14 +443,12 @@ const VideosSection = () => {
         <p className="text-sm text-foreground/70">{t.intro}</p>
       </div>
 
-      {videoCategories.map((category) => {
+      {filteredCategories.map((category) => {
         const info = categoryInfo[category.key];
         return (
           <div key={category.key} className="mb-10">
             <h3 className="text-lg font-semibold flex items-center gap-3 mb-4">
-              <span
-                className={`w-7 h-7 rounded flex items-center justify-center text-xs text-white font-bold ${info.color}`}
-              >
+              <span className={`w-7 h-7 rounded flex items-center justify-center text-xs text-white font-bold ${info.color}`}>
                 {info.icon}
               </span>
               <span className="text-primary">{category.title}</span>
@@ -333,39 +457,57 @@ const VideosSection = () => {
               </Badge>
             </h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-              {category.videos.map((video, index) => (
-                <a
-                  key={index}
-                  href={`https://www.youtube.com/watch?v=${video.id}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="card-judo group overflow-hidden p-0 hover:border-primary transition-colors"
-                >
-                  <div className="relative aspect-video bg-background/50">
-                    <VideoThumbnail videoId={video.id} videoName={video.name} />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <span className="text-white text-sm ml-0.5">▶</span>
+              {category.videos.map((video, index) => {
+                const gokyoBadge = getGokyoBadge(video.name);
+                return (
+                  <a
+                    key={index}
+                    href={`https://www.youtube.com/watch?v=${video.id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="card-judo group overflow-hidden p-0 hover:border-primary transition-colors"
+                  >
+                    <div className="relative aspect-video bg-background/50">
+                      <VideoThumbnail videoId={video.id} videoName={video.name} />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                          <span className="text-white text-sm ml-0.5">▶</span>
+                        </div>
                       </div>
+                      <Badge
+                        variant="secondary"
+                        className={`absolute top-1 right-1 text-[10px] px-1.5 py-0.5 ${info.color} ${info.textColor}`}
+                      >
+                        {info.badge}
+                      </Badge>
+                      {gokyoBadge && (
+                        <Badge
+                          className={`absolute top-1 left-1 text-[10px] px-1.5 py-0.5 ${gokyoBadge.color} ${gokyoBadge.textClass || 'text-white'} border-0`}
+                        >
+                          {gokyoBadge.label}
+                        </Badge>
+                      )}
                     </div>
-                    <Badge
-                      variant="secondary"
-                      className={`absolute top-1 right-1 text-[10px] px-1.5 py-0.5 ${info.color} ${info.textColor}`}
-                    >
-                      {info.badge}
-                    </Badge>
-                  </div>
-                  <div className="p-2 text-center">
-                    <p className="text-xs font-medium text-white group-hover:text-primary transition-colors truncate">
-                      {video.name}
-                    </p>
-                  </div>
-                </a>
-              ))}
+                    <div className="p-2 text-center">
+                      <p className="text-xs font-medium text-white group-hover:text-primary transition-colors truncate">
+                        {video.name}
+                      </p>
+                    </div>
+                  </a>
+                );
+              })}
             </div>
           </div>
         );
       })}
+
+      {filteredCategories.length === 0 && (
+        <div className="text-center py-12">
+          <p className="text-muted-foreground">
+            {language === 'pt' ? 'Nenhum vídeo encontrado.' : 'No videos found.'}
+          </p>
+        </div>
+      )}
 
       <h3 className="text-lg font-semibold text-primary flex items-center gap-2 mb-4 mt-10">
         <span>💡</span> {t.studyTips}
