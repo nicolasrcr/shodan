@@ -20,6 +20,7 @@ import SimuladoPage from "./pages/SimuladoPage";
 import PerformancePage from "./pages/PerformancePage";
 import BlockedPage from "./pages/BlockedPage";
 import NotFound from "./pages/NotFound";
+import OfflineBanner from "@/components/OfflineBanner";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,7 @@ const App = () => {
           <AuthProvider>
             <Toaster />
             <Sonner />
+            <OfflineBanner />
             {showSplash && <SplashScreen onFinish={handleSplashFinish} />}
             <BrowserRouter>
               <Routes>
