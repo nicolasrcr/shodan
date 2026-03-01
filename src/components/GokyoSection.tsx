@@ -4,9 +4,61 @@ import { extraGokyoDataEn } from "@/data/judoDataEn";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Ban, Sparkles } from "lucide-react";
+import { Ban, Sparkles, Play, VideoOff } from "lucide-react";
+import { getVideoIdForTechnique } from "@/data/videoMap";
 
-const GokyoSection = () => {
+interface GokyoSectionProps {
+  onNavigateToVideo?: (techniqueName: string) => void;
+}
+
+const TechniqueThumbnail = ({ name }: { name: string }) => {
+  const videoId = getVideoIdForTechnique(name);
+  const [imgSrc, setImgSrc] = useState(
+    videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : ""
+  );
+  const [hasError, setHasError] = useState(!videoId);
+  const { language } = useLanguage();
+
+  const handleError = () => {
+    if (imgSrc.includes("mqdefault")) {
+      setImgSrc(`https://img.youtube.com/vi/${videoId}/default.jpg`);
+    } else {
+      setHasError(true);
+    }
+  };
+
+  if (hasError || !videoId) {
+    return (
+      <div className="w-full aspect-video bg-muted/30 flex items-center justify-center rounded-t-lg">
+        <div className="flex flex-col items-center gap-1">
+          <VideoOff className="w-5 h-5 text-muted-foreground/50" />
+          <span className="text-[9px] text-muted-foreground/50">
+            {language === "pt" ? "Vídeo indisponível" : "Video unavailable"}
+          </span>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative w-full aspect-video overflow-hidden rounded-t-lg group/thumb cursor-pointer">
+      <img
+        src={imgSrc}
+        alt={name}
+        className="w-full h-full object-cover opacity-80 group-hover/thumb:opacity-100 transition-opacity"
+        loading="lazy"
+        onError={handleError}
+      />
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="w-8 h-8 rounded-full bg-red-600/90 flex items-center justify-center group-hover/thumb:scale-110 transition-transform">
+          <Play className="w-3.5 h-3.5 text-white ml-0.5" fill="white" />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const GokyoSection = ({ onNavigateToVideo }: GokyoSectionProps) => {
   const [activeGroup, setActiveGroup] = useState<string>("ikkyo");
   const { language } = useLanguage();
   const extra = language === 'en' ? extraGokyoDataEn : extraGokyoData;
@@ -40,6 +92,13 @@ const GokyoSection = () => {
         { name: "Ma-sutemi", desc: "Rear sacrifice" },
         { name: "Yoko-sutemi", desc: "Side sacrifice" },
       ];
+
+  const handleTechniqueClick = (name: string) => {
+    const videoId = getVideoIdForTechnique(name);
+    if (videoId && onNavigateToVideo) {
+      onNavigateToVideo(name);
+    }
+  };
 
   return (
     <div className="animate-fade-in">
@@ -126,37 +185,52 @@ const GokyoSection = () => {
       {/* Main Gokyo Techniques Grid */}
       {isMainGokyo && currentGroup && currentColor && (
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {currentGroup.techniques.map((technique) => (
-            <div key={technique.num} className="technique-card relative">
-              <Badge 
+          {currentGroup.techniques.map((technique) => {
+            const hasVideo = !!getVideoIdForTechnique(technique.name);
+            return (
+              <div 
+                key={technique.num} 
                 className={cn(
-                  "absolute top-2 right-2 text-[10px]",
-                  currentColor.bg,
-                  activeGroup === 'ikkyo' ? "text-black" : "text-white",
-                  "hover:opacity-90"
+                  "technique-card relative p-0 overflow-hidden",
+                  hasVideo && "cursor-pointer hover:border-primary/60 hover:shadow-lg hover:shadow-primary/10 transition-all"
                 )}
+                onClick={() => handleTechniqueClick(technique.name)}
               >
-                {currentColor.kyu}
-              </Badge>
-              <div className="flex items-start justify-between mb-2">
-                <span className={cn(
-                  "w-7 h-7 rounded-full text-xs font-bold flex items-center justify-center text-white",
-                  currentColor.bg
-                )}>
-                  {technique.num}
-                </span>
-                <span className="text-xs px-2 py-1 rounded-full bg-muted text-muted-foreground">
-                  {technique.group}
-                </span>
+                <TechniqueThumbnail name={technique.name} />
+                <div className="p-3">
+                  <Badge 
+                    className={cn(
+                      "absolute top-2 right-2 text-[10px]",
+                      currentColor.bg,
+                      activeGroup === 'ikkyo' ? "text-black" : "text-white",
+                      "hover:opacity-90"
+                    )}
+                  >
+                    {currentColor.kyu}
+                  </Badge>
+                  <div className="flex items-start justify-between mb-2">
+                    <span className={cn(
+                      "w-7 h-7 rounded-full text-xs font-bold flex items-center justify-center text-white",
+                      currentColor.bg
+                    )}>
+                      {technique.num}
+                    </span>
+                    <span className="text-xs px-2 py-1 rounded-full bg-muted text-muted-foreground">
+                      {technique.group}
+                    </span>
+                  </div>
+                  <h4 className="font-semibold text-white text-sm mb-1">{technique.name}</h4>
+                  <p className={cn("text-2xl font-serif mb-2", currentColor.text)}>{technique.kanji}</p>
+                  <p className="text-xs text-muted-foreground mb-1">{technique.translation}</p>
+                  {hasVideo && (
+                    <p className="text-[10px] text-primary/70 flex items-center gap-1">
+                      <span>🎬</span> {language === 'pt' ? 'Clique para ver o vídeo' : 'Click to watch video'}
+                    </p>
+                  )}
+                </div>
               </div>
-              <h4 className="font-semibold text-white text-sm mb-1">{technique.name}</h4>
-              <p className={cn("text-2xl font-serif mb-2", currentColor.text)}>{technique.kanji}</p>
-              <p className="text-xs text-muted-foreground mb-2">{technique.translation}</p>
-              <p className="text-[10px] text-primary/70 flex items-center gap-1">
-                <span>🎬</span> {language === 'pt' ? 'Vídeo disponível na página Vídeos' : 'Video available on Videos page'}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
@@ -191,29 +265,42 @@ const GokyoSection = () => {
               </p>
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {extra.habukaretaWaza.techniques.map((technique) => (
-                <div key={technique.num} className="technique-card relative">
-                  <Badge className="absolute top-2 right-2 text-[10px] bg-red-700 text-white hover:opacity-90">
-                    {language === 'pt' ? 'Excluída' : 'Excluded'}
-                  </Badge>
-                  <div className="flex items-start justify-between mb-2">
-                    <span className="w-7 h-7 rounded-full text-xs font-bold flex items-center justify-center text-white bg-red-700">
-                      {technique.num}
-                    </span>
-                    <span className="text-xs px-2 py-1 rounded-full bg-muted text-muted-foreground">
-                      {technique.group}
-                    </span>
+              {extra.habukaretaWaza.techniques.map((technique) => {
+                const hasVideo = !!getVideoIdForTechnique(technique.name);
+                return (
+                  <div 
+                    key={technique.num} 
+                    className={cn(
+                      "technique-card relative p-0 overflow-hidden",
+                      hasVideo && "cursor-pointer hover:border-primary/60 hover:shadow-lg hover:shadow-primary/10 transition-all"
+                    )}
+                    onClick={() => handleTechniqueClick(technique.name)}
+                  >
+                    <TechniqueThumbnail name={technique.name} />
+                    <div className="p-3">
+                      <Badge className="absolute top-2 right-2 text-[10px] bg-red-700 text-white hover:opacity-90">
+                        {language === 'pt' ? 'Excluída' : 'Excluded'}
+                      </Badge>
+                      <div className="flex items-start justify-between mb-2">
+                        <span className="w-7 h-7 rounded-full text-xs font-bold flex items-center justify-center text-white bg-red-700">
+                          {technique.num}
+                        </span>
+                        <span className="text-xs px-2 py-1 rounded-full bg-muted text-muted-foreground">
+                          {technique.group}
+                        </span>
+                      </div>
+                      <h4 className="font-semibold text-white text-sm mb-1">{technique.name}</h4>
+                      <p className="text-2xl font-serif mb-2 text-red-400">{technique.kanji}</p>
+                      <p className="text-xs text-muted-foreground mb-1">
+                        {technique.translation}
+                      </p>
+                      <p className="text-[10px] text-red-400/70">
+                        {language === 'pt' ? `Pertencia ao ${technique.originalGroup}` : `Belonged to ${technique.originalGroup}`}
+                      </p>
+                    </div>
                   </div>
-                  <h4 className="font-semibold text-white text-sm mb-1">{technique.name}</h4>
-                  <p className="text-2xl font-serif mb-2 text-red-400">{technique.kanji}</p>
-                  <p className="text-xs text-muted-foreground mb-1">
-                    {technique.translation}
-                  </p>
-                  <p className="text-[10px] text-red-400/70">
-                    {language === 'pt' ? `Pertencia ao ${technique.originalGroup}` : `Belonged to ${technique.originalGroup}`}
-                  </p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
@@ -236,26 +323,39 @@ const GokyoSection = () => {
               </p>
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {extra.shinmeishoNoWaza.techniques.map((technique) => (
-                <div key={technique.num} className="technique-card relative">
-                  <Badge className="absolute top-2 right-2 text-[10px] bg-sky-600 text-white hover:opacity-90">
-                    Shinmeisho
-                  </Badge>
-                  <div className="flex items-start justify-between mb-2">
-                    <span className="w-7 h-7 rounded-full text-xs font-bold flex items-center justify-center text-white bg-sky-600">
-                      {technique.num}
-                    </span>
-                    <span className="text-xs px-2 py-1 rounded-full bg-muted text-muted-foreground">
-                      {technique.group}
-                    </span>
+              {extra.shinmeishoNoWaza.techniques.map((technique) => {
+                const hasVideo = !!getVideoIdForTechnique(technique.name);
+                return (
+                  <div 
+                    key={technique.num} 
+                    className={cn(
+                      "technique-card relative p-0 overflow-hidden",
+                      hasVideo && "cursor-pointer hover:border-primary/60 hover:shadow-lg hover:shadow-primary/10 transition-all"
+                    )}
+                    onClick={() => handleTechniqueClick(technique.name)}
+                  >
+                    <TechniqueThumbnail name={technique.name} />
+                    <div className="p-3">
+                      <Badge className="absolute top-2 right-2 text-[10px] bg-sky-600 text-white hover:opacity-90">
+                        Shinmeisho
+                      </Badge>
+                      <div className="flex items-start justify-between mb-2">
+                        <span className="w-7 h-7 rounded-full text-xs font-bold flex items-center justify-center text-white bg-sky-600">
+                          {technique.num}
+                        </span>
+                        <span className="text-xs px-2 py-1 rounded-full bg-muted text-muted-foreground">
+                          {technique.group}
+                        </span>
+                      </div>
+                      <h4 className="font-semibold text-white text-sm mb-1">{technique.name}</h4>
+                      <p className="text-2xl font-serif mb-2 text-sky-400">{technique.kanji}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {technique.translation}
+                      </p>
+                    </div>
                   </div>
-                  <h4 className="font-semibold text-white text-sm mb-1">{technique.name}</h4>
-                  <p className="text-2xl font-serif mb-2 text-sky-400">{technique.kanji}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {technique.translation}
-                  </p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>

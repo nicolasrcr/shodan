@@ -481,10 +481,16 @@ const VideosSection = ({ highlightTechnique }: VideosSectionProps) => {
                 return (
                   <a
                     key={index}
+                    ref={highlightTechnique && video.name.toLowerCase() === highlightTechnique.toLowerCase() ? highlightedRef : undefined}
+                    id={`tech-${video.name.replace(/\s+/g, '-')}`}
                     href={`https://www.youtube.com/watch?v=${video.id}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="card-judo group overflow-hidden p-0 hover:border-primary transition-colors"
+                    className={cn(
+                      "card-judo group overflow-hidden p-0 hover:border-primary transition-all relative",
+                      highlightActive && highlightTechnique && video.name.toLowerCase() === highlightTechnique.toLowerCase()
+                        && "ring-2 ring-yellow-400 border-yellow-400 shadow-lg shadow-yellow-400/20"
+                    )}
                   >
                     <div className="relative aspect-video bg-background/50">
                       <VideoThumbnail videoId={video.id} videoName={video.name} />
