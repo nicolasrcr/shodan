@@ -180,7 +180,9 @@ const AuthPage = () => {
         setCadastroError(t("auth.rateLimitReached"));
       } else if (msg.includes('password') && msg.includes('6')) {
         setCadastroError(t("auth.minChars"));
-      } else if (msg.includes('weak') || msg.includes('easy to guess') || msg.includes('password should contain') || msg.includes('character of each')) {
+      } else if (msg.includes('password should contain') || msg.includes('character of each')) {
+        setCadastroError(t("auth.passwordRequirements"));
+      } else if (msg.includes('weak') || msg.includes('easy to guess')) {
         setCadastroError(t("auth.weakPassword"));
       } else {
         setCadastroError(`${t("auth.createAccountError")} (${error.message})`);
